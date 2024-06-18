@@ -1,0 +1,98 @@
+footer {
+  background-image: url("/assets/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  padding-top: 1rem;
+  text-align: center; /* Küçük ekranlarda ortalama */
+  color: whitesmoke;
+  }
+  
+  .container {
+    display: flex;
+    flex-wrap: wrap; /* Sütunları sarmak için */
+    justify-content: center; /* Sütunları ortalamak için */
+  }
+  
+  .column {
+    width: 250px;
+    margin: 0 35px;
+  }
+  
+  h3 {
+    margin-bottom: 15px;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: whitesmoke;
+  }
+
+  a:hover {
+    background-color: whitesmoke;
+    color:rgb(0, 0, 112);
+    padding: 2%;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column; /* Input ve butonu alt alta */
+  }
+  
+  input[type="email"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  button[type="submit"] {
+    padding: 10px;
+    background-color: whitesmoke;
+    color: rgb(0, 0, 112);
+    border: none;
+    cursor: pointer;
+  }
+
+  button:hover{
+    background-color: rgb(0, 0, 112);
+    color: white;
+    border: 1px solid white;
+    
+}
+
+.fa-heart:hover::before {
+  content: ""; // İkonu gizlemek için.
+}
+
+  .fa-heart:hover::after {
+    content: "❤️";
+    font-family:system-ui;
+}
+
+.copyright p{
+  margin: 0;
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+  
+  /* Responsive Tasarım */
+  @media (max-width: 768px) {
+    .column {
+      width: 100%; /* Küçük ekranlarda sütunları tam genişlikte yap */
+      margin-bottom: 20px;
+    }
+    footer {
+      text-align: center;
+    }
+  }
+  
