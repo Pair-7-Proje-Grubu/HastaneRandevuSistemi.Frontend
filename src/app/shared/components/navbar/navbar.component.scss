@@ -1,0 +1,49 @@
+.navbar {
+    background-color: #344b61; /* Arka plan rengini değiştir */
+}
+.navbar .nav-link {
+    color: #dae2e6; /* Yazı rengini değiştir */
+    font-size: 17px; /* Yazı boyutunu değiştir */
+    font-family: 'Arial', sans-serif; /* Yazı tipini değiştir */
+    
+    padding-left: 15px; /* Sol boşluk ekle */
+    padding-right: 15px; /* Sağ boşluk ekle */
+
+    display: inline-block; /* Yazının çevresindeki alana göre ölçeklenmesini sağlar */
+    transition: transform 0.3s ease; /* Ölçekleme geçişi için */
+}
+.navbar .nav-link:active, .navbar .nav-link:focus {
+    background-color: #314455; /* Tıklanan bağlantının arka plan rengini değiştir */
+    color: #dae2e6; /* Yazı rengini değiştir */
+}
+.navbar .nav-link:hover {
+    transform: scale(1.2); /* Yazı üzerine gelindiğinde yazıyı ölçeklendir */
+}
+.navbar-brand {
+    color: #dae2e6; /* Yazı rengini değiştir */
+    font-size: 25px; /* Yazı boyutunu değiştir */
+    font-family: 'Georgia', serif; /* Yazı tipini değiştir */
+    transition: color 0.3s ease, transform 0.3s ease; /* Geçiş animasyonu */
+    
+    padding-left: 20px; /* Sol boşluk ekle */
+}
+.navbar-brand:hover {
+    color: #dae2e6; /* Yazı rengi üzerine gelindiğinde değiştir */
+    transform: scale(1.1); /* Yazı üzerine gelindiğinde ölçeklendir */
+}
+/* Dropdown menü için stil */
+.dropdown-menu {
+    background-color: #344b61; /* Arka plan rengini değiştir */
+    border: none; /* Kenarlığı kaldır */
+}
+
+.dropdown-menu .dropdown-item {
+    color: #dae2e6; /* Yazı rengini değiştir */
+    font-size: 16px; /* Yazı boyutunu değiştir */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Geçiş animasyonu */
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #314455; /* Üzerine gelindiğinde arka plan rengini değiştir */
+    color: #dae2e6; /* Üzerine gelindiğinde yazı rengini değiştir */
+}

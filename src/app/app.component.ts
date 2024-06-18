@@ -3,6 +3,7 @@ import { RouterOutlet, RouterModule } from '@angular/router';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { CardComponent } from './shared/components/card/card.component';
 import { LoadingOverlayComponent } from './shared/components/loading-overlay/loading-overlay.component';
+import { ButtonComponent } from './shared/components/button/button.component';
 import { AuthService } from './features/auth/services/auth.service';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { TableComponent } from './shared/components/table/table.component';
@@ -11,7 +12,7 @@ import { DropdownListComponent } from './shared/components/dropdown-list/dropdow
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, NavbarComponent,CardComponent,LoadingOverlayComponent, FooterComponent, TableComponent, DropdownListComponent],
+  imports: [RouterOutlet, RouterModule, NavbarComponent,CardComponent,LoadingOverlayComponent, ButtonComponent, FooterComponent, TableComponent, DropdownListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
