@@ -6,16 +6,19 @@ import { LoadingOverlayComponent } from './shared/components/loading-overlay/loa
 import { AuthService } from './features/auth/services/auth.service';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { TableComponent } from './shared/components/table/table.component';
+import { DropdownListComponent } from './shared/components/dropdown-list/dropdown-list.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, NavbarComponent,CardComponent,LoadingOverlayComponent, FooterComponent, TableComponent],
+  imports: [RouterOutlet, RouterModule, NavbarComponent,CardComponent,LoadingOverlayComponent, FooterComponent, TableComponent, DropdownListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   title = 'HastaneRandevuSistemi.Frontend';
+
+  dropdownItems1 = ['Option 1', 'Option 2', 'Option 3'];
   randevusayisi = "20";
   constructor(private authService: AuthService) {}
 

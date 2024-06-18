@@ -1,0 +1,13 @@
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ selectedItem ? selectedItem : 'Select an item' }}
+    </button>
+    <ul class="dropdown-menu">
+      <li class="dropdown-item">
+        <input type="text" (input)="onSearch($event)" [value]="searchTerm">
+      </li>
+      <li *ngFor="let item of filteredItems" (click)="onSelect(item)">
+        <a class="dropdown-item" href="#">{{ item }}</a>
+      </li>
+    </ul>
+  </div>
