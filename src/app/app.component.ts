@@ -8,11 +8,21 @@ import { AuthService } from './features/auth/services/auth.service';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { TableComponent } from './shared/components/table/table.component';
 import { DropdownListComponent } from './shared/components/dropdown-list/dropdown-list.component';
+import { CalenderComponent } from './shared/components/calender/calender.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, NavbarComponent,CardComponent,LoadingOverlayComponent, ButtonComponent, FooterComponent, TableComponent, DropdownListComponent],
+  imports: [RouterOutlet, 
+    RouterModule, 
+    NavbarComponent,
+    CardComponent,
+    LoadingOverlayComponent, 
+    FooterComponent, 
+    TableComponent, 
+    DropdownListComponent,
+    CalenderComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
