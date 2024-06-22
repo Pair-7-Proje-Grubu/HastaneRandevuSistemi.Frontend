@@ -16,22 +16,7 @@ import { DropdownListComponent } from './shared/components/dropdown-list/dropdow
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'HastaneRandevuSistemi.Frontend';
 
-  dropdownItems1 = ['Option 1', 'Option 2', 'Option 3'];
-  randevusayisi = "20";
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
-    this.authService.test().subscribe({
-      next: (secretMessage) => {
-        console.log(secretMessage);
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
-  }
-  
 }
