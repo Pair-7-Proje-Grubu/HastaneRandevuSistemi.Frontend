@@ -20,6 +20,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { ErrorFieldComponent } from "../../../../shared/components/error-field/error-field.component";
 import { ValidationService } from '../../../validation/services/validation.service';
+import { matchValidator } from '../../../validation/validator/match.validator';
 
 
 @Component({
@@ -36,15 +37,22 @@ export class RegisterFormComponent {
 
   constructor(formBuilder: FormBuilder, private authService: AuthService) {
     this.registerFormGroup = formBuilder.group({
-      firstName: ['', [Validators.required, Validators.minLength(2),Validators.maxLength(5)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      firstName: ['', [Validators.required, Validators.minLength(2),Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.minLength(2),Validators.maxLength(50)]],
       birthDate: ['', [Validators.required]],
-      gender: ['', [Validators.required, Validators.maxLength(1)]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      gender: ['M', [Validators.required, Validators.maxLength(1)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
+      phone: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
+      confirmPassword: ['', [Validators.required, matchValidator('password')]]
     });
+
+    this.registerFormGroup.controls["password"].setValidators(
+      [Validators.required, Validators.minLength(6), Validators.maxLength(50), matchValidator('confirmPassword', true)]
+    );
+
   }
+
 
   register() {
     const registerCredentials: RegisterCredentials = {
@@ -65,6 +73,7 @@ export class RegisterFormComponent {
 
   onFormSubmit() {
     if (this.registerFormGroup.invalid) {
+      console.log(this.registerFormGroup);
       console.error('Invalid form');
       return;
     }

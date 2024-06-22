@@ -28,40 +28,44 @@
           <div class="form-floating">
             <input type="date" class="form-control" id="birthdate" autocomplete="bday"  formControlName="birthDate" placeholder="Birth Date">
             <label for="floatingInput">Doğum Tarihi</label>
-            <app-error-field [control]="registerFormGroup.controls['lastName']" propertyName="Doğum Tarihi"></app-error-field>
           </div>
 
           <div class="input-group mb-2" autocomplete="sex">
             <label>Cinsiyet:</label>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="gender" name="gender" id="gender" value="M" checked>
-              <label class="form-check-label" for="erkek">Erkek</label>
+              <input class="form-check-input" id="male" value="M" type="radio" formControlName="gender" name="gender" id="gender" >
+              <label class="form-check-label" for="male">Erkek</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="gender" name="gender" id="gender" value="F">
-              <label class="form-check-label" for="kadin">Kadın</label>
+              <input class="form-check-input" id="female" value="F" type="radio" formControlName="gender" name="gender" id="gender">
+              <label class="form-check-label" for="female">Kadın</label>
             </div>
           </div>
 
           <div class="form-floating">
             <input type="email" class="form-control" autocomplete="email" id="email" formControlName="email" placeholder="name@example.com">
             <label for="floatingInput">E-Posta</label>
+            <app-error-field [control]="registerFormGroup.controls['email']" propertyName="E-posta"></app-error-field>
           </div>
 
           <div class="form-floating">
             <input type="text" class="form-control" id="phone" autocomplete="tel"  formControlName="phone" placeholder="Phone">
             <label for="floatingPhone">Telefon Numarası</label>
+            <app-error-field [control]="registerFormGroup.controls['phone']" propertyName="Telefon Numarası"></app-error-field>
+
           </div>
         
 
           <div class="form-floating">
             <input type="password" autocomplete="new-password" class="form-control" id="password"  formControlName="password" placeholder="Password">
             <label for="floatingPassword">Parola</label>
+            <app-error-field [control]="registerFormGroup.controls['password']" propertyName="Parola"></app-error-field>
           </div>
           
           <div class="form-floating">
             <input type="password" autocomplete="new-password" class="form-control" id="confirmPassword"  formControlName="confirmPassword" placeholder="Password">
             <label for="floatingPassword">Parola Tekrarı</label>
+            <app-error-field [control]="registerFormGroup.controls['confirmPassword']" propertyName="Parola"></app-error-field>
           </div>
         
           <div class="form-check text-start my-3">
