@@ -8,6 +8,7 @@ import { AuthService as CoreAuthService } from '../../../core/auth/services/auth
 import { ACCESS_TOKEN_KEY } from '../../../core/auth/constants/auth-keys';
 import { LocalStorageService } from '../../../core/browser/services/local-storage.service';
 import { SecretMessage } from '../models/secret-message';
+import { RegisterCredentials } from '../models/register-credentials';
 
 @Injectable({
   providedIn: 'root',
@@ -40,11 +41,24 @@ export class AuthService extends CoreAuthService {
       );
   }
 
-  test(): Observable<SecretMessage> {
-    return this.http.get<SecretMessage>(`${this.apiControllerUrl}/test`);
-  }
 
-  testAdmin(): Observable<SecretMessage> {
-    return this.http.get<SecretMessage>(`${this.apiControllerUrl}/test-admin`);
+  
+  register(registerCredentials: RegisterCredentials): Observable<LoggedInformation> {
+    return this.http
+      .post<LoggedInformation>(
+        `${this.apiControllerUrl}/register`,
+        registerCredentials
+      )
+      .pipe(
+        tap((loggedInformation) => {
+          console.log("register işlemi geldi");
+          this.localStorageService.set(
+            ACCESS_TOKEN_KEY,
+            loggedInformation.token
+          );
+          this._logged.next();
+          this._isLogged.next(true);
+        })
+      );
   }
 }
