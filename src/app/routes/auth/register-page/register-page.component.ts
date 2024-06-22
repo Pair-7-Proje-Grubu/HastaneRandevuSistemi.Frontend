@@ -21,6 +21,6 @@ export class RegisterPageComponent {
   constructor(private router: Router) {}
   
   onRegisterSuccess() {
-    this.router.navigate(['/my-account']);
+    this.router.navigate(['/login']);
   }
 }

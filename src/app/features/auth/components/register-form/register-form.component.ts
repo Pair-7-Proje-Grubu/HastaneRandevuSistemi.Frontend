@@ -44,7 +44,8 @@ export class RegisterFormComponent {
       email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
       phone: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
-      confirmPassword: ['', [Validators.required, matchValidator('password')]]
+      confirmPassword: ['', [Validators.required, matchValidator('password')]],
+      userAgreement: [false, Validators.requiredTrue]
     });
 
     this.registerFormGroup.controls["password"].setValidators(
@@ -52,7 +53,6 @@ export class RegisterFormComponent {
     );
 
   }
-
 
   register() {
     const registerCredentials: RegisterCredentials = {
@@ -73,7 +73,6 @@ export class RegisterFormComponent {
 
   onFormSubmit() {
     if (this.registerFormGroup.invalid) {
-      console.log(this.registerFormGroup);
       console.error('Invalid form');
       return;
     }

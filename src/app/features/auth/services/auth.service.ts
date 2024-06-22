@@ -26,15 +26,10 @@ export class AuthService extends CoreAuthService {
   login(loginCredentials: LoginCredentials): Observable<LoggedInformation> {
     return this.http
       .post<LoggedInformation>(
-        `${this.apiControllerUrl}/login`,
-        loginCredentials
-      )
+        `${this.apiControllerUrl}/login`, loginCredentials)
       .pipe(
         tap((loggedInformation) => {
-          this.localStorageService.set(
-            ACCESS_TOKEN_KEY,
-            loggedInformation.token
-          );
+          this.localStorageService.set(ACCESS_TOKEN_KEY,loggedInformation.token);
           this._logged.next();
           this._isLogged.next(true);
         })
@@ -43,22 +38,7 @@ export class AuthService extends CoreAuthService {
 
 
   
-  register(registerCredentials: RegisterCredentials): Observable<LoggedInformation> {
-    return this.http
-      .post<LoggedInformation>(
-        `${this.apiControllerUrl}/register`,
-        registerCredentials
-      )
-      .pipe(
-        tap((loggedInformation) => {
-          console.log("register işlemi geldi");
-          this.localStorageService.set(
-            ACCESS_TOKEN_KEY,
-            loggedInformation.token
-          );
-          this._logged.next();
-          this._isLogged.next(true);
-        })
-      );
+  register(registerCredentials: RegisterCredentials): Observable<any> {
+    return this.http.post(`${this.apiControllerUrl}/register`,registerCredentials);
   }
 }
