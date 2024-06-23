@@ -9,11 +9,12 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { TableComponent } from './shared/components/table/table.component';
 import { DropdownListComponent } from './shared/components/dropdown-list/dropdown-list.component';
 import { CalenderComponent } from './shared/components/calender/calender.component';
+import { TableExportComponent } from './shared/components/table-export/table-export.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, 
+  imports: [ RouterOutlet, 
     RouterModule, 
     NavbarComponent,
     CardComponent,
@@ -22,7 +23,7 @@ import { CalenderComponent } from './shared/components/calender/calender.compone
     TableComponent, 
     DropdownListComponent,
     CalenderComponent
-  ],
+  , TableExportComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
