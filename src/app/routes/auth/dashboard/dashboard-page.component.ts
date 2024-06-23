@@ -8,11 +8,11 @@ import { Router } from '@angular/router';
   selector: 'app-my-account-page',
   standalone: true,
   imports: [CommonModule, ButtonComponent],
-  templateUrl: './my-account-page.component.html',
-  styleUrl: './my-account-page.component.scss',
+  templateUrl: './dashboard-page.component.html',
+  styleUrl: './dashboard-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MyAccountPageComponent {
+export class DashboardPageComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogout() {
