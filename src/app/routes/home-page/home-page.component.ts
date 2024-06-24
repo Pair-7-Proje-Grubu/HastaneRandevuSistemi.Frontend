@@ -7,7 +7,8 @@ import { FooterComponent } from '../../shared/components/footer/footer.component
   selector: 'app-home-page',
   standalone: true,
   imports: [
-    CommonModule,NavbarComponent,FooterComponent
+    FooterComponent,
+    NavbarComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',

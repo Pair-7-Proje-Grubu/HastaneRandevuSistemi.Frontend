@@ -21,6 +21,6 @@ export class LoginPageComponent {
   constructor(private router: Router) {}
   
   onLoginSucces() {
-    this.router.navigate(['/my-account']);
+    this.router.navigate(['/dashboard']);
   }
 }

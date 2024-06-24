@@ -1,0 +1,24 @@
+<div class="side-nav-content">
+    <ul class="nav flex-column nav-list">
+        <li *ngFor="let item of list" class="nav-item nav-list-item">
+            <ng-container *ngIf="item.sublist && item.sublist.length > 0; else noSublist">
+                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" [attr.href]="'#submenu' + item.number" role="button" aria-expanded="false" [attr.aria-controls]="'submenu' + item.number">
+                    <span><i class="{{item.icon}}"></i> {{item.name}}</span>
+                    <span class="caret">&#9660;</span>
+                </a>
+                <div class="collapse" [attr.id]="'submenu' + item.number">
+                    <ul class="nav flex-column">
+                        <li *ngFor="let subItem of item.sublist" class="nav-item sub-nav-list-item">
+                            <a class="nav-link" [routerLink]="subItem.link">{{subItem.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </ng-container>
+            <ng-template #noSublist>
+                <a class="nav-link d-flex justify-content-between align-items-center" [routerLink]="item.link">
+                    <span><i class="{{item.icon}}"></i> {{item.name}}</span>
+                </a>
+            </ng-template>
+        </li>
+    </ul>
+</div>

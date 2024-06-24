@@ -1,15 +1,31 @@
 import { Routes } from '@angular/router';
-import { TableComponent } from './shared/components/table/table.component';
 import { authRoutes } from './routes/auth/auth.routes';
-import { securedRouteGuard } from './core/auth/guards/secured-route.guard';
-import { MyAccountPageComponent } from './routes/auth/my-account-page/my-account-page.component';
 import { HomePageComponent } from './routes/home-page/home-page.component';
+import { DashboardPageComponent } from './routes/dashboard-page/dashboard-page.component';
+import { securedRouteGuard } from './core/auth/guards/secured-route.guard';
+import { authGuard } from './core/auth/guards/auth.guard';
+import { DoctorPageComponent } from './routes/doctors/doctor-page/doctor-page.component';
+import { AdminPageComponent } from './routes/admins/admin-page/admin-page.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    redirectTo:'home', pathMatch:'full',
+  },
+  {
+      path: 'home',
+      component: HomePageComponent,
+      canActivate: [authGuard],
+  },
+  {
+    path: 'dashboard',
+    component: DashboardPageComponent,
+    canActivate: [securedRouteGuard],
+    children: [
+      { path: 'doctor', component: DoctorPageComponent },
+      { path: 'admin', component: AdminPageComponent },
+    ],
+  },
 
-    {
-        path: '',
-        component: HomePageComponent
-    },
-    ...authRoutes,
+  ...authRoutes,
 ];

@@ -58,18 +58,28 @@ export class AuthService {
     return true;
   }
 
-  isAuthroized(reqiredRoleIds: number[]): boolean {
-    if (!this.isAuthenticated) return false;
-    if (!this.tokenPayload?.roles) return false;
+  isAuthorized(role: string): boolean {
+    const token = this.token;
+    if (!token) return false;
+  
+    const [, payload] = token.split('.');
+    const decodedPayload = atob(payload);
+    const parsedPayload = JSON.parse(decodedPayload);
+  
+    const roles: string[] = parsedPayload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
+    return roles.includes(role);
+  }
 
-    const userRoles = this.tokenPayload.roles.map((role) => role.roleId) ?? [];
-    // for (const reqiredRoleId of reqiredRoleIds)
-    //   if (!userRoles.includes(reqiredRoleId)) return false;
-    if (
-      !reqiredRoleIds.some((reqiredRoleId) => userRoles.includes(reqiredRoleId))
-    )
-      return false;
+  getUserRoles(): string[]{
+    const token = this.token;
+    if (!token) return [];
 
-    return true;
+    const [, payload] = token.split('.');
+    const decodedPayload = atob(payload);
+    const parsedPayload = JSON.parse(decodedPayload);
+    
+    const roles: string[] = parsedPayload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
+    console.log('Roles:', roles);
+    return roles;
   }
 }

@@ -8,16 +8,19 @@ import { AuthService } from './features/auth/services/auth.service';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { TableComponent } from './shared/components/table/table.component';
 import { DropdownListComponent } from './shared/components/dropdown-list/dropdown-list.component';
+import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, NavbarComponent,CardComponent,LoadingOverlayComponent, ButtonComponent, FooterComponent, TableComponent, DropdownListComponent],
+  imports: [RouterOutlet, RouterModule, NavbarComponent,SidebarComponent,CardComponent,LoadingOverlayComponent, ButtonComponent, FooterComponent, TableComponent, DropdownListComponent,CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   title = 'HastaneRandevuSistemi.Frontend';
+  sideBarStatus: boolean=false;
 
   dropdownItems1 = ['Option 1', 'Option 2', 'Option 3'];
   randevusayisi = "20";

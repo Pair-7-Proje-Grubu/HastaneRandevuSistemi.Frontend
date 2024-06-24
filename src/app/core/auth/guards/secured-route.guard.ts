@@ -15,12 +15,15 @@ export const securedRouteGuard: CanActivateFn = (route, state) => {
     console.log("girişi başarıyla yapmışsın, helal olsun");
   }
 
+  /*
+
   const requiredRoles = route.data['requiredRoles'] as number[] | undefined;
   if (requiredRoles && !authService.isAuthroized(requiredRoles)) {
     console.error('You are not authorized! Redirecting to home page...');
     router.navigate(['/']);
     return false;
   }
-
+*/
   return true; // True döndüldüğünde route'a devam eder, false döndüğünde route'a devam etmez.
+  
 };

@@ -1,13 +1,9 @@
 export interface AccessTokenPayload {
-  id: number;
-  userName: string;
-  roles: Role[];
-  iat: number;
+  id: string;
+  email: string;
+  roles: string[];
+  nbf: number;
   exp: number;
-}
-
-export interface Role {
-  id: number;
-  userId: number;
-  roleId: number;
+  iss: string;
+  aud: string;
 }
