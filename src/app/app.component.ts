@@ -10,31 +10,17 @@ import { TableComponent } from './shared/components/table/table.component';
 import { DropdownListComponent } from './shared/components/dropdown-list/dropdown-list.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
+import { CalenderComponent } from './shared/components/calender/calender.component';
+import { TableExportComponent } from './shared/components/table-export/table-export.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, NavbarComponent,SidebarComponent,CardComponent,LoadingOverlayComponent, ButtonComponent, FooterComponent, TableComponent, DropdownListComponent,CommonModule],
+  imports: [RouterOutlet, RouterModule, NavbarComponent,CardComponent,LoadingOverlayComponent, ButtonComponent, FooterComponent, TableComponent, DropdownListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'HastaneRandevuSistemi.Frontend';
-  sideBarStatus: boolean=false;
-
-  dropdownItems1 = ['Option 1', 'Option 2', 'Option 3'];
-  randevusayisi = "20";
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
-    this.authService.test().subscribe({
-      next: (secretMessage) => {
-        console.log(secretMessage);
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
-  }
   
 }

@@ -1,0 +1,44 @@
+.form-signup {
+  padding: 1rem;
+}
+
+.form-signup .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signup input {
+  margin-bottom: -1px;
+
+}
+
+.form-signup input[id="firstname"] {
+  border-bottom-left-radius: 0;
+}
+
+.form-signup input[type="date"] {
+  margin-bottom: 10px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+#email {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+#phone,#password {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+#confirmPassword {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.form-signup label{
+  margin-right: 10px;
+}
+
