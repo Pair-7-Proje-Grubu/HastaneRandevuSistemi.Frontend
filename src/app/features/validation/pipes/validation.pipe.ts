@@ -6,13 +6,13 @@ import { ValidationErrors } from '@angular/forms';
   standalone: true
 })
 export class ValidationPipe implements PipeTransform {
-  transform(value: any, errorObj: ValidationErrors | null, propertyName: string): unknown {
+  transform(allMessages: any, errorObj: ValidationErrors | null, propertyName: string): unknown {
 
     //Gelen kurallardan ilk kuralı al.
     let firstRule = Object.keys(errorObj!)[0];
 
     // Kurala ait mesajı getir ve propertName ataması yap.
-    let messages = value[firstRule].replace("{propertyName}", propertyName);
+    let messages = allMessages[firstRule].replace("{propertyName}", propertyName);
 
     //Kurala ait tüm gereken değişken atamalarını yap.
     Object.keys(errorObj![firstRule]).forEach((x) => {
