@@ -45,3 +45,11 @@ h2 {
     max-width: 1100px;
     margin: 0 auto;
   }
+
+  ::ng-deep .fc-timegrid-slot {
+    height: 3rem !important; /* Yüksekliği burada arttırabilirsiniz */
+  }
+
+  ::ng-deep .fc-timegrid-slot-label-frame {
+    text-align: center !important; /* Yüksekliği burada arttırabilirsiniz */
+  }
