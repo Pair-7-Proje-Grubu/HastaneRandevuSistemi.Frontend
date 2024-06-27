@@ -41,6 +41,8 @@ export class AuthService {
 
   logout(): void {
     this.localStorageService.remove(ACCESS_TOKEN_KEY);
+    localStorage.removeItem('selectedItem');
+    localStorage.removeItem('selectedSubItem');
     this._loggedOut.next(); // next: Yeni bir event yayınlar, varsa yeni değeri de içerebilir.
     // error(); // error: Observable'a hata ekler.
     // complete(); // complete: Observable'ı tamamlar, artık yeni değer yayınlamaz.

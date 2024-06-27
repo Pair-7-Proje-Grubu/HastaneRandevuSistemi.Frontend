@@ -1,51 +1,88 @@
 .navbar {
-    background-color: #344b61; /* Arka plan rengini değiştir */
+    background-color: #f7f7f7;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    height: 70px;
 }
+
+.navbar .navbar-toggler {
+    margin-left: auto;
+}
+
+.navbar .navbar-brand {
+    color: #222f44;
+    font-size: 25px;
+    font-family: 'Georgia', serif;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar .navbar-brand:hover {
+    color: #dae2e6;
+    transform: scale(1.1);
+}
+
 .navbar .nav-link {
-    color: #dae2e6; /* Yazı rengini değiştir */
-    font-size: 17px; /* Yazı boyutunu değiştir */
-    font-family: 'Arial', sans-serif; /* Yazı tipini değiştir */
-    
-    padding-left: 15px; /* Sol boşluk ekle */
-    padding-right: 15px; /* Sağ boşluk ekle */
-
-    display: inline-block; /* Yazının çevresindeki alana göre ölçeklenmesini sağlar */
-    transition: transform 0.3s ease; /* Ölçekleme geçişi için */
+    color: #222f44;
+    font-size: 17px;
+    font-family: 'Arial', sans-serif;
+    padding-left: 15px;
+    padding-right: 15px;
+    transition: transform 0.3s ease;
 }
+
 .navbar .nav-link:active, .navbar .nav-link:focus {
-    background-color: #314455; /* Tıklanan bağlantının arka plan rengini değiştir */
-    color: #dae2e6; /* Yazı rengini değiştir */
-}
-.navbar .nav-link:hover {
-    transform: scale(1.2); /* Yazı üzerine gelindiğinde yazıyı ölçeklendir */
-}
-.navbar-brand {
-    color: #dae2e6; /* Yazı rengini değiştir */
-    font-size: 25px; /* Yazı boyutunu değiştir */
-    font-family: 'Georgia', serif; /* Yazı tipini değiştir */
-    transition: color 0.3s ease, transform 0.3s ease; /* Geçiş animasyonu */
-    
-    padding-left: 20px; /* Sol boşluk ekle */
-}
-.navbar-brand:hover {
-    color: #dae2e6; /* Yazı rengi üzerine gelindiğinde değiştir */
-    transform: scale(1.1); /* Yazı üzerine gelindiğinde ölçeklendir */
+    background-color: #cad5df;
+    color: #222f44;
 }
 
-////////////////////////////////////////////////////
-nav{
-    height: 100%;
+.navbar .nav-link:hover {
+    transform: scale(1.2);
 }
-.side-nav-button{
+
+.btn-outline {
+    border: 2px solid #3b74b1;
+    transition: transform 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline:hover {
+    transform: scale(1.1);
+    border-color: #0056b3;
+    color: #0056b3;
+}
+
+.collapse.navbar-collapse {
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar-nav.mx-auto {
+    flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-.side-nav-button:hover{
-    background-color: rgb(255,255,255,0.2);
-    border-radius: 30% ;
 }
 
+///////////////////////////////////////////
+mat-toolbar{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #f7f7f7;
+}
 
+ul{
+    li{
+        list-style: none;
+    }
+}
+
+::ng-deep{
+    .mat-menu-content{
+        width:260px ;
+    }
+}
+
+#profileDropdown {
+    margin-top: 20px;
+}

@@ -1,41 +1,76 @@
-.black-border{
-    border: 1px solid black;
+:host{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
-app-navbar{
-    position: fixed;
-    width: 100%;
-    top: 0px;
-    height: 4rem;
-    z-index: 2;
+
+mat-drawer{
+    width: 260px;
+    background: #222f44;
 }
-main{
-    position: absolute;
-    width: 100%;
-    top: 4rem;
-    z-index: 1;
+
+mat-drawer-container{
+    height: 100%;
 }
-app-sidebar{
-    position: absolute;
-    left: 0rem;
-    width: 60px;
-    height: calc(100vh - 4rem);
-    box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.5);
-    background-color: rgb(34, 34, 34, 1);
-    border-top: 1px solid white;
-    overflow-x: hidden;
-    white-space: nowrap;
-    transition: width 250ms ease-in;
+
+///scrollbar
+mat-drawer-content {
+    overflow-y: auto; /* Dikey kaydırmayı etkinleştir */
+    max-height: calc(100vh - 0px); /* Maksimum yükseklik (navbar yüksekliği dahil) */
 }
-.app-sidebar-open{
-    width: 250px;
+
+/* WebKit tabanlı tarayıcılarda kaydırma çubuğu stilini özelleştirme */
+mat-drawer-content::-webkit-scrollbar {
+    width: 12px; /* Kaydırma çubuğu genişliği */
 }
-.display-area{
-    position: absolute;
-    left: 60px;
-    width: calc(100% - 60px);
-    transition: left 250ms ease-in, width 250ms ease-in;
+
+mat-drawer-content::-webkit-scrollbar-track {
+    background: #f1f5f9; /* Kaydırma çubuğu yolu rengi */
+    border-radius: 10px; /* Kenarların yuvarlatılması */
 }
-.display-area-shrink{
-    width: calc(100% - 250px);
-    left: 250px;
+
+mat-drawer-content::-webkit-scrollbar-thumb {
+    background-color: #94a3b8; /* Kaydırma çubuğu rengi */
+    border-radius: 10px; /* Kenarların yuvarlatılması */
+    border: 2px solid #f1f5f9; /* Kenar boşluğu ve renk */
+}
+
+mat-drawer-content::-webkit-scrollbar-thumb:hover {
+    background: #647286; /* Kaydırma çubuğu üzerine gelindiğinde renk */
+}
+
+
+/////////////////////////////
+/// main
+.page {
+    color: white;
+    padding: 0 1rem;
+    background: #f1f5f9;
+}
+
+.page__box {
+    min-height: 90px;
+    background: #222f44;
+    margin: 0 -1rem;
+    font-size: 23px;
+}
+
+.page__content {
+    min-height: calc(100vh - 178px); /* Sabit değer yerine dinamik hesaplama */
+    border-radius: 10px;
+    margin-top: -2rem;
+    background: #f7f7f7;
+    color: black;
+    font-size: 1rem;
+    position: relative;
+}
+
+.page__content-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    padding: 1rem;
 }

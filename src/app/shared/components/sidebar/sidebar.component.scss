@@ -1,14 +1,29 @@
-.boder-white {
-    border: 1px solid white;
-}
-
+/* WebKit tarayıcıları için (Chrome, Safari) */
 .side-nav-content {
-    color: white;
-    width: 100%;
-    max-width: 230px;
-    margin: 0px;
+    overflow-y: auto; /* Yan kaydırma çubuğunun görünmesini sağlar */
+    height: 100vh; /* Yan panelin tam yüksekliğe sahip olmasını sağlar */
 }
 
+.side-nav-content::-webkit-scrollbar {
+    width: 10px; /* Kaydırma çubuğunun genişliği */
+}
+
+.side-nav-content::-webkit-scrollbar-track {
+    background: #1e293b; /* Kaydırma çubuğu yolu rengi */
+    border-radius: 10px; /* Kenarların yuvarlatılması */
+}
+
+.side-nav-content::-webkit-scrollbar-thumb {
+    background-color: #4b5563; /* Kaydırma çubuğu rengi */
+    border-radius: 10px; /* Kenarların yuvarlatılması */
+    border: 2px solid #1e293b; /* Kenar boşluğu ve renk */
+}
+
+.side-nav-content::-webkit-scrollbar-thumb:hover {
+    background: #647286; /* Kaydırma çubuğu üzerine gelindiğinde renk */
+}
+
+/* Genel ayarlar */
 .nav-list {
     list-style: none;
     padding: 0;
@@ -19,18 +34,9 @@
     padding: 10px;
 }
 
-.nav-list-open .nav-list-item:hover {
-    background-color: rgba(255, 255, 255, 0.3);
+.nav-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-}
-
-.nav-list-item i {
-    font-size: 20px;
-    height: 25px;
-    width: 25px;
-    margin-right: 15px;
-    text-align: center;
-    line-height: 25px;
 }
 
 .nav-list-item a {
@@ -42,23 +48,43 @@
     width: 100%;
 }
 
-a:hover {
+.nav-list-item a:hover {
+    color: #f0f0f0;
     text-decoration: none;
+}
+
+.nav-list-item i {
+    font-size: 20px;
+    height: 25px;
+    width: 25px;
+    margin-right: 15px;
+    text-align: center;
+    line-height: 25px;
 }
 
 .sub-nav-list-item {
     padding-left: 20px;
 }
 
-.nav-list-item:hover {
-    background-color: rgba(255, 255, 255, 0.1); 
-    border-radius: 10px;
-}
-.nav-list-item a:hover {
-    color: #f0f0f0; 
-    text-decoration: none;
-}
 .sub-nav-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.nav-list-item.selected {
     background-color: rgba(255, 255, 255, 0.1); 
     border-radius: 10px;
 }
+
+.nav-list-item.selected a {
+    color: #f0f0f0;
+}
+.sub-nav-list-item.selected {
+    background-color: rgba(255, 255, 255, 0.1); 
+    border-radius: 10px;
+  }
+  
+  .sub-nav-list-item.selected a {
+    color: #f0f0f0;
+  }
+  

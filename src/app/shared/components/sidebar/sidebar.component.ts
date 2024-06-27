@@ -1,14 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../../core/auth/services/auth.service';
 import { RouterModule } from '@angular/router';
+
+interface MenuItem {
+  number: string;
+  name: string;
+  icon: string;
+  sublist?: SubMenuItem[];
+  link?: string;
+}
+
+interface SubMenuItem {
+  name: string;
+  link: string;
+}
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
@@ -16,92 +29,113 @@ import { RouterModule } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
   @Input() sideBarStatus: boolean = false;
-  
-  userRoles: string[] = [];
-  list: any[] = [];
+  @Output() menuSelection = new EventEmitter<string>();
 
-  adminList = [
+  selectedItem: string = '';
+  selectedSubItem: string = '';
+
+  userRoles: string[] = [];
+  list: MenuItem[] = [];
+
+  adminList: MenuItem[]= [
     {
-        number: '1',
+      number: '1',
+      name: 'Dashboard',
+      icon: 'fa fa-user-md',
+      sublist: [],
+      link: '/admin/dashboard'
+  },
+    {
+        number: '2',
         name: 'Doctor',
         icon: 'fa fa-user-md',
         sublist: [
-          { name: 'All Doctors', link: '/my-account' },
+          { name: 'All Doctors', link: '/admin/all-doctor' },
           { name: 'Add Doctor', link: '#' },
           { name: 'Edit Doctor', link: '#' },
           { name: 'Doctor Profile', link: '#' },
         ]
     },
     {
-        number: '2',
+        number: '3',
         name: 'Appointments',
         icon: 'fa fa-user-md',
         sublist: [
             { name: 'View Appointment', link: '#' },
-            { name: 'Edit Appointment', link: '#' }
+            { name: 'Edit Appointment', link: '#' },
+            { name: 'Book Appointment', link: '#' }
         ]
     },
     {
-      number: '3',
+      number: '4',
       name: 'Patients',
       icon: 'fa fa-users',
       sublist: [
         { name: 'All Patients', link: '#' },
         { name: 'Add Patients', link: '#' },
         { name: 'Edit Patients', link: '#' },
-        { name: 'Doctor Patients', link: '#' },
+        { name: 'Patient Profile', link: '#' },
       ]
     },
     {
-      number: '4',
+      number: '5',
       name: 'Departments',
       icon: 'fa-solid fa-cart-shopping',
       sublist: [],
-      link: '/my-account' 
+      link: '#' 
     },
     {
-      number: '5',
+      number: '6',
       name: 'Settings',
       icon: 'fa-solid fa-gear',
       sublist: [],
       link: '#'
     },
     {
-      number: '6',
+      number: '7',
       name: 'About',
       icon: 'fa-solid fa-circle-info',
       sublist: [],
       link: '#'
     },
     {
-      number: '7',
+      number: '8',
       name: 'Contact',
       icon: 'fa-solid fa-phone',
       sublist: [],
       link: '#'
     },
   ];
-  doctorList=[
+  doctorList: MenuItem[]=[
     {
       number: '1',
-      name: 'Appointments',
+      name: 'Dashboard',
       icon: 'fa fa-user-md',
-      sublist: [] 
-    },
+      sublist: [],
+      link: '/doctor/dashboard'
+  },
     {
       number: '2',
-      name: 'Doctors',
+      name: 'Appointments',
       icon: 'fa fa-user-md',
-      sublist: [] 
+      sublist: [] ,
+      link:'#'
     },
     {
       number: '3',
+      name: 'Doctors',
+      icon: 'fa fa-user-md',
+      sublist: [],
+      link:'/doctor/all-doctor'
+    },
+    {
+      number: '4',
       name: 'Patients',
       icon: 'fa fa-users',
       sublist: [] 
     },
     {
-      number: '4',
+      number: '5',
       name: 'Settings',
       icon: 'fa-solid fa-gear',
       sublist: [] 
@@ -119,10 +153,11 @@ export class SidebarComponent implements OnInit {
       sublist: [] 
     },
     {
-      number: '7',
+      number: '8',
       name: 'Calendar',
       icon: 'fa fa-calendar',
-      sublist: [] 
+      sublist: [],
+      link: '/doctor/calendar'
     },
   ];
   patientList=[     {
@@ -138,12 +173,89 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRoles = this.authService.getUserRoles();
-    if (this.userRoles.includes('Doctor')) {
-      this.list = this.doctorList;
-    } else if (this.userRoles.includes('Admin')) {
+    if (this.userRoles.includes('Admin')) {
       this.list = this.adminList;
-    } else if (this.userRoles.includes('Patient')) {
+    } else if (this.userRoles.includes('Doctor')) {
+        this.list = this.doctorList;
+    }else if (this.userRoles.includes('Patient')) {
       this.list = this.patientList;
     }
-  }  
+
+   // Seçili olan öğeleri yerel depolamadan yükleme
+   const savedSelectedItem = localStorage.getItem('selectedItem');
+   const savedSelectedSubItem = localStorage.getItem('selectedSubItem');
+
+   if (savedSelectedItem) {
+     this.selectedItem = savedSelectedItem;
+   }
+
+   if (savedSelectedSubItem) {
+     this.selectedSubItem = savedSelectedSubItem;
+     const parentItem = this.list.find(item => item.sublist && item.sublist.some(sub => sub.name === savedSelectedSubItem));
+     if (parentItem) {
+       const parentItemNumber = parentItem.number;
+       this.collapseOtherSubmenus(parentItemNumber);
+       (document.getElementById('submenu' + parentItemNumber) as HTMLElement)?.classList.add('show');
+     }
+   } else {
+     // İlk elemanı seçili yap
+     if (this.list.length > 0 && !this.selectedItem) {
+       this.onItemClick(this.list[0].name);
+     }
+   }
+
+   // BaseLayoutComponent'e seçili menü öğesini gönder
+   if (savedSelectedItem) {
+     this.menuSelection.emit(savedSelectedItem);
+     if (savedSelectedSubItem) {
+       const parentItem = this.list.find(item => item.sublist && item.sublist.some(sub => sub.name === savedSelectedSubItem));
+       if (parentItem) {
+         this.menuSelection.emit(`${parentItem.name} -> ${savedSelectedSubItem}`);
+       } else {
+         this.menuSelection.emit(savedSelectedSubItem);
+       }
+     }
+   }
 }
+
+  //Burdan sonraki metotlar: BaseLayouta seçilen menunun adını gönderme ve menude seçili alan için gerekli düzenlemeler.
+
+  onItemClick(itemName: string) {
+    this.selectedItem = itemName;
+    this.selectedSubItem = '';
+    localStorage.setItem('selectedItem', itemName);
+    localStorage.removeItem('selectedSubItem');
+    const selectedItem = this.list.find(item => item.name === itemName);
+    if (selectedItem && (!selectedItem.sublist || selectedItem.sublist.length === 0)) {
+      this.menuSelection.emit(itemName);
+    }
+  }
+
+  onSubItemClick(subItemName: string, parentItemNumber: string) {
+    this.selectedSubItem = subItemName;
+    this.collapseOtherSubmenus(parentItemNumber);
+    localStorage.setItem('selectedSubItem', subItemName);
+    const parentItem = this.list.find(item => item.sublist && item.sublist.some(sub => sub.name === subItemName));
+    if (parentItem) {
+      localStorage.setItem('selectedItem', parentItem.name);
+      this.menuSelection.emit(`${parentItem.name} -> ${this.selectedSubItem}`);
+    } else {
+      this.menuSelection.emit(this.selectedSubItem);
+    }
+  }
+
+  isSelected(itemName: string): boolean {
+    return this.selectedItem === itemName || this.selectedSubItem === itemName;
+  }
+
+  // Diğer açık olan menüleri kapatmak için tüm collapse elementlerini kapatın
+  collapseOtherSubmenus(parentItemNumber: string) {
+    const collapses = document.querySelectorAll('.collapse');
+    collapses.forEach(collapse => {
+      if (collapse.id !== `submenu${parentItemNumber}`) {
+        (collapse as HTMLElement).classList.remove('show');
+      }
+    });
+  }
+}
+

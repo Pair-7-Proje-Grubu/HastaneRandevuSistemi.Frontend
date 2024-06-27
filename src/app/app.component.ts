@@ -12,11 +12,25 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
 import { CommonModule } from '@angular/common';
 import { CalenderComponent } from './shared/components/calender/calender.component';
 import { TableExportComponent } from './shared/components/table-export/table-export.component';
+import { DashboardPageComponent } from './routes/dashboard-page/dashboard-page.component';
+
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, NavbarComponent,CardComponent,LoadingOverlayComponent, ButtonComponent, FooterComponent, TableComponent, DropdownListComponent],
+  imports: [
+    RouterOutlet, 
+    RouterModule, 
+    NavbarComponent,
+    CardComponent,
+    LoadingOverlayComponent, 
+    ButtonComponent, 
+    FooterComponent, 
+    TableComponent, 
+    DropdownListComponent,
+    CalenderComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

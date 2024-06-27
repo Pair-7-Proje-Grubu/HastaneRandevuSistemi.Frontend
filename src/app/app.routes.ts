@@ -6,7 +6,9 @@ import { securedRouteGuard } from './core/auth/guards/secured-route.guard';
 import { authGuard } from './core/auth/guards/auth.guard';
 import { DoctorPageComponent } from './routes/doctors/doctor-page/doctor-page.component';
 import { AdminPageComponent } from './routes/admins/admin-page/admin-page.component';
-import { BookAppointmentComponent } from './routes/patients/book-appointment/book-appointment.component';
+import { AllDoctorComponent } from './routes/doctors/all-doctor/all-doctor.component';
+import { CalenderComponent } from './shared/components/calender/calender.component';
+import { roleGuard } from './core/auth/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -19,19 +21,34 @@ export const routes: Routes = [
       canActivate: [authGuard],
   },
   {
-    path: 'dashboard',
-    component: DashboardPageComponent,
-    canActivate: [securedRouteGuard],
+    path: 'doctor',
+    component: DoctorPageComponent ,
+    canActivate: [securedRouteGuard, roleGuard],
+    data: { role: 'Doctor' }, // Bu rotaya erişmek için gerekli rol
     children: [
-      { path: 'doctor', component: DoctorPageComponent },
-      { path: 'admin', component: AdminPageComponent },
-      { path: 'patient' , children: [
-        { path: 'book-appointment', component: BookAppointmentComponent }
-      ] },
+      { path: 'dashboard', component: DashboardPageComponent },
+      { path: 'all-doctor', component: AllDoctorComponent },
+      { path: 'calendar', component: CalenderComponent },
     ],
   },
-
-
+  {
+    path: 'admin',
+    component: AdminPageComponent ,
+    canActivate: [securedRouteGuard, roleGuard],
+    data: { role: 'Admin' }, // Bu rotaya erişmek için gerekli rol
+    children: [
+      { path: 'dashboard', component: DashboardPageComponent },
+      { path: 'all-doctor', component: AllDoctorComponent },
+    ],
+  },
+  { 
+    path: 'patient' , 
+    canActivate: [securedRouteGuard, roleGuard],
+    data: { role: 'Patient' }, // Bu rotaya erişmek için gerekli rol
+    children: [
+      {path: 'book-appointment', component: BookAppointmentComponent}
+    ]
+  },
 
   ...authRoutes,
 ];

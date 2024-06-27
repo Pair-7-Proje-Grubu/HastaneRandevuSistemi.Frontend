@@ -11,7 +11,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
     if (authService.isAuthenticated) {
       // Eğer kullanıcı giriş yapmışsa ve '/home' veya kök ('/') sayfasına gitmeye çalışıyorsa, dashboard'a yönlendir
-      if (url === '/' || url === '/home') {
+      if (url === '/' || url === '/home'|| url === '/auth/login') {
            router.navigate(['/dashboard']);
         return false;
       }
