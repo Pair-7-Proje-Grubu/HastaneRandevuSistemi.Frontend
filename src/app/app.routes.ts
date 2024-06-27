@@ -6,6 +6,7 @@ import { securedRouteGuard } from './core/auth/guards/secured-route.guard';
 import { authGuard } from './core/auth/guards/auth.guard';
 import { DoctorPageComponent } from './routes/doctors/doctor-page/doctor-page.component';
 import { AdminPageComponent } from './routes/admins/admin-page/admin-page.component';
+import { BookAppointmentComponent } from './routes/patients/book-appointment/book-appointment.component';
 
 export const routes: Routes = [
   {
@@ -24,8 +25,13 @@ export const routes: Routes = [
     children: [
       { path: 'doctor', component: DoctorPageComponent },
       { path: 'admin', component: AdminPageComponent },
+      { path: 'patient' , children: [
+        { path: 'book-appointment', component: BookAppointmentComponent }
+      ] },
     ],
   },
+
+
 
   ...authRoutes,
 ];

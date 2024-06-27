@@ -17,5 +17,6 @@ import {
 })
 export class ButtonComponent {
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
+  @Input() disabled: boolean = false;
   @Output() buttonClick = new EventEmitter<MouseEvent>();
 }

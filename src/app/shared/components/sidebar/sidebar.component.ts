@@ -125,7 +125,14 @@ export class SidebarComponent implements OnInit {
       sublist: [] 
     },
   ];
-  patientList=[  ];
+  patientList=[     {
+    number: '1',
+    name: 'Appointments',
+    icon: 'fa fa-user-md',
+    sublist: [
+        { name: 'Book Appointment', link: 'patient/book-appointment' },
+    ]
+}, ];
 
   constructor(private authService: AuthService) { }
 
@@ -135,6 +142,8 @@ export class SidebarComponent implements OnInit {
       this.list = this.doctorList;
     } else if (this.userRoles.includes('Admin')) {
       this.list = this.adminList;
+    } else if (this.userRoles.includes('Patient')) {
+      this.list = this.patientList;
     }
   }  
 }
