@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
-
+import { NoworkhoursService } from '../../services/noworkhours.service';
 
 @Component({
     selector: 'app-add-noworkhour-popup',
@@ -23,7 +23,7 @@ import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
         MatButtonModule,
         MatNativeDateModule,
         FormsModule,
-        NgxMatTimepickerModule
+        NgxMatTimepickerModule,
     ],
     templateUrl: './add-noworkhour-popup.component.html',
     styleUrl: './add-noworkhour-popup.component.scss',
@@ -32,28 +32,69 @@ import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 export class AddNoworkhourPopupComponent { 
   startTime: string = '';
   endTime: string = '';
+  isNewEvent: boolean = false;
+  selectedTimes: { date: Date, startTime: string, endTime: string }[] = [];
+  @Input() format: number = 24;
 
   constructor(
+    private noworkhourService: NoworkhoursService,
     public dialogRef: MatDialogRef<AddNoworkhourPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { title: string; start: Date; end: Date; details: string } // 'details' property’sini ekledik
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { title: string; start: Date | null; end: Date | null; details: string }
+  ) {
+    // Timepicker input alanlarına zaman değerlerini ayarlama
+    this.startTime = data.start ? this.formatTime(new Date(data.start)) : '';
+    this.endTime = data.end ? this.formatTime(new Date(data.end)) : '';
+  }
+
+  ngOnInit() {
+    this.isNewEvent = !this.data.title; // title boşsa yeni bir eventtir
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+  addTime(): void {
+    if (this.startTime && this.endTime && this.data.start && this.data.end) {
+      const newTime = {
+        date: this.data.start,
+        startTime: this.startTime,
+        endTime: this.endTime
+      };
+      this.selectedTimes.push(newTime);
+      // Yeni saat ekledikten sonra giriş alanlarını temizleyin
+      this.startTime = '';
+      this.endTime = '';
+    }
+  }
+
+  removeTime(time: { date: Date, startTime: string, endTime: string }): void {
+    const index = this.selectedTimes.indexOf(time);
+    if (index > -1) {
+      this.selectedTimes.splice(index, 1);
+    }
+  }
+
   onSaveClick(): void {
     if (this.startTime) {
       const [hours, minutes] = this.startTime.split(':').map(Number);
-      this.data.start.setHours(hours);
-      this.data.start.setMinutes(minutes);
+      this.data.start!.setHours(hours);
+      this.data.start!.setMinutes(minutes);
     }
     if (this.endTime) {
       const [hours, minutes] = this.endTime.split(':').map(Number);
-      this.data.end.setHours(hours);
-      this.data.end.setMinutes(minutes);
+      this.data.end!.setHours(hours);
+      this.data.end!.setMinutes(minutes);
     }
+    // this.noworkhourService.saveEvent(this.data.start!, this.data.end!);
     this.dialogRef.close(this.data);
+  }
+
+  private formatTime(date: Date | null): string {
+    if (!date) return ''; // null kontrolü
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
   }
 }
 
