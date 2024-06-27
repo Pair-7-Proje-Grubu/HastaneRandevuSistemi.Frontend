@@ -1,6 +1,7 @@
 <button
   [type]="type"
   class="btn btn-primary"
+  [disabled]="disabled"
   (click)="buttonClick.emit($event)"
 >
   <ng-content></ng-content>
