@@ -1,10 +1,14 @@
-<div class="container-fluid g-0">
-    <app-navbar (sideBarToggled)="sideBarStatus= $event;"></app-navbar>
-
-    <main>
-        <app-sidebar [sideBarStatus]="sideBarStatus" [ngClass]="{'app-sidebar-open': sideBarStatus}"></app-sidebar>
-        <div class="display-area p-3" [ngClass]="{'display-area-shrink': sideBarStatus}">
-            <router-outlet></router-outlet>
+<mat-drawer-container>
+    <mat-drawer mode="side" [opened]="sideBarOpen">
+        <app-sidebar (menuSelection)="onMenuSelection($event)"></app-sidebar>
+    </mat-drawer>
+    <mat-drawer-content>
+        <app-navbar (toggleSidebarForMe)="sideBarToggler()"></app-navbar>
+        <div class="container-fluid page">
+            <div class="page__box p-3 mt-2">{{ selectedMenu }}</div>
+            <div class="page__content shadow p-3 position-relative">
+                    <router-outlet></router-outlet>
+            </div>
         </div>
-    </main>
-</div>
+    </mat-drawer-content>
+</mat-drawer-container>

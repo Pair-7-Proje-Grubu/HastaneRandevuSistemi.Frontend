@@ -2,16 +2,27 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonComponent } from '../button/button.component';
 import { AuthService } from '../../../features/auth/services/auth.service';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule, ButtonComponent],
+  imports: [RouterModule, ButtonComponent,MatSidenavModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatIconModule,
+    MatDividerModule,
+    MatListModule ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
-  @Output() sideBarToggled= new EventEmitter<boolean>();
+  @Output() toggleSidebarForMe:EventEmitter<any> =new EventEmitter();
   menuStatus: boolean = false;
 
   isLogged: boolean = false;
@@ -33,8 +44,7 @@ export class NavbarComponent implements OnInit {
     });
   } 
 
-  SideBarToggle(){
-    this.menuStatus = !this.menuStatus;
-    this.sideBarToggled.emit(this.menuStatus);
+  toggleSidebar(){
+    this.toggleSidebarForMe.emit(this.menuStatus);
   }
 }
