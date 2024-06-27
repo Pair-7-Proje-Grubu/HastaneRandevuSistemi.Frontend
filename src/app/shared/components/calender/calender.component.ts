@@ -9,19 +9,31 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { INITIAL_EVENTS, createEventId } from '../../../event-utils';
 import { WorkingtimesService } from '../../../features/workingtimes/services/workingtimes.service';
+import { AddNoworkhourPopupComponent } from '../../../features/noworkhours/components/add-noworkhour-popup/add-noworkhour-popup.component';
+import { NoWorkHour } from '../../../features/noworkhours/models/noworkhour';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ClinicsService } from '../../../features/clinics/services/clinics.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-calender',
     standalone: true,
     imports: [
-        CommonModule, FullCalendarModule, RouterOutlet
+        CommonModule, FullCalendarModule, RouterOutlet, AddNoworkhourPopupComponent, 
+        MatDialogModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatButtonModule, MatNativeDateModule, FormsModule
     ],
     templateUrl: './calender.component.html',
     styleUrl: './calender.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalenderComponent {
-    calendarVisible = signal(true);
     calendarOptions = signal<CalendarOptions>({
     plugins: [
       interactionPlugin,
@@ -45,6 +57,10 @@ export class CalenderComponent {
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
+    slotMinTime: '00:00:00', // Varsayılan
+    slotMaxTime: '24:00:00', // Varsayılan
+    slotDuration: '00:30:00',
+    slotLabelInterval: '00:30',
     slotLabelFormat: {
       hour: '2-digit',
       minute: '2-digit',
@@ -63,38 +79,64 @@ export class CalenderComponent {
   });
   currentEvents = signal<EventApi[]>([]);
 
-  constructor(private changeDetector: ChangeDetectorRef, private workingTimeService: WorkingtimesService) {
+  constructor(
+    private changeDetector: ChangeDetectorRef, 
+    private workingTimeService: WorkingtimesService,
+    private clinicService: ClinicsService,
+    public dialog: MatDialog
+  ) {
+    this.initializeCalendarOptions();
+    this.workingTimeService.getWorkingHourById(1).subscribe(workingTime => console.log(workingTime));
+  }
+
+  initializeCalendarOptions() {
+    const workingTimeId = 1; // Örneğin, 1 numaralı çalışma saatini alıyoruz
     
+    forkJoin({
+      workingTime: this.workingTimeService.getWorkingHourById(workingTimeId),
+      clinic: this.clinicService.getDurationTimeById(workingTimeId + 1)
+    }).subscribe(({ workingTime, clinic }) => {
+      const updatedOptions = {
+        ...this.calendarOptions(),
+        slotMinTime: workingTime.startTime.ticks,
+        slotMaxTime: workingTime.endTime.ticks,
+        slotDuration: this.formatTimeFromMinutes(clinic.appointmentDuration),
+        slotLabelInterval: this.formatTimeFromMinutes(clinic.appointmentDuration) // Randevu süresini buraya ekliyoruz
+      };
+      this.calendarOptions.set(updatedOptions);
+      this.changeDetector.detectChanges();
+    });
   }
-
   
-
-  handleCalendarToggle() {
-    this.calendarVisible.update((bool) => !bool);
+  formatTimeFromMinutes(minutes: number): string {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${this.pad(hours)}:${this.pad(mins)}:00`
   }
 
-  handleWeekendsToggle() {
-    this.calendarOptions.update((options) => ({
-      ...options,
-      weekends: !options.weekends,
-    }));
+  pad(num: number): string {
+    return num.toString().padStart(2, '0');
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
+    const dialogRef = this.dialog.open(AddNoworkhourPopupComponent, {
+      width: '500px',
+      height: '500px',
+      data: { title: '', start: selectInfo.start, end: selectInfo.end }
+    });
 
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const calendarApi = selectInfo.view.calendar;
+        calendarApi.addEvent({
+          id: createEventId(),
+          title: result.title,
+          start: result.start,
+          end: result.end,
+          allDay: selectInfo.allDay
+        });
+      }
+    });
   }
 
   handleEventClick(clickInfo: EventClickArg) {

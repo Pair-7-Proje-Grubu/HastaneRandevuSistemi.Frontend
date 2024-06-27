@@ -8,7 +8,7 @@ import { WorkingTime } from '../models/workingtime';
   providedIn: 'root'
 })
 export class WorkingtimesService {
-  private readonly apiControllerUrl = `${environment.apiUrl}/workingtime`;
+  private readonly apiControllerUrl = `${environment.apiUrl}/WorkingTime`;
 
   constructor(private http: HttpClient) { }
 
