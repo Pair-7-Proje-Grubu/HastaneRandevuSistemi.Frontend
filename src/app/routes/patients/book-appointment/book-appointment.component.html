@@ -1,0 +1,32 @@
+<mat-tab-group animationDuration="200ms">
+  <mat-tab label="Klinik">  
+  </mat-tab>
+  <mat-tab label="Doktor"> Content 2 </mat-tab>
+  <mat-tab label="Zaman">
+    <div class="h1 text-center mt-5" >Randevu zamanını ayarla</div>
+    
+    <mat-tab-group animationDuration="200ms">
+      @for (availableDate of availableAppointments.appointmentDates; track $index) {
+        <mat-tab label="{{ formatDate(availableDate.date)}}">  
+          <mat-accordion>
+
+            @for (slot of availableDate.slots; track $index) {
+
+              <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>{{ slot.hour}} </mat-panel-title>
+                  <mat-panel-description> </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                @for (time of slot.times; track $index) {
+                  <app-button [attr.date-time]="time" (buttonClick)="bookAppointment($event)" [disabled]=" availableDate.bookedSlots && availableDate.bookedSlots.includes(time + ':00')">{{time}}</app-button>
+                }
+                
+              </mat-expansion-panel>
+            }
+          </mat-accordion>
+        </mat-tab>
+      }
+    </mat-tab-group>
+  </mat-tab>
+</mat-tab-group>

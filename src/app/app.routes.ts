@@ -41,7 +41,14 @@ export const routes: Routes = [
       { path: 'all-doctor', component: AllDoctorComponent },
     ],
   },
-  //patient kısmı eklenecek
+  { 
+    path: 'patient' , 
+    canActivate: [securedRouteGuard, roleGuard],
+    data: { role: 'Patient' }, // Bu rotaya erişmek için gerekli rol
+    children: [
+      {path: 'book-appointment', component: BookAppointmentComponent}
+    ]
+  },
 
   ...authRoutes,
 ];

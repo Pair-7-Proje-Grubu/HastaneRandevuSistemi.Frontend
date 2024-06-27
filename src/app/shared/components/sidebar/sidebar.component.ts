@@ -160,7 +160,14 @@ export class SidebarComponent implements OnInit {
       link: '/doctor/calendar'
     },
   ];
-  patientList: MenuItem[]=[  ];
+  patientList=[     {
+    number: '1',
+    name: 'Appointments',
+    icon: 'fa fa-user-md',
+    sublist: [
+        { name: 'Book Appointment', link: 'patient/book-appointment' },
+    ]
+}, ];
 
   constructor(private authService: AuthService) { }
 
