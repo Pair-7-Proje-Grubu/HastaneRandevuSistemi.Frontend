@@ -34,7 +34,6 @@ export class AddNoworkhourPopupComponent {
   endTime: string = '';
   isNewEvent: boolean = false;
   selectedTimes: { date: Date, startTime: string, endTime: string }[] = [];
-  @Input() format: number = 24;
 
   constructor(
     private noworkhourService: NoworkhoursService,

@@ -9,6 +9,7 @@ import { ACCESS_TOKEN_KEY } from '../../../core/auth/constants/auth-keys';
 import { LocalStorageService } from '../../../core/browser/services/local-storage.service';
 import { SecretMessage } from '../models/secret-message';
 import { RegisterCredentials } from '../models/register-credentials';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -35,10 +36,19 @@ export class AuthService extends CoreAuthService {
         })
       );
   }
-
-
   
   register(registerCredentials: RegisterCredentials): Observable<any> {
     return this.http.post(`${this.apiControllerUrl}/register`,registerCredentials);
+  }
+
+  //Token'dan UserID'yi alıyoruz
+  getUserIdFromToken(): number {
+    const token = this.localStorageService.get<string>(ACCESS_TOKEN_KEY);
+    if (!token) {
+      throw new Error('No JWT token found');
+    }
+
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.nameid; // JWT'deki NameIdentifier (nameid) claim'ini kullanarak ID'yi alın
   }
 }

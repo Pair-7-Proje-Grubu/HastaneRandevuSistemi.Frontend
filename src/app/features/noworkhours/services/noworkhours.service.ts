@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateNoWorkHourRequest, NoWorkHour } from '../models/create-no-work-hour-request';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../auth/services/auth.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -13,7 +14,7 @@ export class NoworkhoursService {
 
   private readonly apiControllerUrl = `${environment.apiUrl}/NoWorkHour/Create`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   // saveEvent(start: Date, end: Date) {
   //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -34,8 +35,13 @@ export class NoworkhoursService {
   // });
   // }
 
-  addNoWorkHour(noWorkHour: CreateNoWorkHourRequest): Observable<any> {
-    return this.http.post(this.apiControllerUrl, noWorkHour);
+  addNoWorkHour(noWorkHours: NoWorkHour[]): Observable<any> {
+    const doctorId = this.authService.getUserIdFromToken();
+    const request: CreateNoWorkHourRequest = {
+      DoctorId: doctorId,
+      NoWorkHours: noWorkHours
+    };
+    return this.http.post(this.apiControllerUrl, request);
   }
 
 }

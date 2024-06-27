@@ -138,12 +138,12 @@ export class CalenderComponent {
           allDay: selectInfo.allDay
         });
 
-        const requestBody: CreateNoWorkHourRequest = {
-          // title: result.title,
-          NoWorkHours: [{startDate: result.start,
-            endDate: result.end,}]
-          // details: result.details
-        };
+        const requestBody: NoWorkHour[] = [
+          {
+            startDate: result.start,
+            endDate: result.end
+          }
+        ];
         console.log(requestBody);
 
         this.noWorkHourService.addNoWorkHour(requestBody).subscribe(response => {
