@@ -10,7 +10,8 @@ import listPlugin from '@fullcalendar/list';
 import { INITIAL_EVENTS, createEventId } from '../../../event-utils';
 import { WorkingtimesService } from '../../../features/workingtimes/services/workingtimes.service';
 import { AddNoworkhourPopupComponent } from '../../../features/noworkhours/components/add-noworkhour-popup/add-noworkhour-popup.component';
-import { NoWorkHour } from '../../../features/noworkhours/models/noworkhour';
+import { NoworkhoursService } from '../../../features/noworkhours/services/noworkhours.service';
+import { CreateNoWorkHourRequest, NoWorkHour } from '../../../features/noworkhours/models/create-no-work-hour-request';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -83,7 +84,8 @@ export class CalenderComponent {
     private changeDetector: ChangeDetectorRef, 
     private workingTimeService: WorkingtimesService,
     private clinicService: ClinicsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private noWorkHourService: NoworkhoursService
   ) {
     this.initializeCalendarOptions();
     this.workingTimeService.getWorkingHourById(1).subscribe(workingTime => console.log(workingTime));
@@ -122,7 +124,7 @@ export class CalenderComponent {
     const dialogRef = this.dialog.open(AddNoworkhourPopupComponent, {
       width: '500px',
       height: '500px',
-      data: { title: '', start: selectInfo.start, end: selectInfo.end }
+      data: { start: selectInfo.start, end: selectInfo.end  }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -135,15 +137,46 @@ export class CalenderComponent {
           end: result.end,
           allDay: selectInfo.allDay
         });
+
+        const requestBody: NoWorkHour[] = [
+          {
+            startDate: result.start,
+            endDate: result.end
+          }
+        ];
+        console.log(requestBody);
+
+        this.noWorkHourService.addNoWorkHour(requestBody).subscribe(response => {
+          console.log('NoWorkHour added:', response);
+        });
       }
     });
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
-    }
+    const event = clickInfo.event;
+    const dialogRef = this.dialog.open(AddNoworkhourPopupComponent, {
+      width: '500px',
+      height: '500px',
+      data: { 
+        title: event.title,
+        start: event.start,
+        end: event.end,
+        details: event.extendedProps['details'] || '' // varsayılan olarak diğer bilgileri burada taşıyoruz
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        event.setProp('title', result.title);
+        event.setStart(result.start);
+        event.setEnd(result.end);
+        event.setExtendedProp('details', result.details);
+        this.changeDetector.detectChanges(); // ek bilgileri güncellemek için
+      }
+    });
   }
+  
 
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);

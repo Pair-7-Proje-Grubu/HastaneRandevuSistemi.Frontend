@@ -5,6 +5,7 @@
         <ng-template #eventContent let-arg>
           <b>{{ arg.timeText }}</b>
           <i>{{ arg.event.title }}</i>
+          <div>{{ arg.event.extendedProps?.details }}</div>
         </ng-template>
       </full-calendar>
     </div>

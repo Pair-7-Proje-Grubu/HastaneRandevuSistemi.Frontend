@@ -8,12 +8,14 @@ export const authGuard: CanActivateFn = (route, state) => {
   
   //ÇALIŞMIYOR KONTROL EDİLECEK
   const url: string = state.url;
-
+  
     if (authService.isAuthenticated) {
       // Eğer kullanıcı giriş yapmışsa ve '/home' veya kök ('/') sayfasına gitmeye çalışıyorsa, dashboard'a yönlendir
       if (url === '/' || url === '/home'|| url === '/auth/login') {
-           router.navigate(['/dashboard']);
-        return false;
+      
+        const role =  authService.getUserRoles().reverse()[0].toLowerCase();
+        router.navigate([`${role}/dashboard`]);
+      return false;
       }
       return true;
     } else {

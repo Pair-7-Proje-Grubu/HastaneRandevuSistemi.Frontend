@@ -14,15 +14,20 @@ import { CalenderComponent } from './shared/components/calender/calender.compone
 import { TableExportComponent } from './shared/components/table-export/table-export.component';
 import { DashboardPageComponent } from './routes/dashboard-page/dashboard-page.component';
 
-
-
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, NavbarComponent,CardComponent,
-    LoadingOverlayComponent, ButtonComponent, FooterComponent, TableComponent, 
-    DropdownListComponent,SidebarComponent,DashboardPageComponent
-     
+  imports: [
+    RouterOutlet, 
+    RouterModule, 
+    NavbarComponent,
+    CardComponent,
+    LoadingOverlayComponent, 
+    ButtonComponent, 
+    FooterComponent, 
+    TableComponent, 
+    DropdownListComponent,
+    CalenderComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

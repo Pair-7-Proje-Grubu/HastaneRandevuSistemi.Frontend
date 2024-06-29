@@ -79,9 +79,9 @@ export class AuthService {
     const [, payload] = token.split('.');
     const decodedPayload = atob(payload);
     const parsedPayload = JSON.parse(decodedPayload);
-    
     const roles: string[] = parsedPayload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
-    console.log('Roles:', roles);
+    const roleLists = (typeof roles === 'string') ? [roles] : roles;
+    console.log('Roles:', roleLists);
     return roles;
   }
 
