@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../../core/auth/services/auth.service';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 interface MenuItem {
   number: string;
@@ -165,21 +165,26 @@ export class SidebarComponent implements OnInit {
     name: 'Appointments',
     icon: 'fa fa-user-md',
     sublist: [
-        { name: 'Book Appointment', link: 'patient/book-appointment' },
+        { name: 'Book Appointment', link: 'book-appointment' },
     ]
 }, ];
 
-  constructor(private authService: AuthService) { }
-
+  constructor(private authService: AuthService,private route: ActivatedRoute) { }
   ngOnInit(): void {
-    this.userRoles = this.authService.getUserRoles();
-    if (this.userRoles.includes('Admin')) {
-      this.list = this.adminList;
-    } else if (this.userRoles.includes('Doctor')) {
+    
+      const userType = this.route.snapshot.data['role'];
+      this.userRoles = this.authService.getUserRoles();
+
+      if (userType === 'Patient' && this.userRoles.includes("Patient")) {
+        this.list = this.patientList;
+      } 
+      else if (userType === 'Doctor'  && this.userRoles.includes("Doctor")) {
         this.list = this.doctorList;
-    }else if (this.userRoles.includes('Patient')) {
-      this.list = this.patientList;
-    }
+      }
+        else if (userType === 'Admin'  && this.userRoles.includes("Admin")) {
+        this.list = this.adminList;
+      }
+  
 
    // Seçili olan öğeleri yerel depolamadan yükleme
    const savedSelectedItem = localStorage.getItem('selectedItem');
