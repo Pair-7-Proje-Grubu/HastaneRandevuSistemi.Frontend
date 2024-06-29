@@ -10,6 +10,7 @@ export const roleGuard: CanActivateFn = (route, state) => {
     if (authService.isAuthenticated && authService.isAuthorized(requiredRole)) {
       return true;
     }
+    console.log("No authorization!");
     
     // Yetki yoksa login sayfasına yönlendir
     router.navigate(['/auth/login']);
