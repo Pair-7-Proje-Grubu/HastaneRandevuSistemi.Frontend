@@ -89,7 +89,7 @@ export class SidebarComponent implements OnInit {
       name: 'Settings',
       icon: 'fa-solid fa-gear',
       sublist: [],
-      link: '#'
+      link: 'change-password-page'
     },
     {
       number: '7',

@@ -51,7 +51,7 @@
               <i class="fa fa-user d-lg-none"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-            <li><a href="#" class="dropdown-item"><i class="fa fa-lock"></i> Şifre Değiştir</a></li>
+            <li><a [routerLink]="['./change-password-page']" class="dropdown-item"><i class="fa fa-lock"></i> Şifre Değiştir</a></li>
             <li><a href="#" class="dropdown-item"><i class="fa fa-envelope"></i> E-posta Değiştir</a></li>
             <li><button (click)="onLogout()" routerLinkActive="active" class="dropdown-item"><i class="fa fa-sign-out-alt"></i> Çıkış Yap</button></li>
           </ul>

@@ -9,6 +9,7 @@ import { AdminPageComponent } from './routes/admins/admin-page/admin-page.compon
 import { AllDoctorComponent } from './routes/doctors/all-doctor/all-doctor.component';
 import { CalenderComponent } from './shared/components/calender/calender.component';
 import { roleGuard } from './core/auth/guards/role.guard';
+import { ChangePasswordPageComponent } from './routes/changePassword-page/changePassword-page.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: DashboardPageComponent },
       { path: 'all-doctor', component: AllDoctorComponent },
       { path: 'calendar', component: CalenderComponent },
+      { path: 'change-password-page', component: ChangePasswordPageComponent },
     ],
   },
   {
@@ -39,6 +41,8 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardPageComponent },
       { path: 'all-doctor', component: AllDoctorComponent },
+      { path: 'change-password-page', component: ChangePasswordPageComponent },
+      
     ],
   },
   //patient kısmı eklenecek

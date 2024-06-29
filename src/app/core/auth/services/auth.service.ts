@@ -84,4 +84,17 @@ export class AuthService {
     console.log('Roles:', roles);
     return roles;
   }
+
+  getEmailToken(): string | null {
+    const token = this.token;
+    if (!token) return null;
+
+    const [, payload] = token.split('.');
+    const decodedPayload = atob(payload);
+    const parsedPayload = JSON.parse(decodedPayload);
+    
+    const email = parsedPayload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || [];
+    console.log('Email:', email);
+    return email;
+  }
 }
