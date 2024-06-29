@@ -44,12 +44,11 @@ export class BookAppointmentComponent {
 
     });
   }
+
   bookAppointment(event: any)
   {
-    console.log(event);
-    const target = event.target as HTMLElement;
-    const time = target.getAttribute('data-time');
-    console.log(time);
+    const target = event.target.parentElement as HTMLElement;
+    const time = target.getAttribute('date-time');
   }
   
   parseTimeString(timeString: string): Date {
@@ -65,7 +64,6 @@ export class BookAppointmentComponent {
       const slots: Slot[] = [];
   
       appointmentDate.ranges.forEach(range => {
-        
         
         let startTime = this.parseTimeString(range.startTime);
         let endTime = this.parseTimeString(range.endTime);

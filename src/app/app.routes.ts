@@ -9,6 +9,8 @@ import { AdminPageComponent } from './routes/admins/admin-page/admin-page.compon
 import { AllDoctorComponent } from './routes/doctors/all-doctor/all-doctor.component';
 import { CalenderComponent } from './shared/components/calender/calender.component';
 import { roleGuard } from './core/auth/guards/role.guard';
+import { BookAppointmentComponent } from './routes/patients/book-appointment/book-appointment.component';
+import { PatientPageComponent } from './routes/patients/patient-page/patient-page.component';
 
 export const routes: Routes = [
   {
@@ -43,9 +45,11 @@ export const routes: Routes = [
   },
   { 
     path: 'patient' , 
+    component: PatientPageComponent,
     canActivate: [securedRouteGuard, roleGuard],
     data: { role: 'Patient' }, // Bu rotaya erişmek için gerekli rol
     children: [
+      { path: 'dashboard', component: DashboardPageComponent },
       {path: 'book-appointment', component: BookAppointmentComponent}
     ]
   },
