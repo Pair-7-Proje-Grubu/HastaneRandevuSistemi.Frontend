@@ -1,0 +1,9 @@
+<div class="live-support-widget">
+  <button (click)="toggleWidget()" class="toggle-button">
+    <span class="icon">💬</span>
+    {{ isOpen ? 'Canlı Desteği Kapat' : 'Canlı Destek' }}
+  </button>
+  <div *ngIf="isOpen" class="widget-container">
+    <iframe [src]="liveSupportUrl" class="support-iframe"></iframe>
+  </div>
+</div>
