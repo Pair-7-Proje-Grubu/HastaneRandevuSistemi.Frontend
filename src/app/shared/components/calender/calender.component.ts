@@ -11,7 +11,7 @@ import { INITIAL_EVENTS, createEventId } from '../../../event-utils';
 import { WorkingtimesService } from '../../../features/workingtimes/services/workingtimes.service';
 import { AddNoworkhourPopupComponent } from '../../../features/noworkhours/components/add-noworkhour-popup/add-noworkhour-popup.component';
 import { NoworkhoursService } from '../../../features/noworkhours/services/noworkhours.service';
-import { CreateNoWorkHourRequest, NoWorkHour } from '../../../features/noworkhours/models/create-no-work-hour-request';
+import { NoWorkHour } from '../../../features/noworkhours/models/create-no-work-hour-request';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -48,7 +48,7 @@ export class CalenderComponent {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+    initialEvents: [], // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
     editable: true,
     selectable: true,
@@ -88,7 +88,8 @@ export class CalenderComponent {
     private noWorkHourService: NoworkhoursService
   ) {
     this.initializeCalendarOptions();
-    this.workingTimeService.getWorkingHourById(1).subscribe(workingTime => console.log(workingTime));
+    // this.workingTimeService.getWorkingHourById(1).subscribe(workingTime => console.log(workingTime));
+    this.fetchNoWorkHours();
   }
 
   initializeCalendarOptions() {
@@ -103,7 +104,7 @@ export class CalenderComponent {
         slotMinTime: workingTime.startTime.ticks,
         slotMaxTime: workingTime.endTime.ticks,
         slotDuration: this.formatTimeFromMinutes(clinic.appointmentDuration),
-        slotLabelInterval: this.formatTimeFromMinutes(clinic.appointmentDuration) // Randevu süresini buraya ekliyoruz
+        slotLabelInterval: this.formatTimeFromMinutes(clinic.appointmentDuration) // Randevu süresi
       };
       this.calendarOptions.set(updatedOptions);
       this.changeDetector.detectChanges();
@@ -120,6 +121,25 @@ export class CalenderComponent {
     return num.toString().padStart(2, '0');
   }
 
+  fetchNoWorkHours() {
+    this.noWorkHourService.getListNoWorkHour().subscribe(noWorkHours => {
+      const events = noWorkHours.map(noWorkHour => ({
+        id: noWorkHour.id.toString(),
+        start: noWorkHour.startDate,
+        end: noWorkHour.endDate,
+        title: noWorkHour.title,
+      }));
+      
+      const updatedOptions = {
+        ...this.calendarOptions(),
+        events: events
+      };
+
+      this.calendarOptions.set(updatedOptions);
+      this.changeDetector.detectChanges();
+    });
+  }
+
   handleDateSelect(selectInfo: DateSelectArg) {
     const dialogRef = this.dialog.open(AddNoworkhourPopupComponent, {
       width: '500px',
@@ -131,23 +151,29 @@ export class CalenderComponent {
       if (result) {
         const calendarApi = selectInfo.view.calendar;
         calendarApi.addEvent({
-          id: createEventId(),
-          title: result.title,
+          id: result.id,
+          // title: result.title,
           start: result.start,
           end: result.end,
-          allDay: selectInfo.allDay
+          // allDay: selectInfo.allDay
         });
 
         const requestBody: NoWorkHour[] = [
           {
-            startDate: result.start,
-            endDate: result.end
+            id: result.id,
+            title: result.title,
+            startDate: result.start.toISOString(),
+            endDate: result.end.toISOString()
           }
         ];
         console.log(requestBody);
 
         this.noWorkHourService.addNoWorkHour(requestBody).subscribe(response => {
           console.log('NoWorkHour added:', response);
+          const event = calendarApi.getEventById(result.id);
+        if (event) {
+          event.setProp('title', result.title);
+        }
         });
       }
     });
@@ -155,6 +181,8 @@ export class CalenderComponent {
 
   handleEventClick(clickInfo: EventClickArg) {
     const event = clickInfo.event;
+    console.log('Event:', event);
+    console.log('Event ID:', event.id);
     const dialogRef = this.dialog.open(AddNoworkhourPopupComponent, {
       width: '500px',
       height: '500px',
@@ -162,21 +190,38 @@ export class CalenderComponent {
         title: event.title,
         start: event.start,
         end: event.end,
-        details: event.extendedProps['details'] || '' // varsayılan olarak diğer bilgileri burada taşıyoruz
+        // details: event.extendedProps['details'],
+        id: event.id // varsayılan olarak diğer bilgileri burada taşıyoruz
       }
     });
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        event.setProp('title', result.title);
-        event.setStart(result.start);
-        event.setEnd(result.end);
-        event.setExtendedProp('details', result.details);
-        this.changeDetector.detectChanges(); // ek bilgileri güncellemek için
+        if (result.delete) {
+          this.deleteEvent(result.id); // Event silme işlemi
+          event.remove(); // Takvimden etkinliği kaldırma
+        }else{
+          event.setProp('title', result.title);
+          event.setStart(result.start);
+          event.setEnd(result.end);
+          event.setExtendedProp('details', result.details);
+          this.changeDetector.detectChanges(); // ek bilgileri güncellemek için
+        } 
       }
     });
   }
   
+  deleteEvent(eventId: string) {
+    const eventIdAsNumber = Number(eventId); // veya +eventId şeklinde de kullanılabilir
+    if (isNaN(eventIdAsNumber)) {
+      console.error(`Invalid eventId: ${eventId}`);
+      return;
+    }
+  
+    this.noWorkHourService.deleteNoWorkHour(eventIdAsNumber).subscribe(() => {
+      this.fetchNoWorkHours();
+    });
+  }
 
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);

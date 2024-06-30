@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateNoWorkHourRequest, NoWorkHour } from '../models/create-no-work-hour-request';
 import { environment } from '../../../../environments/environment';
-import { AuthService } from '../../auth/services/auth.service';
+import { AuthService } from '../../../core/auth/services/auth.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { of } from 'rxjs';
 })
 export class NoworkhoursService {
 
-  private readonly apiControllerUrl = `${environment.apiUrl}/NoWorkHour/Create`;
+  private readonly apiControllerUrl = `${environment.apiUrl}/NoWorkHour`;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -36,12 +36,30 @@ export class NoworkhoursService {
   // }
 
   addNoWorkHour(noWorkHours: NoWorkHour[]): Observable<any> {
-    const doctorId = this.authService.getUserIdFromToken();
+    const doctorId: number | null = this.authService.getUserIdFromToken();
+    if (doctorId === null) {
+      throw new Error('Doctor ID cannot be null');
+    }
+
     const request: CreateNoWorkHourRequest = {
-      DoctorId: doctorId,
+      DoctorId: doctorId !== null ? doctorId : 0,
       NoWorkHours: noWorkHours
     };
-    return this.http.post(this.apiControllerUrl, request);
+
+    console.log(request);
+    
+    return this.http.post(`${this.apiControllerUrl}/Create`, request);
   }
 
+  getListNoWorkHour(doctorId: number | null = this.authService.getUserIdFromToken()): Observable<NoWorkHour[]> {
+    if (doctorId === null) {
+      throw new Error('Doctor ID is null');
+    }
+    const params = new HttpParams().set('DoctorId', doctorId.toString());
+    return this.http.get<NoWorkHour[]>(`${this.apiControllerUrl}/GetList`, { params });
+  }
+
+  deleteNoWorkHour(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiControllerUrl}/${id}`);
+  }
 }

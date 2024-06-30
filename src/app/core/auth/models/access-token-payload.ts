@@ -6,4 +6,5 @@ export interface AccessTokenPayload {
   exp: number;
   iss: string;
   aud: string;
+  [key: string]: string | string[] | number;
 }

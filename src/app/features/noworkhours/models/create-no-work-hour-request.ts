@@ -4,6 +4,8 @@ export interface CreateNoWorkHourRequest {
 }
 
 export interface NoWorkHour{
+  id: number;
   startDate: Date;
-  endDate: Date
+  endDate: Date;
+  title: string
 }

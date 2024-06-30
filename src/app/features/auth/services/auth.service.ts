@@ -42,13 +42,13 @@ export class AuthService extends CoreAuthService {
   }
 
   //Token'dan UserID'yi alıyoruz
-  getUserIdFromToken(): number {
-    const token = this.localStorageService.get<string>(ACCESS_TOKEN_KEY);
-    if (!token) {
-      throw new Error('No JWT token found');
-    }
+  // getUserIdFromToken(): number {
+  //   const token = this.localStorageService.get<string>(ACCESS_TOKEN_KEY);
+  //   if (!token) {
+  //     throw new Error('No JWT token found');
+  //   }
 
-    const decodedToken: any = jwtDecode(token);
-    return decodedToken.nameid; // JWT'deki NameIdentifier (nameid) claim'ini kullanarak ID'yi alın
-  }
+  //   const decodedToken: any = jwtDecode(token);
+  //   return decodedToken.nameid; // JWT'deki NameIdentifier (nameid) claim'ini kullanarak ID'yi alın
+  // }
 }

@@ -38,15 +38,19 @@ export class AddNoworkhourPopupComponent {
   constructor(
     private noworkhourService: NoworkhoursService,
     public dialogRef: MatDialogRef<AddNoworkhourPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { title: string; start: Date | null; end: Date | null; details: string }
+    @Inject(MAT_DIALOG_DATA) public data: { id: string; title: string; start: Date; end: Date; details: string }
+    // title: string; details: string
   ) {
     // Timepicker input alanlarına zaman değerlerini ayarlama
     this.startTime = data.start ? this.formatTime(new Date(data.start)) : '';
     this.endTime = data.end ? this.formatTime(new Date(data.end)) : '';
+    this.isNewEvent = !data.title;
+    console.log('Dialog Data in Constructor:', this.data);
   }
 
   ngOnInit() {
     this.isNewEvent = !this.data.title; // title boşsa yeni bir eventtir
+    console.log(this.data);
   }
 
   onNoClick(): void {
@@ -86,6 +90,7 @@ export class AddNoworkhourPopupComponent {
       this.data.end!.setMinutes(minutes);
     }
     // this.noworkhourService.saveEvent(this.data.start!, this.data.end!);
+    console.log('Saving Event Data:', this.data);
     this.dialogRef.close(this.data);
   }
 
@@ -94,6 +99,11 @@ export class AddNoworkhourPopupComponent {
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
+  }
+
+  onDeleteClick(): void {
+    console.log('Deleting Event Data:', this.data);
+    this.dialogRef.close({ delete: true, id: this.data.id }); // ID'yi geri döndürüyoruz
   }
 }
 

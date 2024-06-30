@@ -39,6 +39,26 @@ export class AuthService {
     return parsedPayload;
   }
 
+  public getUserIdFromToken(): number | null {
+    const payload = this.tokenPayload;
+    if (!payload) {
+        console.error('Token payload is null');
+        return null;
+    }
+
+    // console.log('Token payload:', payload); 
+
+    for (const claim in payload) {
+      if (claim.endsWith('/nameidentifier')) { // nameidentifier claim'ini bulduk
+          return Number(payload[claim]);
+      }
+  }
+
+  console.error('NameIdentifier claim is missing in the token');
+  return null;
+}
+
+
   logout(): void {
     this.localStorageService.remove(ACCESS_TOKEN_KEY);
     localStorage.removeItem('selectedItem');
