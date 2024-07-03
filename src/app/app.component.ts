@@ -14,6 +14,7 @@ import { CalenderComponent } from './shared/components/calender/calender.compone
 import { TableExportComponent } from './shared/components/table-export/table-export.component';
 import { DashboardPageComponent } from './routes/dashboard-page/dashboard-page.component';
 import { LiveSupportWidgetComponent } from './shared/components/live-support-widget/live-support-widget.component';
+import { DataGridComponent } from './shared/components/data-grid/data-grid.component';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,8 @@ import { LiveSupportWidgetComponent } from './shared/components/live-support-wid
     TableComponent, 
     DropdownListComponent,
     CalenderComponent,
-    LiveSupportWidgetComponent
+    LiveSupportWidgetComponent,
+    DataGridComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

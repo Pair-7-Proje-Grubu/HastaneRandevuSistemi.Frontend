@@ -16,4 +16,8 @@ export class ClinicsService {
     return this.http.get<Clinic>(`${this.apiControllerUrl}/${id}`);
   }
 
+  getAllClinics(): Observable<Clinic[]> {
+    return this.http.get<Clinic[]>(this.apiControllerUrl + '/GetList');
+  }
+
 }
