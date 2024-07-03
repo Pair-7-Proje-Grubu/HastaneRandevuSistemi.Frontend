@@ -42,14 +42,25 @@
 }
 
 .btn-outline {
-    border: 2px solid #3b74b1;
-    transition: transform 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    // border: 2px solid #3b74b1;
+    // transition: transform 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    border: 1px solid #e0ecde;
+    background-color: #e0ecde;
+    color: #160828;
+    text-align: center;
+    text-transform: capitalize;
+    border-radius: 50px;
+    flex: none;
+    padding: 11px 40px;
+    transition: all .5s;
+    display: inline-block;
 }
 
 .btn-outline:hover {
-    transform: scale(1.1);
-    border-color: #0056b3;
-    color: #0056b3;
+    transform: scale(1.02);
+    // border-color: #0056b3;
+    // color: #0056b3;
+    background-color: #fcff70;
 }
 
 .collapse.navbar-collapse {

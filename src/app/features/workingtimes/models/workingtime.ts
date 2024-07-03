@@ -1,6 +1,6 @@
 export interface WorkingTime{
-    startTime: {ticks:string};
-    endTime: {ticks:string};
+    startTime: string;
+    endTime: string;
     startBreakTime: string;
     endBreakTime: string
 }

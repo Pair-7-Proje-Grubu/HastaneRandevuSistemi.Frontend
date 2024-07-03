@@ -38,7 +38,7 @@ export class AddNoworkhourPopupComponent {
   constructor(
     private noworkhourService: NoworkhoursService,
     public dialogRef: MatDialogRef<AddNoworkhourPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { id: string; title: string; start: Date; end: Date; details: string }
+    @Inject(MAT_DIALOG_DATA) public data: { id: string | number; title: string; start: Date; end: Date; details: string }
     // title: string; details: string
   ) {
     // Timepicker input alanlarına zaman değerlerini ayarlama
@@ -65,7 +65,7 @@ export class AddNoworkhourPopupComponent {
         endTime: this.endTime
       };
       this.selectedTimes.push(newTime);
-      // Yeni saat ekledikten sonra giriş alanlarını temizleyin
+      // Yeni saat ekledikten sonra giriş alanlarını temizle
       this.startTime = '';
       this.endTime = '';
     }
@@ -103,7 +103,7 @@ export class AddNoworkhourPopupComponent {
 
   onDeleteClick(): void {
     console.log('Deleting Event Data:', this.data);
-    this.dialogRef.close({ delete: true, id: this.data.id }); // ID'yi geri döndürüyoruz
+    this.dialogRef.close({ delete: true, id: this.data.id.toString() }); // ID'yi geri döndürüyoruz
   }
 }
 

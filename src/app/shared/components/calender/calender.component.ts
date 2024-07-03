@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, signal, ChangeDetectorRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
+import { CalendarOptions, DateSelectArg, EventClickArg, EventApi, SlotLabelContentArg, EventInput  } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -21,7 +21,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ClinicsService } from '../../../features/clinics/services/clinics.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
+import { AppointmentService } from '../../../features/appointments/services/appointment.service';
+import { Clinic } from '../../../features/clinics/models/clinic';
 
 @Component({
     selector: 'app-calender',
@@ -47,8 +49,14 @@ export class CalenderComponent {
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
+    initialDate: new Date(), // Bugünün tarihini başlangıç tarihi olarak ayarla
+    validRange: {
+      start: new Date(new Date().getFullYear(), 0, 1), // Bu yılın başlangıcı
+      end: new Date(new Date().getFullYear() + 1, 11, 31) // Gelecek yılın sonu
+    },
     initialView: 'dayGridMonth',
     initialEvents: [], // alternatively, use the `events` setting to fetch from a feed
+    events: [] as EventInput[],
     weekends: true,
     editable: true,
     selectable: true,
@@ -85,11 +93,13 @@ export class CalenderComponent {
     private workingTimeService: WorkingtimesService,
     private clinicService: ClinicsService,
     public dialog: MatDialog,
-    private noWorkHourService: NoworkhoursService
+    private noWorkHourService: NoworkhoursService,
+    private appointmentService: AppointmentService
   ) {
     this.initializeCalendarOptions();
     // this.workingTimeService.getWorkingHourById(1).subscribe(workingTime => console.log(workingTime));
     this.fetchNoWorkHours();
+    this.fetchAppointments();
   }
 
   initializeCalendarOptions() {
@@ -97,14 +107,36 @@ export class CalenderComponent {
     
     forkJoin({
       workingTime: this.workingTimeService.getWorkingHourById(workingTimeId),
-      clinic: this.clinicService.getDurationTimeById(workingTimeId + 1)
+      clinic: this.clinicService.getClinicById(workingTimeId + 16)
     }).subscribe(({ workingTime, clinic }) => {
       const updatedOptions = {
         ...this.calendarOptions(),
-        slotMinTime: workingTime.startTime.ticks,
-        slotMaxTime: workingTime.endTime.ticks,
+        slotMinTime: workingTime.startTime,
+        slotMaxTime: workingTime.endTime,
         slotDuration: this.formatTimeFromMinutes(clinic.appointmentDuration),
-        slotLabelInterval: this.formatTimeFromMinutes(clinic.appointmentDuration) // Randevu süresi
+        slotLabelInterval: this.formatTimeFromMinutes(clinic.appointmentDuration),
+        businessHours: [
+          {
+            daysOfWeek: [0, 1, 2, 3, 4, 5, 6], 
+            startTime: workingTime.startTime,
+            endTime: workingTime.startBreakTime
+          },
+          {
+            daysOfWeek: [0, 1, 2, 3, 4, 5, 6], 
+            startTime: workingTime.endBreakTime,
+            endTime: workingTime.endTime
+          }
+        ],
+        slotLabelContent: (arg: SlotLabelContentArg) => {
+          const time = arg.date.toTimeString().slice(0, 5);
+          const startBreakTime = workingTime.startBreakTime.slice(0, 5);
+          const endBreakTime = workingTime.endBreakTime.slice(0, 5);
+          
+          if (time > startBreakTime && time < endBreakTime) {
+            return 'Mola';
+          }
+          return arg.text;
+        }
       };
       this.calendarOptions.set(updatedOptions);
       this.changeDetector.detectChanges();
@@ -138,6 +170,48 @@ export class CalenderComponent {
       this.calendarOptions.set(updatedOptions);
       this.changeDetector.detectChanges();
     });
+  }
+
+  fetchAppointments() {
+    forkJoin({
+      appointments: this.appointmentService.getListActiveAppointmentByDoctor(),
+      clinic: this.clinicService.getClinicById(17)
+    }).subscribe(({ appointments, clinic }) => {
+      const appointmentEvents: EventInput[] = appointments.map(appointment => ({
+        // id: appointment.id.toString(),
+        title: `${appointment.firstName} ${appointment.lastName}`,
+        start: appointment.appointmentDate,
+        end: this.calculateEndTime(appointment.appointmentDate, clinic.appointmentDuration),
+        extendedProps: {
+          type: 'appointment'
+        }
+      }));
+  
+      const currentEvents = this.calendarOptions().events;
+      let updatedEvents: EventInput[];
+  
+      if (Array.isArray(currentEvents)) {
+        updatedEvents = [
+          ...currentEvents.filter((event: EventInput) => 
+            !(event as any).extendedProps || (event as any).extendedProps.type !== 'appointment'
+          ),
+          ...appointmentEvents
+        ];
+      } else {
+        updatedEvents = appointmentEvents;
+      }
+  
+      this.calendarOptions.update(options => ({
+        ...options,
+        events: updatedEvents
+      }));
+      this.changeDetector.detectChanges();
+    });
+  }
+  
+  calculateEndTime(startTime: string | Date, duration: number): Date {
+    const start = startTime instanceof Date ? startTime : new Date(startTime);
+    return new Date(start.getTime() + duration * 60000);
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
@@ -201,11 +275,19 @@ export class CalenderComponent {
           this.deleteEvent(result.id); // Event silme işlemi
           event.remove(); // Takvimden etkinliği kaldırma
         }else{
-          event.setProp('title', result.title);
-          event.setStart(result.start);
-          event.setEnd(result.end);
-          event.setExtendedProp('details', result.details);
-          this.changeDetector.detectChanges(); // ek bilgileri güncellemek için
+          const updatedEvent: NoWorkHour = {
+            id: result.id,
+            title: result.title,
+            startDate: result.start.toISOString(),
+            endDate: result.end.toISOString()
+          };
+  
+          this.noWorkHourService.updateNoWorkHour(updatedEvent).subscribe(() => {
+            event.setProp('title', result.title);
+            event.setStart(result.start);
+            event.setEnd(result.end);
+            this.changeDetector.detectChanges(); // ek bilgileri güncellemek için
+          });
         } 
       }
     });

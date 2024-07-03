@@ -45,8 +45,6 @@ export class NoworkhoursService {
       DoctorId: doctorId !== null ? doctorId : 0,
       NoWorkHours: noWorkHours
     };
-
-    console.log(request);
     
     return this.http.post(`${this.apiControllerUrl}/Create`, request);
   }
@@ -61,5 +59,10 @@ export class NoworkhoursService {
 
   deleteNoWorkHour(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiControllerUrl}/${id}`);
+  }
+
+  updateNoWorkHour(noWorkHour: NoWorkHour): Observable<void> {
+    console.log('Gönderilen NoWorkHour:', noWorkHour);
+    return this.http.put<void>(`${this.apiControllerUrl}/Update`, noWorkHour);
   }
 }
