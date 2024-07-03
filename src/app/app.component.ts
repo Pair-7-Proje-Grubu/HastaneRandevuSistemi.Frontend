@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { CalenderComponent } from './shared/components/calender/calender.component';
 import { TableExportComponent } from './shared/components/table-export/table-export.component';
 import { DashboardPageComponent } from './routes/dashboard-page/dashboard-page.component';
+import { LiveSupportWidgetComponent } from './shared/components/live-support-widget/live-support-widget.component';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,8 @@ import { DashboardPageComponent } from './routes/dashboard-page/dashboard-page.c
     FooterComponent, 
     TableComponent, 
     DropdownListComponent,
-    CalenderComponent
+    CalenderComponent,
+    LiveSupportWidgetComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
