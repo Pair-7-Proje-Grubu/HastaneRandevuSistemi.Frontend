@@ -5,7 +5,7 @@
   <mat-tab label="Zaman">
     <div class="h1 text-center mt-5" >Randevu zamanını ayarla</div>
     
-    <mat-tab-group animationDuration="200ms">
+    <mat-tab-group animationDuration="200ms" #dateMatTabGroup>
       @for (availableDate of availableAppointments.appointmentDates; track $index) {
         <mat-tab label="{{ formatDate(availableDate.date)}}">  
           <mat-accordion>
@@ -30,3 +30,23 @@
     </mat-tab-group>
   </mat-tab>
 </mat-tab-group>
+
+<ng-template #confirmationDialogTemplate>
+  <h3><b>BİLGİ</b></h3>
+  <p> Bu poliklinikte hizmet uzman ve ekibi tarafından verilmektedir.</p>
+
+  <h3><b>ÖNEMLİ!</b></h3>
+  <p class="important">Lütfen, gelemeyeceğiniz durumlarda randevunuzu önceden iptal etmeyi unutmayınız.</p>
+</ng-template>
+
+
+
+<ng-template #successDialogTemplate>
+  <h3><b>Randevu Bilgileriniz</b></h3>
+  <p><b>Tarih:</b> {{selecteds.dateTime | date:'EEEE, d MMMM y HH:mm:ss' }}</p>
+  <p>Randevunuz başarıyla oluşturuldu. Detayları e-posta adresinize gönderdik.</p>
+</ng-template>
+
+<ng-template #failedDialogTemplate>
+  <p class="important"> Randevu oluşturulurken bir hata oluştu.<br>Lütfen bir süre sonra tekrar deneyiniz!</p>
+</ng-template>
