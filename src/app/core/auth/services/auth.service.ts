@@ -17,10 +17,13 @@ export class AuthService {
   public loggedOut: Observable<void> = this._loggedOut.asObservable();
 
   // BehaviorSubject, bir değer tutar ve bu değeri subscribe olanlara anında mevcut değeri verir. Yeni bir değer yayınlandığında, bu değeri değiştirir ve subscribe olan herkese yeni değeri yayınlar. // Redux'taki store'a benzer.
-  protected _isLogged = new BehaviorSubject<boolean>(this.isAuthenticated);
+  protected _isLogged = new BehaviorSubject<boolean>(false);
   public isLogged: Observable<boolean> = this._isLogged.asObservable();
 
-  constructor(protected localStorageService: LocalStorageService) {}
+  constructor(protected localStorageService: LocalStorageService) {
+    // Constructor içinde gerçek durumu ayarla
+    this._isLogged.next(this.isAuthenticated);
+  }
 
   public get token(): string | null {
     return this.localStorageService.get<string>(ACCESS_TOKEN_KEY);
@@ -102,7 +105,7 @@ export class AuthService {
     const roles: string[] = parsedPayload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || [];
     const roleLists = (typeof roles === 'string') ? [roles] : roles;
     console.log('Roles:', roleLists);
-    return roles;
+    return roleLists;
   }
 
   getEmailToken(): string | null {
