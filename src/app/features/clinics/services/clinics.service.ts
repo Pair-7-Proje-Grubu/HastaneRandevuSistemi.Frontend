@@ -12,7 +12,7 @@ export class ClinicsService {
 
   constructor(private http: HttpClient) { }
 
-  getDurationTimeById(id: number): Observable<Clinic> {
+  getClinicById(id: number): Observable<Clinic> {
     return this.http.get<Clinic>(`${this.apiControllerUrl}/${id}`);
   }
 
