@@ -1,0 +1,56 @@
+
+::ng-deep{
+
+ 
+  .success {
+    --dialog-icon-color: #4caf50;
+  }
+
+  .failed {
+    --dialog-icon-color: #f44336;
+  }
+
+  .information {
+    --dialog-icon-color: #2196f3;
+  }
+
+  .dialog-container{
+    mat-icon {
+      color: var(--dialog-icon-color);
+      vertical-align: middle;
+      margin-right: 4px;
+      font-size: 36px;  // İkon boyutunu artırır
+      width: 36px;      // Genişliği ayarlar
+      height: 36px;     // Yüksekliği ayarlar
+    }
+  }
+
+
+
+  mat-dialog-content
+  {
+    text-align: center;
+    p {
+      background-color: #E6F4FB; /* Mavi arka plan rengi */
+      border: 1px solid #BBDDE5; /* Açık mavi kenar çizgisi */
+      color: #333333; /* Metin rengi */
+      padding: 10px; /* İç boşluk */
+      border-radius: 4px; /* Kenarları yuvarlama */
+      margin: 10px 0; /* Üst ve alt boşluk */
+      font-size: 14px; /* Yazı boyutu */
+      
+    }
+    p::before {
+      content: "ℹ️"; /* Bilgi ikonu */
+      margin-right: 8px; /* İkon ve metin arası boşluk */
+      font-size: 16px; /* İkon boyutu */
+      vertical-align: middle; /* İkon hizalaması */
+    }
+    .important {
+      background-color: #FFE9E9; /* Açık kırmızı arka plan rengi */
+      border: 1px solid #FFB2B2; /* Açık kırmızı kenar çizgisi */
+      color: #9e0910; /* Metin rengi */
+      font-weight: bold; /* Kalın yazı */
+    }
+  }
+}

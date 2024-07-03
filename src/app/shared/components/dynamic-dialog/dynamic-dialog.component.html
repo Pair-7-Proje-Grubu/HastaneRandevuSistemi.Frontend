@@ -1,0 +1,19 @@
+<div class="dialog-container" [ngClass]="data.dialogType">
+  <h2 mat-dialog-title>
+      <mat-icon>
+        {{data.dialogType === 'success' ? 'check_circle' : (data.dialogType === 'failed' ? 'error' : 'info')}}
+      </mat-icon>
+    {{ data.title }}
+  </h2>
+  <mat-dialog-content>
+    <ng-container [ngTemplateOutlet]="data.dialogContent"> </ng-container>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button *ngIf="data.declineButtonTitle" mat-button mat-dialog-close>
+      {{ data.declineButtonTitle }}
+    </button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+      {{ data.acceptButtonTitle }}
+    </button>
+  </mat-dialog-actions>
+</div>
