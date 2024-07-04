@@ -12,11 +12,11 @@ import { ChangephoneFormComponent } from '../../features/users/component/changep
     ChangepasswordFormComponent,
     ChangephoneFormComponent
   ],
-  templateUrl: './changePassword-page.component.html',
-  styleUrl: './changePassword-page.component.scss',
+  templateUrl: './settings-page.component.html',
+  styleUrl: './settings-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChangePasswordPageComponent { 
+export class SettingsPageComponent { 
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
