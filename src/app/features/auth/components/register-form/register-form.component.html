@@ -77,6 +77,14 @@
 
           <button class="btn btn-primary w-100 py-2" type="submit">Kayıt Ol</button>
         </form>
+        <ng-template #successDialogTemplate>
+          <h4><b>Başarılı!</b></h4>
+          <p>Başarıyla kayıt olundu.</p>
+        </ng-template>
+        <ng-template #failedDialogTemplate>
+          <h4><b>Hata!</b></h4>
+          <p class="important">Kayıt esnasında bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.</p>
+        </ng-template>
       </div>
     </div>
   </div>
