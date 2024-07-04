@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 // footer {
 //   background-color: #160828;
@@ -110,7 +110,109 @@
 //       text-align: center;
 //     }
 //   }
-  
+
+
+.footer-register{
+  text-align: center;
+  align-items: flex-start;
+  margin-bottom: -50px;
+}
+
+.footer-register-container{
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  position: relative;
+}
+
+.footer-register-wrapper{
+  background-color: #e0ecde;
+  justify-content: space-between;
+  width: 100%;
+  display: flex;
+}
+
+.footer-register-content{
+  flex-direction: column;
+  flex-shrink: 1;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 55%;
+  padding: 50px 100px;
+  display: flex;
+}
+
+.footer-register-logo{
+  color: #160828;
+  font-size: 2rem;
+}
+
+.footer-register-title{
+  color: #160828;
+  text-align: left;
+  text-transform: none;
+  width: 100%;
+  margin-bottom: 30px;
+  font-family: Noto Sans, sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1em;
+}
+
+.register-form{
+  margin-bottom: 0;
+}
+
+.footer-register-form{
+  grid-row-gap: 30px;
+  flex-direction: column;
+  align-items: flex-start;
+  display: flex;
+}
+
+.footer-register-input{
+  border-style: none none solid;
+  border-width: 1px;
+  border-color: #fff #fff #160828;
+  color: #160828;
+  background-color: rgba(0, 0, 0, 0);
+  width: 300px;
+  min-height: 50px;
+  margin-bottom: 0;
+  padding: 12px 20px;
+}
+
+.footer-submit-input{
+  background-color: #160828;
+  color: #fcff70;
+  text-align: center;
+  border-radius: 50px;
+  padding: 11px 40px;
+  transition: all .5s;
+  font-size: 1.2rem;
+}
+
+.footer-submit-input:hover{
+  background-color: #fcff70;
+  color: #160828;
+}
+
+.footer-register-image{
+  object-fit: cover;
+  background-image: url('/assets/doctors.png');
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 45%;
+  position: relative;
+  overflow: hidden;
+}
 
 .footer-top{
   background-color: #160828;
@@ -186,4 +288,113 @@ span{
 .register-button:hover{
   background-color: #e0ecde;
   padding: 20px 45px;
+}
+
+.contact-container{
+  grid-column-gap: 50px;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  display: flex;
+}
+
+.contact-item{
+  grid-column-gap: 20px;
+  text-align: left;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+}
+
+.contact-item-logo{
+  color: #fcff70;
+  font-size: 2rem;
+  position: relative;
+}
+
+.contact-info{
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+
+
+.footer-bottom{
+  background-color: #160828;
+  text-align: center;
+  align-items: flex-start;
+  padding-top: 50px;
+  padding-bottom: 60px;
+  position: relative;
+}
+
+.footer-line{
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, .2);
+  position: absolute;
+  top: 0%;
+  bottom: auto;
+  left: 0%;
+  right: 0%;
+}
+
+.footer-bottom-container{
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  position: relative;
+}
+
+.bottom-container{
+  grid-row-gap: 50px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  display: flex;
+}
+
+.footer-bottom-links{
+  grid-column-gap: 50px;
+  display: flex;
+}
+
+.footer-link{
+  color: #fff;
+  text-transform: capitalize;
+  align-items: center;
+  font-family: Inter, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5em;
+  text-decoration: none;
+  transition: color .5s;
+}
+
+.footer-link:hover{
+  color: #fcff70;
+}
+
+.footer-copyright{
+  color: #fff;
+  text-transform: capitalize;
+  align-items: center;
+  font-family: Inter, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5em;
+}
+
+span{
+  color: #fcff70;
+  font-size: 18px;
 }
