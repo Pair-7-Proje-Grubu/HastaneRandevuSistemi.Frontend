@@ -23,6 +23,10 @@ export class UsersService extends CoreAuthService{
 
   changePassword(changeCredentials:ChangeCredentials): Observable<any> {
     console.log(this.apiControllerUrl);
-    return this.http.post(`${this.apiControllerUrl}/change-password`,changeCredentials);
+    return this.http.post(`${this.apiControllerUrl}/ChangePassword`,changeCredentials);
+  }
+
+  getProfile(): Observable<any> {
+    return this.http.post(`${this.apiControllerUrl}/GetProfile`,{});
   }
 }
