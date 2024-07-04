@@ -18,7 +18,8 @@ import { AuthService } from '../../../../core/auth/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangepasswordFormComponent {
-  @Output() success = new EventEmitter<void>();
+  @Output() success = new EventEmitter<string>();
+  @Output() error = new EventEmitter<string>();
   changePasswordFormGroup: FormGroup;
 
   showCurrentPassword: boolean = true;
@@ -35,18 +36,34 @@ export class ChangepasswordFormComponent {
       currentPassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
       confirmPassword: ['', Validators.required]
-    }, {
-      validators: this.passwordMatchValidator
-    });
+    }, { validators: [this.passwordMatchValidator, this.newPasswordDifferentValidator] });
   }
 
   passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
-    const newPassword = group.get('newPassword')!.value;
-    const confirmPassword = group.get('confirmPassword')!.value;
+    const newPassword = group.get('newPassword')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
     return newPassword === confirmPassword ? null : { passwordMismatch: true };
   }
 
+  newPasswordDifferentValidator(group: FormGroup): { [key: string]: boolean } | null {
+    const currentPassword = group.get('currentPassword')?.value;
+    const newPassword = group.get('newPassword')?.value;
+    return currentPassword !== newPassword ? null : { sameAsOldPassword: true };
+  }
+
   change() {
+    if (this.changePasswordFormGroup.invalid) {
+      this.changePasswordFormGroup.markAllAsTouched();
+      if (this.changePasswordFormGroup.hasError('sameAsOldPassword')) {
+        this.error.emit('Yeni parola mevcut parola ile aynı olamaz.');
+      } else if (this.changePasswordFormGroup.hasError('passwordMismatch')) {
+        this.error.emit('Yeni şifre ve onay şifresi eşleşmiyor.');
+      } else {
+        this.error.emit('Lütfen tüm alanları doğru şekilde doldurunuz.');
+      }
+      return;
+    }
+
     const email = this.authService.getEmailToken();
 
     if (email) {
@@ -57,26 +74,32 @@ export class ChangepasswordFormComponent {
       };
 
       this.userService.changePassword(changeCredentials).subscribe({
-        complete: () => {
-          this.success.emit();
+        next: (response) => {
+          console.log('Password change response:', response);
+          if (response.isSuccess || (typeof response === 'string' && response.includes('başarıyla'))) {
+            const successMessage = response.message || response || 'Parola başarıyla güncellendi.';
+            this.success.emit(successMessage);
+            this.changePasswordFormGroup.reset();
+          } else {
+            this.error.emit(response.message || 'Parola değiştirme işlemi başarısız oldu.');
+          }
         },
-        error: (error) => {
-          this.changePasswordFormGroup.get('currentPassword')!.setErrors({ invalidCurrentPassword: true });
+        error: (err) => {
+          console.error('Password change error:', err);
+          if (err.status === 400 && err.error && err.error.message) {
+            this.error.emit(err.error.message);
+          } else {
+            this.error.emit('Mevcut parola hatalı. Lütfen kontrol edip tekrar deneyiniz.');
+          }
         }
       });
     } else {
-      throw new Error('Email bilgisi alınamadı.');
+      this.error.emit('Email bilgisi alınamadı.');
     }
   }
 
   onFormSubmit() {
-    if (this.changePasswordFormGroup.invalid) {
-      this.changePasswordFormGroup.markAllAsTouched();
-      return;
-    }
-
     this.change();
-    this.changePasswordFormGroup.reset();
   }
 
   togglePasswordVisibility(inputId: string) {
