@@ -1,0 +1,10 @@
+<p>Randevularım</p>,
+<ag-grid-angular
+class="ag-theme-quartz"
+style="height: 100vh;"
+(gridReady)="onGridReadyAppointmentList($event)"
+rowSelection="single"
+(selectionChanged)="onSelectionChangedAppointmentList()"
+[rowData]="appointmentRows"
+[columnDefs]="appointmentCols"
+[defaultColDef]="defaultColDef"/>
