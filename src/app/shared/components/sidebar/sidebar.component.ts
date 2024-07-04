@@ -82,6 +82,13 @@ export class SidebarComponent implements OnInit {
       link: 'settings'
     },
 
+    {
+      number: '9',
+      name: 'Feedback',
+      icon: 'fa-solid fa-comment',
+      sublist: [],
+      link: '/admin/all-feedback'
+    }
   ];
   doctorList: MenuItem[]=[
     {

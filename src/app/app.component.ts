@@ -15,6 +15,8 @@ import { TableExportComponent } from './shared/components/table-export/table-exp
 import { DashboardPageComponent } from './routes/dashboard-page/dashboard-page.component';
 import { LiveSupportWidgetComponent } from './shared/components/live-support-widget/live-support-widget.component';
 import { DataGridComponent } from './shared/components/data-grid/data-grid.component';
+import { FeedbackComponent } from './shared/components/feedback/feedback.component';
+import { AllFeedbackComponent } from './routes/feedbacks/all-feedback/all-feedback.component';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +33,9 @@ import { DataGridComponent } from './shared/components/data-grid/data-grid.compo
     DropdownListComponent,
     CalenderComponent,
     LiveSupportWidgetComponent,
-    DataGridComponent
+    DataGridComponent,
+    FeedbackComponent,
+    AllFeedbackComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
