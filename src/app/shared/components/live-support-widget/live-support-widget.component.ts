@@ -12,7 +12,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 export class LiveSupportWidgetComponent implements OnInit {
   isOpen = false;
   liveSupportUrl: SafeResourceUrl;
-  private readonly apiUrl = 'http://localhost:4200'; // LiveSupport uygulamasının çalıştığı adres
+  private readonly apiUrl = 'http://localhost:4201'; // LiveSupport uygulamasının çalıştığı adres
 
   constructor(private sanitizer: DomSanitizer) {
     this.liveSupportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.apiUrl); //Güvenilir kaynak olarak belirttik
