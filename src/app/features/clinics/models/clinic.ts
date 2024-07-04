@@ -1,5 +1,6 @@
 export interface Clinic{
-    name: string;
-    phoneNumber: string;
-    appointmentDuration: number;
+  id: number;
+  name: string;
+  phoneNumber: string;
+  appointmentDuration: number;
 }

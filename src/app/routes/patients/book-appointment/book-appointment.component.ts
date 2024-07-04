@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe, formatDate } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import {MatTabGroup, MatTabsModule} from '@angular/material/tabs';
 import { TableComponent } from '../../../shared/components/table/table.component';
@@ -14,14 +14,38 @@ import { DynamicDialogComponent } from '../../../shared/components/dynamic-dialo
 import { IDynamicDialogConfig } from '../../../shared/models/dynamic-dialog/dynamic-dialog-config';
 import { MatIcon } from '@angular/material/icon';
 import { BookAppointmentRequest } from '../../../features/appointments/models/book-appointment-request';
+import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
+import { ClinicsService } from '../../../features/clinics/services/clinics.service';
+import { Clinic } from '../../../features/clinics/models/clinic';
+import { ColDef, GridApi, SelectionChangedEvent,GridReadyEvent,  ModuleRegistry, } from 'ag-grid-community';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
+import { DoctorService } from '../../../features/doctors/services/doctor.service';
+import { GetByClinicIdDoctorResponse } from '../../../features/doctors/models/get-by-clinic-id-doctor-response';
 
+export interface IClinicData {
+  id: number,
+  name: string,
+}
+export interface IDoctorData {
+  id: number,
+  titleName: string,
+  firstName: string,
+  lastName: string,
+  gender: string,
+}
 
+export interface SelectedData {
+  clinicName: string,
+  doctorName: string,
+  dateTime: string,
+}
 
 @Component({
   selector: 'app-book-appointment',
   standalone: true,
   imports: [
-    CommonModule, MatTabsModule,MatTableModule,MatExpansionModule,CardComponent,ButtonComponent,MatIcon
+    CommonModule, MatTabsModule,MatTableModule,MatExpansionModule,CardComponent,ButtonComponent,MatIcon,AgGridAngular,AgGridModule
   ],
   templateUrl: './book-appointment.component.html',
   styleUrl: './book-appointment.component.scss',
@@ -29,46 +53,143 @@ import { BookAppointmentRequest } from '../../../features/appointments/models/bo
 })
 
 
+export class BookAppointmentComponent{
+  
+  private clinicGridApi!: GridApi<IClinicData>;
+  private doctorGridApi!: GridApi<IDoctorData>;
+  selectedIndex! : number;
 
-export class BookAppointmentComponent {
-  readonly dialog = inject(MatDialog);
+
+  @ViewChild('confirmationDialogTemplate') confirmationDialogTemplate: TemplateRef<any> | undefined;
+  @ViewChild('successDialogTemplate') successDialogTemplate: TemplateRef<any> | undefined;
+  @ViewChild('failedDialogTemplate') failedDialogTemplate: TemplateRef<any> | undefined;
+  @ViewChild('dateMatTabGroup') tabGroup: MatTabGroup | undefined;
+  @ViewChild('mainMatTabGroup') mainGroup!: MatTabGroup;
 
   availableAppointments: ListAvailableAppointmentResponse = {
     appointmentDuration:0,
-    appointmentDates:[]};
-    
+    appointmentDates:[]
+  };
 
-  selecteds : any = {
+  selectedData : SelectedData = {
     clinicName:"",
     doctorName:"",
     dateTime:"",
   };
 
+  selectedDoctorId: number = 0; 
 
-    @ViewChild('confirmationDialogTemplate') confirmationDialogTemplate: TemplateRef<any> | undefined;
-    @ViewChild('successDialogTemplate') successDialogTemplate: TemplateRef<any> | undefined;
-    @ViewChild('failedDialogTemplate') failedDialogTemplate: TemplateRef<any> | undefined;
-    @ViewChild('dateMatTabGroup') tabGroup: MatTabGroup | undefined;
+
+  readonly dialog = inject(MatDialog);
   
-  constructor(private appointmentService: AppointmentService){
-
-    const listAvailableAppointmentRequest: ListAvailableAppointmentRequest = {
-      doctorId:2,
-    };
 
 
+  defaultColDef: ColDef = {flex: 1,filter: true,floatingFilter: true};
+  
+  clinicCols: ColDef[] = [
+    { headerName: 'Klinik Adı', field: 'name' },
+  ];
 
+  clinicRows: Clinic[] = [];
 
-    this.appointmentService.getListAvailableAppointment(listAvailableAppointmentRequest).subscribe(response=>{
-      this.availableAppointments = this.generateSlots(response);
-      console.log(this.availableAppointments);
-    });
+  listAvailableAppointmentRequest: ListAvailableAppointmentRequest = {
+    doctorId: 0
+  };
+  
+
+  doctorCols: ColDef[] = [
+
+    {
+      headerName: 'Adı Soyadı',
+      cellRenderer: (params: any) => {
+        let result : any;
+        let photo : any = "";
+        if (params.data.gender === 'M') {
+          photo = `<img src="../../../../assets/male-icon.png" alt="Male" style="width:48px; height:48px;" />`;
+        } else if (params.data.gender === 'F') {
+          photo = `<img src="../../../../assets/female-icon.png" alt="Female" style="width:48px; height:48px;" />` ;
+        }
+        result = photo + " " + params.data.firstName + " " + params.data.lastName;
+        return result;
+      },
+      filterValueGetter: (params: any) => `${params.data.firstName} ${params.data.lastName}`,
+    },
+    { headerName: 'Ünvanı', field: 'titleName' },
+  ];
+
+  doctorRows: GetByClinicIdDoctorResponse[] = [];
+
+  constructor(private appointmentService: AppointmentService,
+    private clinicService: ClinicsService,
+    private doctorService: DoctorService, private cdr: ChangeDetectorRef){
+
+  
   }
+
+  onGridReadyClinic(params : GridReadyEvent<IClinicData> ) {
+    this.clinicGridApi = params.api;
+
+    this.clinicService.getAllClinics().subscribe(
+      (data: Clinic[]) => {
+        this.clinicRows = data;
+        this.cdr.detectChanges();
+      }
+    );
+    
+  }
+
+  onSelectionChangedClinic() {
+    const selectedRows = this.clinicGridApi.getSelectedRows();
+    if (selectedRows.length > 0)
+    {
+      this.doctorService.getByClinicId(selectedRows[0].id).subscribe(
+        (data: GetByClinicIdDoctorResponse[]) => {
+          this.doctorRows = data;
+          this.mainGroup.selectedIndex = 1;
+          this.mainGroup._tabs.toArray()[1].disabled = false;
+          this.selectedData.clinicName = selectedRows[0].name;
+          this.cdr.detectChanges();
+
+        }
+      );
+    }
+    else
+    {
+      this.selectedData.clinicName = "";
+    }
+  }
+
+
+  onGridReadyDoctor(params : GridReadyEvent<IDoctorData> ) {
+    this.doctorGridApi = params.api;
+  }
+
+  onSelectionChangedDoctor() {
+    const selectedRows = this.doctorGridApi.getSelectedRows();
+    if (selectedRows.length > 0 )
+    {
+      this.listAvailableAppointmentRequest.doctorId = selectedRows[0].id;
+      this.appointmentService.getListAvailableAppointment(this.listAvailableAppointmentRequest).subscribe(response=>{
+        this.availableAppointments = this.generateSlots(response);
+        console.log(this.availableAppointments);
+        this.mainGroup.selectedIndex = 2;
+        this.selectedDoctorId = selectedRows[0].id;
+        this.mainGroup._tabs.toArray()[2].disabled = false;
+        this.selectedData.doctorName = selectedRows[0].firstName + " " + selectedRows[0].lastName;
+        this.cdr.detectChanges();
+      });
+    }
+    else
+    {
+      this.selectedData.doctorName = "";
+      this.mainGroup._tabs.toArray()[2].disabled = true;
+    }
+    
+  }
+
 
   bookAppointment(event: any)
   {
-    
-
     const target = event.target.parentElement as HTMLElement;
     const dateStr = this.availableAppointments.appointmentDates[this.tabGroup?.selectedIndex!].date;
     const timeStr = target.getAttribute('date-time') ?? "";
@@ -91,17 +212,21 @@ export class BookAppointmentComponent {
       console.log("onaylandı!");
       
       const bookAppointmentRequest: BookAppointmentRequest = {
-        doctorId:2,
+        doctorId:this.listAvailableAppointmentRequest.doctorId,
         dateTime: dateTime.toISOString(),
       };
       
 
-      this.selecteds.dateTime = dateTimeForFrontend;
-      console.log(this.selecteds);
+      this.selectedData.dateTime = dateTimeForFrontend.toString();
+      console.log(this.selectedData);
       
 
       this.appointmentService.bookAvailableAppointment(bookAppointmentRequest).subscribe({
         next: () => {
+
+          console.log(timeStr);
+          this.availableAppointments.appointmentDates[this.tabGroup?.selectedIndex!].bookedSlots.push(timeStr + ":00");
+          this.cdr.detectChanges();
           this.dialog.open(DynamicDialogComponent, {
             width: '500px',
             data: <IDynamicDialogConfig>{
@@ -110,7 +235,9 @@ export class BookAppointmentComponent {
               acceptButtonTitle: 'Tamam',
               dialogType: 'success' 
             },
-          }); 
+          }
+        ); 
+
         },
 
         error: () => {
@@ -144,7 +271,6 @@ export class BookAppointmentComponent {
   ));
   return utcDate;
 }
-
   parseDateTimeString(timeString: string,dateTime: string = ""): Date {
     const [hours, minutes] = timeString.split(':').map(Number);
     const date =  dateTime != "" ? new Date(dateTime) : new Date();
@@ -152,8 +278,6 @@ export class BookAppointmentComponent {
     return date;
   }
 
-
-  
   generateSlots(response : ListAvailableAppointmentResponse): ListAvailableAppointmentResponse {
     
     response.appointmentDates = response.appointmentDates.map(appointmentDate => {

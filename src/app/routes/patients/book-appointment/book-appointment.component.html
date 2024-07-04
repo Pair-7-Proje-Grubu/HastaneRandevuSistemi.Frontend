@@ -1,27 +1,69 @@
-<mat-tab-group animationDuration="200ms">
-  <mat-tab label="Klinik">  
+
+<mat-tab-group animationDuration="200ms" #mainMatTabGroup>
+  <mat-tab > 
+    <ng-template mat-tab-label>
+      Klinik
+      <br>
+      {{selectedData.clinicName}}
+    </ng-template>
+  <div class="content" style="width: 100%; height: 100%;">
+    <!-- The AG Grid component, with Dimensions, CSS Theme, Row Data, and Column Definition -->
+    <ag-grid-angular
+    class="ag-theme-quartz"
+    style="height: 100vh;"
+    (gridReady)="onGridReadyClinic($event)"
+    rowSelection="single"
+    (selectionChanged)="onSelectionChangedClinic()"
+    [rowData]="clinicRows"
+    [columnDefs]="clinicCols"
+    [defaultColDef]="defaultColDef"/>
+  </div>
   </mat-tab>
-  <mat-tab label="Doktor"> Content 2 </mat-tab>
-  <mat-tab label="Zaman">
+
+
+
+  <mat-tab label="Doktor" disabled> 
+    <ng-template mat-tab-label>
+      Doktor
+      <br>
+      {{selectedData.doctorName}}
+    </ng-template>
+    <ag-grid-angular
+    class="ag-theme-quartz"
+    style="height: 100vh;"
+    (gridReady)="onGridReadyDoctor($event)"
+    rowSelection="single"
+    (selectionChanged)="onSelectionChangedDoctor()"
+    [rowData]="doctorRows"
+    [columnDefs]="doctorCols"
+    [defaultColDef]="defaultColDef"/>
+  </mat-tab>
+
+
+
+
+  <mat-tab label="Zaman" disabled>
+    <ng-template mat-tab-label>
+      Zaman
+      <br>
+      {{selectedData.dateTime}}
+    </ng-template>
+
     <div class="h1 text-center mt-5" >Randevu zamanını ayarla</div>
-    
     <mat-tab-group animationDuration="200ms" #dateMatTabGroup>
       @for (availableDate of availableAppointments.appointmentDates; track $index) {
-        <mat-tab label="{{ formatDate(availableDate.date)}}">  
+        <mat-tab label="{{formatDate(availableDate.date)}}">  
           <mat-accordion>
-
             @for (slot of availableDate.slots; track $index) {
-
               <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
-                  <mat-panel-title>{{ slot.hour}} </mat-panel-title>
-                  <mat-panel-description> </mat-panel-description>
+                  <mat-panel-title> {{ slot.hour}} </mat-panel-title>
+                  <mat-panel-description>  </mat-panel-description>
                 </mat-expansion-panel-header>
 
                 @for (time of slot.times; track $index) {
                   <app-button [attr.date-time]="time" (buttonClick)="bookAppointment($event)" [disabled]=" availableDate.bookedSlots && availableDate.bookedSlots.includes(time + ':00')">{{time}}</app-button>
                 }
-                
               </mat-expansion-panel>
             }
           </mat-accordion>
@@ -43,7 +85,11 @@
 
 <ng-template #successDialogTemplate>
   <h3><b>Randevu Bilgileriniz</b></h3>
-  <p><b>Tarih:</b> {{selecteds.dateTime | date:'EEEE, d MMMM y HH:mm:ss' }}</p>
+  <p>
+    <b>Klinik:</b> {{selectedData.clinicName }} <br>
+    <b>Doktor:</b> {{selectedData.doctorName }} <br>
+    <b>Tarih:</b> {{selectedData.dateTime | date:'EEEE, d MMMM y HH:mm:ss' }}
+  </p>
   <p>Randevunuz başarıyla oluşturuldu. Detayları e-posta adresinize gönderdik.</p>
 </ng-template>
 

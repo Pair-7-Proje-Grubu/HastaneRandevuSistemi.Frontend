@@ -12,6 +12,7 @@ import { roleGuard } from './core/auth/guards/role.guard';
 import { ChangePasswordPageComponent } from './routes/changePassword-page/changePassword-page.component';
 import { BookAppointmentComponent } from './routes/patients/book-appointment/book-appointment.component';
 import { PatientPageComponent } from './routes/patients/patient-page/patient-page.component';
+import { AppointmentListComponent } from './routes/patients/appointment-list/appointment-list.component';
 
 export const routes: Routes = [
   {
@@ -54,7 +55,8 @@ export const routes: Routes = [
     data: { role: 'Patient' }, // Bu rotaya erişmek için gerekli rol
     children: [
       { path: 'dashboard', component: DashboardPageComponent },
-      {path: 'book-appointment', component: BookAppointmentComponent}
+      {path: 'book-appointment', component: BookAppointmentComponent},
+      {path: 'appointments', component: AppointmentListComponent}
     ]
   },
 
