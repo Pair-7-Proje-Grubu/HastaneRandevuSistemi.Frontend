@@ -9,11 +9,13 @@ interface MenuItem {
   icon: string;
   sublist?: SubMenuItem[];
   link?: string;
+  disabled?: boolean;
 }
 
 interface SubMenuItem {
   name: string;
   link: string;
+  disabled?: boolean;
 }
 
 @Component({
@@ -40,134 +42,129 @@ export class SidebarComponent implements OnInit {
   adminList: MenuItem[]= [
     {
       number: '1',
-      name: 'Dashboard',
+      name: 'Profilim',
       icon: 'fa fa-user-md',
       sublist: [],
       link: '/admin/dashboard'
   },
     {
         number: '2',
-        name: 'Doctor',
+        name: 'Doktorlar',
         icon: 'fa fa-user-md',
-        sublist: [
-          { name: 'All Doctors', link: '/admin/all-doctor' },
-          { name: 'Add Doctor', link: '#' },
-          { name: 'Edit Doctor', link: '#' },
-          { name: 'Doctor Profile', link: '#' },
-        ]
+        link: '/admin/all-doctor' ,
+        disabled:true,
     },
     {
         number: '3',
-        name: 'Appointments',
+        name: 'Randevular',
         icon: 'fa fa-user-md',
-        sublist: [
-            { name: 'View Appointment', link: '#' },
-            { name: 'Edit Appointment', link: '#' },
-            { name: 'Book Appointment', link: '#' }
-        ]
+        disabled:true,
+        
     },
     {
       number: '4',
-      name: 'Patients',
+      name: 'Hastalar',
       icon: 'fa fa-users',
-      sublist: [
-        { name: 'All Patients', link: '#' },
-        { name: 'Add Patients', link: '#' },
-        { name: 'Edit Patients', link: '#' },
-        { name: 'Patient Profile', link: '#' },
-      ]
+      disabled:true,
     },
+
+    {
+      number: '3',
+      name: 'Geri Bildirim',
+      icon: 'fa-solid fa-comment',
+      link: 'feedbacks',
+    }, 
     {
       number: '5',
-      name: 'Departments',
-      icon: 'fa-solid fa-cart-shopping',
-      sublist: [],
-      link: '#' 
-    },
-    {
-      number: '6',
-      name: 'Settings',
+      name: 'Ayarlar',
       icon: 'fa-solid fa-gear',
       sublist: [],
       link: 'change-password-page'
     },
-    {
-      number: '7',
-      name: 'About',
-      icon: 'fa-solid fa-circle-info',
-      sublist: [],
-      link: '#'
-    },
-    {
-      number: '8',
-      name: 'Contact',
-      icon: 'fa-solid fa-phone',
-      sublist: [],
-      link: '#'
-    },
+
   ];
   doctorList: MenuItem[]=[
     {
       number: '1',
-      name: 'Dashboard',
+      name: 'Profilim',
       icon: 'fa fa-user-md',
       sublist: [],
       link: '/doctor/dashboard'
   },
     {
       number: '2',
-      name: 'Appointments',
+      name: 'Randevularım',
       icon: 'fa fa-user-md',
       sublist: [] ,
-      link:'#'
+      link:'#',
+      disabled: true,
     },
     {
       number: '3',
-      name: 'Doctors',
+      name: 'Doktorlar',
       icon: 'fa fa-user-md',
       sublist: [],
-      link:'/doctor/all-doctor'
+      link:'/doctor/all-doctor',
     },
     {
       number: '4',
-      name: 'Patients',
+      name: 'Hastalarım',
       icon: 'fa fa-users',
-      sublist: [] 
+      sublist: [],
+      disabled: true,
+
     },
     {
       number: '5',
-      name: 'Settings',
+      name: 'Ayarlar',
       icon: 'fa-solid fa-gear',
       sublist: [] 
     },
     {
       number: '6',
-      name: 'Chat',
-      icon: 'fa fa-comments',
-      sublist: [] 
-    },
+      name: 'Geri Bildirim',
+      icon: 'fa-solid fa-comment',
+      link: 'feedbacks',
+    }, 
     {
       number: '7',
-      name: 'Contact',
-      icon: 'fa-solid fa-phone',
-      sublist: [] 
-    },
-    {
-      number: '8',
       name: 'Calendar',
       icon: 'fa fa-calendar',
       sublist: [],
       link: '/doctor/calendar'
     },
   ];
-  patientList=[     {
-    number: '1',
-    name: 'Appointments',
-    icon: 'fa fa-user-md',
-    sublist: [
-        { name: 'Book Appointment', link: 'book-appointment' },
-    ]
-}, ];
+  patientList=[     
+    {
+      number: '1',
+      name: 'Randevu Al',
+      icon: 'fa-solid fa-calendar-plus',
+      link: 'book-appointment',
+    }, 
+    {
+      number: '2',
+      name: 'Randevularım',
+      icon: 'fa-solid fa-calendar-days',
+      link: 'appointments',
+    }, 
+    {
+      number: '3',
+      name: 'Doktorlar',
+      icon: 'fa-solid fa-users',
+      disabled: true,
+    }, 
+    {
+      number: '3',
+      name: 'Geri Bildirim',
+      icon: 'fa-solid fa-comment',
+      link: 'feedbacks',
+    }, 
+    {
+      number: '4',
+      name: 'Ayarlar',
+      icon: 'fa-solid fa-gear',
+    },
+  ];
 
   constructor(private authService: AuthService,private route: ActivatedRoute) { }
   ngOnInit(): void {
@@ -187,40 +184,40 @@ export class SidebarComponent implements OnInit {
   
 
    // Seçili olan öğeleri yerel depolamadan yükleme
-   const savedSelectedItem = localStorage.getItem('selectedItem');
-   const savedSelectedSubItem = localStorage.getItem('selectedSubItem');
+  const savedSelectedItem = localStorage.getItem('selectedItem');
+  const savedSelectedSubItem = localStorage.getItem('selectedSubItem');
 
-   if (savedSelectedItem) {
-     this.selectedItem = savedSelectedItem;
-   }
+  if (savedSelectedItem) {
+    this.selectedItem = savedSelectedItem;
+  }
 
-   if (savedSelectedSubItem) {
-     this.selectedSubItem = savedSelectedSubItem;
-     const parentItem = this.list.find(item => item.sublist && item.sublist.some(sub => sub.name === savedSelectedSubItem));
-     if (parentItem) {
-       const parentItemNumber = parentItem.number;
-       this.collapseOtherSubmenus(parentItemNumber);
-       (document.getElementById('submenu' + parentItemNumber) as HTMLElement)?.classList.add('show');
-     }
-   } else {
+  if (savedSelectedSubItem) {
+    this.selectedSubItem = savedSelectedSubItem;
+    const parentItem = this.list.find(item => item.sublist && item.sublist.some(sub => sub.name === savedSelectedSubItem));
+    if (parentItem) {
+      const parentItemNumber = parentItem.number;
+      this.collapseOtherSubmenus(parentItemNumber);
+      (document.getElementById('submenu' + parentItemNumber) as HTMLElement)?.classList.add('show');
+    }
+  } else {
      // İlk elemanı seçili yap
-     if (this.list.length > 0 && !this.selectedItem) {
-       this.onItemClick(this.list[0].name);
-     }
-   }
+    if (this.list.length > 0 && !this.selectedItem) {
+      this.onItemClick(this.list[0].name);
+    }
+  }
 
-   // BaseLayoutComponent'e seçili menü öğesini gönder
-   if (savedSelectedItem) {
-     this.menuSelection.emit(savedSelectedItem);
-     if (savedSelectedSubItem) {
-       const parentItem = this.list.find(item => item.sublist && item.sublist.some(sub => sub.name === savedSelectedSubItem));
-       if (parentItem) {
-         this.menuSelection.emit(`${parentItem.name} -> ${savedSelectedSubItem}`);
-       } else {
-         this.menuSelection.emit(savedSelectedSubItem);
-       }
-     }
-   }
+  // BaseLayoutComponent'e seçili menü öğesini gönder
+  if (savedSelectedItem) {
+    this.menuSelection.emit(savedSelectedItem);
+    if (savedSelectedSubItem) {
+      const parentItem = this.list.find(item => item.sublist && item.sublist.some(sub => sub.name === savedSelectedSubItem));
+      if (parentItem) {
+        this.menuSelection.emit(`${parentItem.name} -> ${savedSelectedSubItem}`);
+      } else {
+        this.menuSelection.emit(savedSelectedSubItem);
+      }
+    }
+  }
 }
 
   //Burdan sonraki metotlar: BaseLayouta seçilen menunun adını gönderme ve menude seçili alan için gerekli düzenlemeler.

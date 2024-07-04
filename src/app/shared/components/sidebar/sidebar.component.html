@@ -3,7 +3,7 @@
     <img src="../../assets/logo_white.png" width="200px" alt="Company logo"/>
   </div>
   <ul class="nav flex-column nav-list">
-    <li *ngFor="let item of list" class="nav-item nav-list-item" [class.selected]="isSelected(item.name)">
+    <li *ngFor="let item of list" class="nav-item nav-list-item" [class.selected]="isSelected(item.name)" [class.disabled]="item.disabled">
       <ng-container *ngIf="item.sublist && item.sublist.length > 0; else noSublist">
         <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" [attr.href]="'#submenu' + item.number" role="button" aria-expanded="false" [attr.aria-controls]="'submenu' + item.number" (click)="onItemClick(item.name)">
           <span><i class="{{item.icon}}"></i> {{item.name}}</span>
@@ -11,7 +11,7 @@
         </a>
         <div class="collapse" [attr.id]="'submenu' + item.number">
           <ul class="nav flex-column">
-            <li *ngFor="let subItem of item.sublist" class="nav-item sub-nav-list-item" [class.selected]="isSelected(subItem.name)">
+            <li *ngFor="let subItem of item.sublist" class="nav-item sub-nav-list-item" [class.selected]="isSelected(subItem.name)" [class.disabled]="subItem.disabled">
               <a class="nav-link" [routerLink]="subItem.link" (click)="onSubItemClick(subItem.name, item.number)">{{subItem.name}}</a>
             </li>
           </ul>
