@@ -165,7 +165,7 @@ export class SidebarComponent implements OnInit {
       number: '3',
       name: 'Geri Bildirim',
       icon: 'fa-solid fa-comment',
-      link: '/patient/feedback-page',
+      link: 'feedback',
     }, 
     {
       number: '4',

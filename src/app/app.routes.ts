@@ -61,7 +61,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: DashboardPageComponent },
       {path: 'book-appointment', component: BookAppointmentComponent},
       {path: 'appointments', component: AppointmentListComponent},
-      { path: 'settings', component: SettingsPageComponent },,
+      { path: 'settings', component: SettingsPageComponent },
       {path: 'feedback', component: FeedbackComponent}
     ]
   },
