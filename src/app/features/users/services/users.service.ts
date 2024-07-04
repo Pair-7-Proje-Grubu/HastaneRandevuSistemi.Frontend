@@ -73,6 +73,6 @@ export class UsersService extends CoreAuthService {
   }
 
   getProfile(): Observable<any> {
-    return this.http.post(`${this.apiControllerUrl}/GetProfile`,{});
+    return this.http.get(`${this.apiControllerUrl}/GetProfile`,{});
   }
 }

@@ -79,9 +79,16 @@ export class SidebarComponent implements OnInit {
       name: 'Ayarlar',
       icon: 'fa-solid fa-gear',
       sublist: [],
-      link: 'change-password-page'
+      link: 'settings'
     },
 
+    {
+      number: '9',
+      name: 'Feedback',
+      icon: 'fa-solid fa-comment',
+      sublist: [],
+      link: '/admin/all-feedback'
+    }
   ];
   doctorList: MenuItem[]=[
     {
@@ -119,7 +126,7 @@ export class SidebarComponent implements OnInit {
       name: 'Ayarlar',
       icon: 'fa-solid fa-gear',
       sublist: [],
-      link: 'change-password-page'
+      link: 'settings'
     },
     {
       number: '6',
@@ -164,6 +171,7 @@ export class SidebarComponent implements OnInit {
       number: '4',
       name: 'Ayarlar',
       icon: 'fa-solid fa-gear',
+      link: 'settings',
     },
   ];
 
