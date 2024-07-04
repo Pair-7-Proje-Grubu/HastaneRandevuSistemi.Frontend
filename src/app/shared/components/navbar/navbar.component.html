@@ -51,12 +51,11 @@
       <ul>
         <li class="nav-item dropdown">
           <button class="btn btn-outline dropdown-toggle me-3" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="d-none d-lg-inline">User Name</span>
+            <span class="d-none d-lg-inline">{{displayUserName}}</span>
               <i class="fa fa-user d-lg-none"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
             <li><a [routerLink]="['./change-password-page']" class="dropdown-item"><i class="fa fa-lock"></i> Şifre Değiştir</a></li>
-            <li><a href="#" class="dropdown-item"><i class="fa fa-envelope"></i> E-posta Değiştir</a></li>
             <li><button (click)="onLogout()" routerLinkActive="active" class="dropdown-item"><i class="fa fa-sign-out-alt"></i> Çıkış Yap</button></li>
           </ul>
         </li>

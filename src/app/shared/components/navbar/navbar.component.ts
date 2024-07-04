@@ -41,6 +41,8 @@ export class NavbarComponent implements OnInit {
       this.displayUserName = isLogged
         ? this.authService.tokenPayload!.email
         : null;
+
+        // console.log(this.authService.tokenPayload!.firstName);
     });
   } 
 
