@@ -1,0 +1,16 @@
+<div class="mb-3">
+  <label class="form-label"><strong>Mevcut Telefon Numarası:</strong></label>
+  <p *ngIf="currentPhoneNumber !== ''" class="form-control-static">{{ currentPhoneNumber }}</p>
+  <p *ngIf="currentPhoneNumber === ''" class="form-control-static text-muted">Loading...</p>
+</div>
+<form [formGroup]="changePhoneFormGroup" (submit)="onFormSubmit()">
+  <div class="mb-3">
+    <label for="newPhoneNumber" class="form-label">Yeni Telefon Numarası</label>
+    <input type="tel" class="form-control" id="newPhoneNumber" formControlName="newPhoneNumber" placeholder="Yeni telefon numarasını girin">
+    <div *ngIf="changePhoneFormGroup.get('newPhoneNumber')?.touched && changePhoneFormGroup.get('newPhoneNumber')?.invalid" class="text-danger mt-1 small">
+      <div *ngIf="changePhoneFormGroup.get('newPhoneNumber')?.errors?.['required']">Yeni telefon numarası alanı boş bırakılamaz.</div>
+      <div *ngIf="changePhoneFormGroup.get('newPhoneNumber')?.errors?.['pattern']">Lütfen geçerli bir 10 haneli telefon numarası girin.</div>
+    </div>
+  </div>
+  <button class="btn btn-primary w-100" type="submit">Telefon Numarasını Güncelle</button>
+</form>

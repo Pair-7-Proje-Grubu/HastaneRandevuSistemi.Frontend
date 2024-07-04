@@ -118,7 +118,8 @@ export class SidebarComponent implements OnInit {
       number: '5',
       name: 'Ayarlar',
       icon: 'fa-solid fa-gear',
-      sublist: [] 
+      sublist: [],
+      link: 'change-password-page'
     },
     {
       number: '6',
