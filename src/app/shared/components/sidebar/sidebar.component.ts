@@ -79,7 +79,7 @@ export class SidebarComponent implements OnInit {
       name: 'Ayarlar',
       icon: 'fa-solid fa-gear',
       sublist: [],
-      link: 'change-password-page'
+      link: 'settings'
     },
 
   ];
@@ -119,7 +119,7 @@ export class SidebarComponent implements OnInit {
       name: 'Ayarlar',
       icon: 'fa-solid fa-gear',
       sublist: [],
-      link: 'change-password-page'
+      link: 'settings'
     },
     {
       number: '6',
