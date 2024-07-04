@@ -45,8 +45,9 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardPageComponent },
       { path: 'all-doctor', component: AllDoctorComponent },
+      { path: 'all-feedback', component: AllFeedbackComponent},
       { path: 'settings', component: SettingsPageComponent },
-      { path: 'all-feedback', component: AllFeedbackComponent}
+
       
     ],
   },
@@ -58,7 +59,8 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardPageComponent },
       {path: 'book-appointment', component: BookAppointmentComponent},
-      {path: 'appointments', component: AppointmentListComponent}
+      {path: 'appointments', component: AppointmentListComponent},
+      { path: 'settings', component: SettingsPageComponent },
     ]
   },
 

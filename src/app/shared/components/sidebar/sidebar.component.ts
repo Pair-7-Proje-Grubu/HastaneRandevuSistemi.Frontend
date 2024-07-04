@@ -171,6 +171,7 @@ export class SidebarComponent implements OnInit {
       number: '4',
       name: 'Ayarlar',
       icon: 'fa-solid fa-gear',
+      link: 'settings',
     },
   ];
 
