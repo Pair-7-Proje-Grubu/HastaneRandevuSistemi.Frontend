@@ -14,6 +14,7 @@ import { BookAppointmentComponent } from './routes/patients/book-appointment/boo
 import { PatientPageComponent } from './routes/patients/patient-page/patient-page.component';
 import { AppointmentListComponent } from './routes/patients/appointment-list/appointment-list.component';
 import { AllFeedbackComponent } from './routes/feedbacks/all-feedback/all-feedback.component';
+import { FeedbackComponent } from './shared/components/feedback/feedback.component';
 
 export const routes: Routes = [
   {
@@ -60,7 +61,8 @@ export const routes: Routes = [
       { path: 'dashboard', component: DashboardPageComponent },
       {path: 'book-appointment', component: BookAppointmentComponent},
       {path: 'appointments', component: AppointmentListComponent},
-      { path: 'settings', component: SettingsPageComponent },
+      { path: 'settings', component: SettingsPageComponent },,
+      {path: 'feedback', component: FeedbackComponent}
     ]
   },
 

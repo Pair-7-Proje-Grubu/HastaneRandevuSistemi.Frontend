@@ -165,14 +165,14 @@ export class SidebarComponent implements OnInit {
       number: '3',
       name: 'Geri Bildirim',
       icon: 'fa-solid fa-comment',
-      link: 'feedbacks',
+      link: '/patient/feedback-page',
     }, 
     {
       number: '4',
       name: 'Ayarlar',
       icon: 'fa-solid fa-gear',
       link: 'settings',
-    },
+    }
   ];
 
   constructor(private authService: AuthService,private route: ActivatedRoute) { }
