@@ -1,4 +1,4 @@
-<div class="register-page">
+<!-- <div class="register-page">
   <div class="register-container">
     <h2 class="text-center"><a [routerLink]="['/']" class="logo">HRS.COM</a></h2>
 
@@ -86,4 +86,56 @@
 <ng-template #failedDialogTemplate>
   <h4><b>Hata!</b></h4>
   <p class="important">Kayıt esnasında bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.</p>
-</ng-template>
+</ng-template> -->
+
+<div class="main">
+
+  <section class="signup">
+      <!-- <img src="../../../../../assets/bg.jpg" alt=""> -->
+      <div class="container">
+          <div class="signup-content">
+              <form method="POST" id="signup-form" class="signup-form">
+                  <h2 class="form-title">Kayıt Olun</h2>
+                  <div class="form-group">
+                      <input type="text" class="form-input" name="name" id="name" placeholder="Ad"/>
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-input" name="name" id="name" placeholder="Soyad"/>
+                  </div>
+                  <div class="form-group">
+                    <input type="date" class="form-input" name="name" id="name" placeholder="Doğum Tarihi"/>
+                  </div>
+                  <div class="form-group">
+                    <label>Cinsiyet: </label>
+                    <label><input type="radio" class="form-input" name="name" id="name" placeholder="Doğum Tarihi"/> Erkek </label>
+                    <label><input type="radio" class="form-input" name="name" id="name" placeholder="Doğum Tarihi"/>Kadın</label>
+                  </div>
+                  <div class="form-group">
+                      <input type="email" class="form-input" name="email" id="email" placeholder="E-Posta"/>
+                  </div>
+                  <div class="form-group">
+                    <input type="tel" class="form-input" name="email" id="email" placeholder="Telefon No."/>
+                  </div>
+                  <div class="form-group">
+                      <input type="text" class="form-input" name="password" id="password" placeholder="Parola"/>
+                      <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                  </div>
+                  <div class="form-group">
+                      <input type="password" class="form-input" name="re_password" id="re_password" placeholder="Parola Tekrarı"/>
+                  </div>
+                  <div class="form-group">
+                      <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                      <label for="agree-term" class="label-agree-term"><span><span></span></span>Aydınlatma Metni'ni okudum, anladım.</label>
+                  </div>
+                  <div class="form-group">
+                      <input type="submit" name="submit" id="submit" class="form-submit" value="Kayıt Ol"/>
+                  </div>
+              </form>
+              <p class="loginhere">
+                  Zaten bir hesabın var mı ? <a href="#" class="loginhere-link">Giriş Yap</a>
+              </p>
+          </div>
+      </div>
+  </section>
+
+</div>
