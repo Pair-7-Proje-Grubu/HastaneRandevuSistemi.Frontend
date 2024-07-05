@@ -24,6 +24,7 @@ import { ClinicsService } from '../../../features/clinics/services/clinics.servi
 import { forkJoin, Observable } from 'rxjs';
 import { AppointmentService } from '../../../features/appointments/services/appointment.service';
 import { Clinic } from '../../../features/clinics/models/clinic';
+import trLocale from '@fullcalendar/core/locales/tr';
 
 @Component({
     selector: 'app-calender',
@@ -50,6 +51,14 @@ export class CalenderComponent {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
     initialDate: new Date(), // Bugünün tarihini başlangıç tarihi olarak ayarla
+    locale: trLocale,
+    buttonText: {
+      today: 'Bugün',
+      month: 'Ay',
+      week: 'Hafta',
+      day: 'Gün',
+      list: 'Liste'
+  },
     validRange: {
       start: new Date(new Date().getFullYear(), 0, 1), // Bu yılın başlangıcı
       end: new Date(new Date().getFullYear() + 1, 11, 31) // Gelecek yılın sonu
@@ -103,7 +112,7 @@ export class CalenderComponent {
   }
 
   initializeCalendarOptions() {
-    const workingTimeId = 1; // Örneğin, 1 numaralı çalışma saatini alıyoruz
+    const workingTimeId = 1; 
     
     forkJoin({
       workingTime: this.workingTimeService.getWorkingHourById(workingTimeId),

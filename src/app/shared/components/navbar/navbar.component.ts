@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, HostListener } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonComponent } from '../button/button.component';
 import { AuthService } from '../../../features/auth/services/auth.service';
@@ -58,4 +58,21 @@ export class NavbarComponent implements OnInit {
   toggleSidebar(){
     this.toggleSidebarForMe.emit(this.menuStatus);
   }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+    const navbar = document.getElementById('mainNavbar');
+    if (navbar) {
+      if (window.scrollY > 50) {
+        navbar.classList.add('navbar-scrolled');
+        navbar.style.removeProperty('background-color'); // Inline style'ı kaldır
+        navbar.style.setProperty('background-color', '#f7f7f7', 'important');
+      } else {
+        navbar.classList.remove('navbar-scrolled');
+        navbar.style.removeProperty('background-color'); // Inline style'ı kaldır
+        navbar.style.setProperty('background-color', 'transparent', 'important');
+      }
+    }
+    this.cdr.detectChanges();
+}
 }

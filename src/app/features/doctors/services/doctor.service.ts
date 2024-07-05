@@ -3,6 +3,7 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { GetByClinicIdDoctorResponse } from '../models/get-by-clinic-id-doctor-response';
+import { GetListDoctorResponse } from '../models/get-list-doctor-response';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,10 @@ export class DoctorService {
 
   getByClinicId(id: number): Observable<GetByClinicIdDoctorResponse[]> {
     return this.http.get<GetByClinicIdDoctorResponse[]>(`${this.apiControllerUrl}/GetByClinicId/${id}`);
+  }
+
+  getListDoctor(): Observable<GetListDoctorResponse[]> {
+    return this.http.post<GetListDoctorResponse[]>(`${this.apiControllerUrl}/GetListDoctor`, {});
   }
 
 }

@@ -100,11 +100,10 @@ export class SidebarComponent implements OnInit {
   },
     {
       number: '2',
-      name: 'Randevularım',
+      name: 'Geçmiş Randevular',
       icon: 'fa fa-user-md',
-      sublist: [] ,
-      link:'#',
-      disabled: true,
+      sublist: [],
+      link:'/doctor/past-appointment',
     },
     {
       number: '3',
@@ -118,8 +117,7 @@ export class SidebarComponent implements OnInit {
       name: 'Hastalarım',
       icon: 'fa fa-users',
       sublist: [],
-      disabled: true,
-
+      link:'/doctor/patient'
     },
     {
       number: '5',
@@ -136,7 +134,7 @@ export class SidebarComponent implements OnInit {
     }, 
     {
       number: '7',
-      name: 'Calendar',
+      name: 'Çalışma Takvimi',
       icon: 'fa fa-calendar',
       sublist: [],
       link: '/doctor/calendar'

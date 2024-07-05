@@ -1,11 +1,40 @@
 .navbar {
-    background-color: #f7f7f7;
     width: 100%;
     position: fixed;
     top: 0;
     z-index: 1000;
     height: 70px;
+    margin-top: .5rem;
+    .nav-link {
+        color: #000 !important;
+      }
+    
+      .nav-link:hover {
+        color: #333 !important;
+      }
+    
+      .navbar-brand {
+        color: #000 !important;
+        
+        span {
+          color: #000 !important;
+        }
+      }
+    
+      &.navbar-scrolled {
+        background-color: #f7f7f7 !important;
+
+        .nav-link, .navbar-brand, .navbar-brand span {
+          color: #000 !important;
+        }
+      }
 }
+
+.navbar-scrolled {
+    background-color: #f7f7f7; 
+    margin-top: 0;
+    padding-bottom: 2rem;
+  }
 
 .navbar .navbar-toggler {
     margin-left: auto;
@@ -24,21 +53,23 @@
 }
 
 .navbar .nav-link {
-    color: #222f44;
-    font-size: 17px;
+    color: #fff;
+    font-size: 1.2rem;
     font-family: 'Arial', sans-serif;
     padding-left: 15px;
+    margin-left: 1rem;
     padding-right: 15px;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease-in;
+}
+
+.navbar .nav-link:hover{
+    opacity: .7;
+    border-bottom: 1px solid #fff;
 }
 
 .navbar .nav-link:active, .navbar .nav-link:focus {
     background-color: #cad5df;
     color: #222f44;
-}
-
-.navbar .nav-link:hover {
-    transform: scale(1.2);
 }
 
 .btn-outline {
@@ -49,6 +80,7 @@
     color: #160828;
     text-align: center;
     text-transform: capitalize;
+    font-weight: 500;
     border-radius: 50px;
     flex: none;
     padding: 11px 40px;
@@ -98,3 +130,21 @@ ul{
 #profileDropdown {
     margin-top: 20px;
 }
+
+.fa-dna{
+    font-size: 2.5rem;
+    color: #e0ecde;
+  }
+  
+  span{
+    color: #fff;
+    text-transform: capitalize;
+    align-items: center;
+    font-family: Inter, sans-serif;
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1.5em;
+    text-decoration: none;
+    transition: color .5s;
+    margin-left: .8rem;
+  }

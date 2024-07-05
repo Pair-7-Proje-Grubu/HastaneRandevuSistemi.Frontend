@@ -5,8 +5,9 @@ import { ListAvailableAppointmentResponse } from '../models/list-available-appoi
 import { environment } from '../../../../environments/environment';
 import { ListAvailableAppointmentRequest } from '../models/list-available-appointment-request';
 import { BookAppointmentRequest } from '../models/book-appointment-request';
-import { ListActiveAppointmentByDoctorResponse } from '../models/list-active-appointment-by-doctor-reponse';
+import { ListAppointmentByDoctorResponse } from '../models/list-appointment-by-doctor-reponse';
 import { GetListAppointmentResponse } from '../models/get-list-appointment-response';
+import { GetListPatientByDoctorResponse } from '../models/get-list-patient-by-doctor-response';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,16 @@ export class AppointmentService {
     return this.http.post<ListAvailableAppointmentResponse>(`${this.apiControllerUrl}/GetListAvailableAppointments`,requestBody);
   }
 
-  getListActiveAppointmentByDoctor(): Observable<ListActiveAppointmentByDoctorResponse[]> {
-    return this.http.post<ListActiveAppointmentByDoctorResponse[]>(`${this.apiControllerUrl}/GetListActiveAppointmentByDoctor`, {});
+  getListActiveAppointmentByDoctor(): Observable<ListAppointmentByDoctorResponse[]> {
+    return this.http.post<ListAppointmentByDoctorResponse[]>(`${this.apiControllerUrl}/GetListActiveAppointmentByDoctor`, {});
+  }
+
+  getListPastAppointmentByDoctor(): Observable<ListAppointmentByDoctorResponse[]> {
+    return this.http.post<ListAppointmentByDoctorResponse[]>(`${this.apiControllerUrl}/GetListPastAppointmentByDoctor`, {});
+  }
+
+  getListPatientByDoctor(): Observable<GetListPatientByDoctorResponse[]> {
+    return this.http.post<GetListPatientByDoctorResponse[]>(`${this.apiControllerUrl}/GetListPatientByDoctor`, {});
   }
 
   getListAppointment(): Observable<GetListAppointmentResponse[]> {

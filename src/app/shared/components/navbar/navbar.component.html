@@ -1,17 +1,20 @@
 <!--Giriş yapılmamış (ana sayfa) responsive-->
+<!-- navbar-light  -->
+<!-- navbar-light bg-light -->
 @if (!isLogged){
-<nav class="navbar navbar-expand-lg navbar-light px-2">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light px-2">
+<nav id="mainNavbar" class="navbar navbar-expand-lg px-2">
+    <nav class="navbar navbar-expand-lg px-2">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="logo py-4">
+      <div class="logo py-4 ms-5 mb-2">
         <a [routerLink]="['/']">
           <img src="../../assets/logo.png" width="200px" alt="Company logo"/>
+          <!-- <i class="fa-solid fa-dna"></i><span>HRS.COM</span> -->
         </a>
       </div>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-5">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" [routerLink]="['/']">Ana Sayfa</a>
           </li>
@@ -32,11 +35,11 @@
           </li>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item me-2">
+          <li class="nav-item me-2 mb-2">
             <button class="btn btn-outline btn-custom" type="button" [routerLink]="['/auth/login']" routerLinkActive="active">Giriş Yap</button>
           </li>
-          <li class="nav-item me-2">
-            <button class="btn btn-outline btn-custom" type="button" [routerLink]="['/auth/register']" routerLinkActive="active">Kayıt Ol</button>
+          <li class="nav-item me-2 mb-2">
+            <button class="btn btn-outline btn-custom me-5" type="button" [routerLink]="['/auth/register']" routerLinkActive="active">Kayıt Ol</button>
           </li>
         </ul>
       </div>
