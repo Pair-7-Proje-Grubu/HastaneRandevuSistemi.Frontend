@@ -6,6 +6,9 @@ import {
   Component,
   EventEmitter,
   Output,
+  inject,
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import {
@@ -21,6 +24,9 @@ import { RouterLink } from '@angular/router';
 import { ErrorFieldComponent } from "../../../../shared/components/error-field/error-field.component";
 import { ValidationService } from '../../../validation/services/validation.service';
 import { matchValidator } from '../../../validation/validator/match.validator';
+import { MatDialog } from '@angular/material/dialog';
+import { DynamicDialogComponent } from '../../../../shared/components/dynamic-dialog/dynamic-dialog.component';
+import { IDynamicDialogConfig } from '../../../../shared/models/dynamic-dialog/dynamic-dialog-config';
 
 
 @Component({
@@ -32,8 +38,12 @@ import { matchValidator } from '../../../validation/validator/match.validator';
     imports: [CommonModule, ReactiveFormsModule, ButtonComponent, RouterLink, ErrorFieldComponent]
 })
 export class RegisterFormComponent {
+  readonly dialog = inject(MatDialog);
   registerFormGroup: FormGroup;
   @Output() success = new EventEmitter<void>();
+
+  @ViewChild('successDialogTemplate') successDialogTemplate: TemplateRef<any> | undefined;
+  @ViewChild('failedDialogTemplate') failedDialogTemplate: TemplateRef<any> | undefined;
 
   constructor(formBuilder: FormBuilder, private authService: AuthService) {
     this.registerFormGroup = formBuilder.group({
@@ -52,6 +62,19 @@ export class RegisterFormComponent {
       [Validators.required, Validators.minLength(6), Validators.maxLength(50), matchValidator('confirmPassword', true)]
     );
 
+  }
+
+  registerDialog(dialogType: any)
+  {
+    const dialogRef = this.dialog.open(DynamicDialogComponent, {
+      width: '400px',
+      data: <IDynamicDialogConfig>{
+        title: 'Kayıt',
+        dialogContent: dialogType == "success"? this.successDialogTemplate : this.failedDialogTemplate,
+        dialogType: dialogType,
+        acceptButtonTitle: 'Tamam'
+      }
+    });
   }
 
   register() {
@@ -74,9 +97,11 @@ export class RegisterFormComponent {
   onFormSubmit() {
     if (this.registerFormGroup.invalid) {
       console.error('Invalid form');
+      this.registerDialog("failed");
       return;
     }
 
     this.register();
+    this.registerDialog("success");
   }
 }

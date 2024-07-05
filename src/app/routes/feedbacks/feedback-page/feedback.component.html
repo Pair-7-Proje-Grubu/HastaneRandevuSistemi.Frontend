@@ -1,0 +1,23 @@
+<div class="container">
+    <h2>Geri Bildirim Formu</h2>
+    <form (ngSubmit)="onSubmit(feedbackForm)" #feedbackForm="ngForm">
+      <div class="form-group">
+        <label for="userMail">E-posta Adresiniz:</label>
+        <input type="text" class="form-control" id="userMail" required [(ngModel)]="feedback.userMail" name="userMail">
+      </div>
+      <div class="form-group">
+        <label for="userFeedback">Geri Bildirim:</label>
+        <textarea class="form-control" id="userFeedback" required [(ngModel)]="feedback.userFeedback" name="userFeedback"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!feedbackForm.form.valid">Gönder</button>
+    </form>
+    <ng-template #successDialogTemplate>
+        <h4><b>Başarılı!</b></h4>
+        <p>Geri bildiriminiz başarıyla alındı. Teşekkür ederiz.</p>
+    </ng-template>
+    <ng-template #failedDialogTemplate>
+        <h4><b>Hata!</b></h4>
+        <p class="important">Geri bildiriminiz alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.</p>
+    </ng-template>
+  </div>
+  
