@@ -12,8 +12,8 @@ export class ClinicsService {
 
   constructor(private http: HttpClient) { }
 
-  getClinicById(id: number): Observable<Clinic> {
-    return this.http.get<Clinic>(`${this.apiControllerUrl}/${id}`);
+  getClinic(): Observable<Clinic> {
+    return this.http.post<Clinic>(`${this.apiControllerUrl}/GetClinic`, {});
   }
 
   getAllClinics(): Observable<Clinic[]> {

@@ -116,7 +116,7 @@ export class CalenderComponent {
     
     forkJoin({
       workingTime: this.workingTimeService.getWorkingHourById(workingTimeId),
-      clinic: this.clinicService.getClinicById(workingTimeId + 16)
+      clinic: this.clinicService.getClinic()
     }).subscribe(({ workingTime, clinic }) => {
       const updatedOptions = {
         ...this.calendarOptions(),
@@ -184,7 +184,7 @@ export class CalenderComponent {
   fetchAppointments() {
     forkJoin({
       appointments: this.appointmentService.getListActiveAppointmentByDoctor(),
-      clinic: this.clinicService.getClinicById(17)
+      clinic: this.clinicService.getClinic()
     }).subscribe(({ appointments, clinic }) => {
       const appointmentEvents: EventInput[] = appointments.map(appointment => ({
         // id: appointment.id.toString(),

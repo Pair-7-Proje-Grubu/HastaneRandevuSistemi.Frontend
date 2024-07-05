@@ -34,7 +34,7 @@
 .navbar-scrolled {
     background-color: #f7f7f7; 
     margin-top: 0;
-    padding-bottom: 2rem;
+    padding-bottom: 4.5rem;
   }
 
 .navbar .navbar-toggler {
@@ -88,7 +88,7 @@
     border-radius: 50px;
     flex: none;
     padding: 11px 40px;
-    transition: all .5s;
+    transition: all .3s;
     display: inline-block;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
@@ -142,20 +142,12 @@ ul{
     color: #0056B3;
   }
   
-  span{
-    color: #fff;
-    text-transform: capitalize;
-    align-items: center;
-    font-family: Inter, sans-serif;
-    // font-size: 2rem;
-    font-weight: 300;
-    line-height: 1.5em;
-    text-decoration: none;
-    transition: color .5s;
-    margin-left: .8rem;
+
+  .hrs{
+    margin-left: 4.5rem;
   }
   .logo{
-  color: #0056B3;
+    color: #0056B3;
     text-transform: capitalize;
     align-items: center;
     font-family: Inter, sans-serif;
