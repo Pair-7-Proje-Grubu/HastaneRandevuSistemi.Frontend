@@ -1,3 +1,45 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.register-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #e6f2ff, #99ccff);
+}
+
+.register-container {
+  max-width: 500px;
+  width: 100%;
+  padding: 2rem;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0056b3;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: transparent;
+  border-bottom: none;
+  text-align: center;
+}
+
 .form-signup {
   padding: 1rem;
 }
@@ -8,7 +50,6 @@
 
 .form-signup input {
   margin-bottom: -1px;
-
 }
 
 .form-signup input[id="firstname"] {
@@ -26,11 +67,8 @@
   border-bottom-left-radius: 0;
 }
 
-#phone,#password {
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 0;
-  border-top-left-radius: 0;
+#phone, #password {
+  border-radius: 0;
 }
 
 #confirmPassword {
@@ -38,7 +76,29 @@
   border-top-left-radius: 0;
 }
 
-.form-signup label{
+.form-signup label {
   margin-right: 10px;
 }
 
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.gender-label {
+  margin-right: 10px;
+  align-self: center;
+}
+
+.form-check-inline {
+  margin-right: 1rem;
+}
+
+.btn-primary {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.btn-primary:hover {
+  background-color: #003d82;
+  border-color: #003d82;
+}

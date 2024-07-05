@@ -1,91 +1,89 @@
-<div class="form-signup row d-flex justify-content-center align-items-center" style="height: 98vh;">
+<div class="register-page">
+  <div class="register-container">
+    <h2 class="text-center"><a [routerLink]="['/']" class="logo">HRS.COM</a></h2>
 
-  <div class="col-3">
-    <h2 class="text-center"><a  [routerLink]="['/']">HRS.COM</a></h2>
     <div class="card">
       <div class="card-header">
         <h1 class="h3 mb-3 fw-normal">Kayıt ol</h1>
       </div>
       <div class="card-body">
         <form [formGroup]="registerFormGroup" (submit)="onFormSubmit()">
-    
           <div class="input-group">
-
-
             <div class="form-floating">
               <input type="text" class="form-control" id="firstname" autocomplete="given-name" formControlName="firstName" placeholder="First Name" required>
-              <label for="floatingInput">Ad</label>
+              <label for="firstname">Ad</label>
               <app-error-field [control]="registerFormGroup.controls['firstName']" propertyName="Ad"></app-error-field>
             </div>
             
             <div class="form-floating">
-              <input type="text" class="form-control" id="lastname" autocomplete="family-name"  formControlName="lastName" placeholder="Last Name">
-              <label for="floatingInput">Soyad</label>
+              <input type="text" class="form-control" id="lastname" autocomplete="family-name" formControlName="lastName" placeholder="Last Name">
+              <label for="lastname">Soyad</label>
               <app-error-field [control]="registerFormGroup.controls['lastName']" propertyName="Soyad"></app-error-field>
             </div>
           </div>
 
           <div class="form-floating">
-            <input type="date" class="form-control" id="birthdate" autocomplete="bday"  formControlName="birthDate" placeholder="Birth Date">
-            <label for="floatingInput">Doğum Tarihi</label>
+            <input type="date" class="form-control" id="birthdate" autocomplete="bday" formControlName="birthDate" placeholder="Birth Date">
+            <label for="birthdate">Doğum Tarihi</label>
             <app-error-field [control]="registerFormGroup.controls['birthDate']" propertyName="Doğum Tarihi"></app-error-field>
           </div>
 
-          <div class="input-group mb-2" autocomplete="sex">
-            <label>Cinsiyet:</label>
+          <div class="input-group mb-3" autocomplete="sex">
+            <label class="gender-label">Cinsiyet:</label>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" id="male" value="M" type="radio" formControlName="gender" name="gender" id="gender" >
+              <input class="form-check-input" id="male" value="M" type="radio" formControlName="gender" name="gender">
               <label class="form-check-label" for="male">Erkek</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" id="female" value="F" type="radio" formControlName="gender" name="gender" id="gender">
+              <input class="form-check-input" id="female" value="F" type="radio" formControlName="gender" name="gender">
               <label class="form-check-label" for="female">Kadın</label>
             </div>
           </div>
 
           <div class="form-floating">
             <input type="email" class="form-control" autocomplete="email" id="email" formControlName="email" placeholder="name@example.com">
-            <label for="floatingInput">E-Posta</label>
+            <label for="email">E-Posta</label>
             <app-error-field [control]="registerFormGroup.controls['email']" propertyName="E-posta"></app-error-field>
           </div>
 
           <div class="form-floating">
-            <input type="text" class="form-control" id="phone" autocomplete="tel"  formControlName="phone" placeholder="Phone">
-            <label for="floatingPhone">Telefon Numarası</label>
+            <input type="text" class="form-control" id="phone" autocomplete="tel" formControlName="phone" placeholder="Phone">
+            <label for="phone">Telefon Numarası</label>
             <app-error-field [control]="registerFormGroup.controls['phone']" propertyName="Telefon Numarası"></app-error-field>
           </div>
 
           <div class="form-floating">
-            <input type="password" autocomplete="new-password" class="form-control" id="password"  formControlName="password" placeholder="Password">
-            <label for="floatingPassword">Parola</label>
+            <input type="password" autocomplete="new-password" class="form-control" id="password" formControlName="password" placeholder="Password">
+            <label for="password">Parola</label>
             <app-error-field [control]="registerFormGroup.controls['password']" propertyName="Parola"></app-error-field>
           </div>
           
           <div class="form-floating">
-            <input type="password" autocomplete="new-password" class="form-control" id="confirmPassword"  formControlName="confirmPassword" placeholder="Password">
-            <label for="floatingPassword">Parola Tekrarı</label>
+            <input type="password" autocomplete="new-password" class="form-control" id="confirmPassword" formControlName="confirmPassword" placeholder="Password">
+            <label for="confirmPassword">Parola Tekrarı</label>
             <app-error-field [control]="registerFormGroup.controls['confirmPassword']" propertyName="Parola"></app-error-field>
           </div>
         
           <div class="form-check text-start my-3">
             <input class="form-check-input" type="checkbox" formControlName="userAgreement" value="useragreement" id="useragreement">
-            <label class="form-check-label"  for="useragreement">
+            <label class="form-check-label" for="useragreement">
               Kullanıcı Sözleşmesi'ni okudum, anladım, kabul ediyorum.
             </label>
             <app-error-field [control]="registerFormGroup.controls['userAgreement']" propertyName="Kullanıcı Sözleşmesi"></app-error-field>
           </div>
 
-          <button class="btn btn-primary w-100 py-2" type="submit">Kayıt Ol</button>
+          <button class="btn btn-primary w-100 py-2" type="submit">Randevu Sistemi Kayıt</button>
         </form>
-        <ng-template #successDialogTemplate>
-          <h4><b>Başarılı!</b></h4>
-          <p>Başarıyla kayıt olundu.</p>
-        </ng-template>
-        <ng-template #failedDialogTemplate>
-          <h4><b>Hata!</b></h4>
-          <p class="important">Kayıt esnasında bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.</p>
-        </ng-template>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #successDialogTemplate>
+  <h4><b>Başarılı!</b></h4>
+  <p>Başarıyla kayıt olundu.</p>
+</ng-template>
+<ng-template #failedDialogTemplate>
+  <h4><b>Hata!</b></h4>
+  <p class="important">Kayıt esnasında bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.</p>
+</ng-template>
