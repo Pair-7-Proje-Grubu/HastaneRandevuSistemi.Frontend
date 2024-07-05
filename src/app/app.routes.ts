@@ -41,6 +41,8 @@ export const routes: Routes = [
       { path: 'past-appointment', component: ListPastAppointmentComponent },
       { path: 'past-appointment', component: ListPastAppointmentComponent },
       { path: 'patient', component: PatientListComponent },
+      {path: 'feedback', component: FeedbackComponent},
+
     ],
   },
   {
@@ -53,7 +55,6 @@ export const routes: Routes = [
       { path: 'all-doctor', component: AllDoctorComponent },
       { path: 'all-feedback', component: AllFeedbackComponent},
       { path: 'settings', component: SettingsPageComponent },
-
       
     ],
   },
@@ -67,7 +68,8 @@ export const routes: Routes = [
       {path: 'book-appointment', component: BookAppointmentComponent},
       {path: 'appointments', component: AppointmentListComponent},
       { path: 'settings', component: SettingsPageComponent },
-      {path: 'feedback', component: AllFeedbackComponent}
+      {path: 'feedback', component: FeedbackComponent},
+      { path: 'all-doctor', component: AllDoctorComponent }
     ]
   },
 

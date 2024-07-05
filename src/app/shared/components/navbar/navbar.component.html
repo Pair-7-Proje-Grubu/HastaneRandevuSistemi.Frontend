@@ -9,8 +9,8 @@
       </button>
       <div class="logo py-4 ms-5 mb-2">
         <a [routerLink]="['/']">
-          <img src="../../assets/logo.png" width="200px" alt="Company logo"/>
-          <!-- <i class="fa-solid fa-dna"></i><span>HRS.COM</span> -->
+          <!-- <img src="../../assets/logo.png" width="200px" alt="Company logo"/> -->
+          <i class="fa-solid fa-dna"></i><span>HRS.COM</span>
         </a>
       </div>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -58,7 +58,7 @@
               <i class="fa fa-user d-lg-none"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-            <li><a [routerLink]="['./change-password-page']" class="dropdown-item"><i class="fa fa-lock"></i> Şifre Değiştir</a></li>
+            <!-- <li><a [routerLink]="['./settings']" class="dropdown-item"><i class="fa fa-lock"></i> Ayarlar</a></li> -->
             <li><button (click)="onLogout()" routerLinkActive="active" class="dropdown-item"><i class="fa fa-sign-out-alt"></i> Çıkış Yap</button></li>
           </ul>
         </li>

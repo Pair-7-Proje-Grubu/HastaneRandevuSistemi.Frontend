@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
@@ -49,7 +49,7 @@ export class AllFeedbackComponent implements OnInit {
     { headerName: 'Created Date', field: 'createdDate', cellRenderer: (data: { value: string | number | Date; }) => { return data.value ? (new Date(data.value)).toLocaleString() : '' } }
   ];
 
-  constructor(private feedbackService: FeedbacksService) {
+  constructor(private feedbackService: FeedbacksService, private cdr: ChangeDetectorRef) {
     
   }
 
@@ -62,6 +62,7 @@ export class AllFeedbackComponent implements OnInit {
       (data: Feedback[]) => {
         this.feedbackList = data;
         console.log(data);
+        this.cdr.detectChanges();
       }
     );
   }
