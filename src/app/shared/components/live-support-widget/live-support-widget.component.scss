@@ -14,7 +14,7 @@ $shadow-color: rgba(0, 0, 0, 0.1);
   .toggle-button {
     display: flex;
     align-items: center;
-    background-color: $hover-background-color;
+    background-color: $primary-color;
     color: $hover-color;
     border: none;
     padding: 10px 20px;
@@ -31,7 +31,7 @@ $shadow-color: rgba(0, 0, 0, 0.1);
     }
 
     &:hover {
-      background-color: $primary-color;
+      background-color: $hover-background-color;
       color: $secondary-color;
       box-shadow: 0 4px 8px $shadow-color;
     }
