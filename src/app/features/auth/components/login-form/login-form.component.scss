@@ -10,11 +10,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to right, #e6f2ff, #99ccff);
+  background-image: url('../../../../../assets/register-img.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgba(255,255,255,0.6);
+  background-blend-mode: lighten;
 }
 
 .login-container {
-  max-width: 400px;
+  max-width: 600px;
   width: 100%;
   padding: 2rem;
 }
