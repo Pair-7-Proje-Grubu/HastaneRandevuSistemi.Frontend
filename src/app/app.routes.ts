@@ -16,7 +16,7 @@ import { AppointmentListComponent } from './routes/patients/appointment-list/app
 import { AllFeedbackComponent } from './routes/feedbacks/all-feedback/all-feedback.component';
 import { ListPastAppointmentComponent } from './routes/doctors/list-past-appointment/list-past-appointment.component';
 import { PatientListComponent } from './routes/doctors/patient-list/patient-list.component';
-import { FeedbackComponent } from './shared/components/feedback/feedback.component';
+import { FeedbackComponent } from './routes/feedbacks/feedback-page/feedback.component';
 
 export const routes: Routes = [
   {
@@ -41,6 +41,8 @@ export const routes: Routes = [
       { path: 'past-appointment', component: ListPastAppointmentComponent },
       { path: 'past-appointment', component: ListPastAppointmentComponent },
       { path: 'patient', component: PatientListComponent },
+      {path: 'feedback', component: FeedbackComponent},
+
     ],
   },
   {
@@ -53,7 +55,6 @@ export const routes: Routes = [
       { path: 'all-doctor', component: AllDoctorComponent },
       { path: 'all-feedback', component: AllFeedbackComponent},
       { path: 'settings', component: SettingsPageComponent },
-
       
     ],
   },
@@ -67,7 +68,8 @@ export const routes: Routes = [
       {path: 'book-appointment', component: BookAppointmentComponent},
       {path: 'appointments', component: AppointmentListComponent},
       { path: 'settings', component: SettingsPageComponent },
-      {path: 'feedback', component: FeedbackComponent}
+      {path: 'feedback', component: FeedbackComponent},
+      { path: 'all-doctor', component: AllDoctorComponent }
     ]
   },
 

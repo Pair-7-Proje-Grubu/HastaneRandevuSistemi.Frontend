@@ -41,18 +41,10 @@ export class SidebarComponent implements OnInit {
 
   adminList: MenuItem[]= [
     {
-      number: '1',
-      name: 'Profilim',
-      icon: 'fa fa-user-md',
-      sublist: [],
-      link: '/admin/dashboard'
-  },
-    {
         number: '2',
         name: 'Doktorlar',
         icon: 'fa fa-user-md',
-        link: '/admin/all-doctor' ,
-        disabled:true,
+        link: 'all-doctor' ,
     },
     {
         number: '3',
@@ -70,9 +62,9 @@ export class SidebarComponent implements OnInit {
 
     {
       number: '3',
-      name: 'Geri Bildirim',
+      name: 'Geri Bildirimler',
       icon: 'fa-solid fa-comment',
-      link: 'feedbacks',
+      link: 'all-feedback',
     }, 
     {
       number: '5',
@@ -80,44 +72,36 @@ export class SidebarComponent implements OnInit {
       icon: 'fa-solid fa-gear',
       sublist: [],
       link: 'settings'
-    },
-
-    {
-      number: '9',
-      name: 'Feedback',
-      icon: 'fa-solid fa-comment',
-      sublist: [],
-      link: '/admin/all-feedback'
     }
   ];
   doctorList: MenuItem[]=[
     {
       number: '1',
-      name: 'Profilim',
-      icon: 'fa fa-user-md',
+      name: 'Çalışma Takvimi',
+      icon: 'fa fa-calendar',
       sublist: [],
-      link: '/doctor/dashboard'
-  },
+      link: 'calendar'
+    },
     {
       number: '2',
       name: 'Geçmiş Randevular',
       icon: 'fa fa-user-md',
       sublist: [],
-      link:'/doctor/past-appointment',
+      link:'past-appointment',
     },
     {
       number: '3',
       name: 'Doktorlar',
       icon: 'fa fa-user-md',
       sublist: [],
-      link:'/doctor/all-doctor',
+      link:'all-doctor',
     },
     {
       number: '4',
       name: 'Hastalarım',
       icon: 'fa fa-users',
       sublist: [],
-      link:'/doctor/patient'
+      link:'patient'
     },
     {
       number: '5',
@@ -130,15 +114,9 @@ export class SidebarComponent implements OnInit {
       number: '6',
       name: 'Geri Bildirim',
       icon: 'fa-solid fa-comment',
-      link: 'feedbacks',
+      link: 'feedback',
     }, 
-    {
-      number: '7',
-      name: 'Çalışma Takvimi',
-      icon: 'fa fa-calendar',
-      sublist: [],
-      link: '/doctor/calendar'
-    },
+
   ];
   patientList=[     
     {
@@ -157,7 +135,8 @@ export class SidebarComponent implements OnInit {
       number: '3',
       name: 'Doktorlar',
       icon: 'fa-solid fa-users',
-      disabled: true,
+      link:'all-doctor',
+
     }, 
     {
       number: '3',

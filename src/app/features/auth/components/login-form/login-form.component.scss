@@ -1,25 +1,73 @@
 html,
 body {
   height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.login-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #e6f2ff, #99ccff);
+}
+
+.login-container {
+  max-width: 400px;
+  width: 100%;
+  padding: 2rem;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0056b3;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: transparent;
+  border-bottom: none;
+  text-align: center;
+}
+
+.form-floating {
+  margin-bottom: 1rem;
+  
+  &:focus-within {
+    z-index: 2;
+  }
 }
 
 .form-signin {
-  max-width: 330px;
-  padding: 1rem;
+  input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
 }
 
-.form-signin .form-floating:focus-within {
-  z-index: 2;
-}
+.btn-primary {
+  background-color: #0056b3;
+  border-color: #0056b3;
 
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  &:hover {
+    background-color: #003d82;
+    border-color: #003d82;
+  }
 }

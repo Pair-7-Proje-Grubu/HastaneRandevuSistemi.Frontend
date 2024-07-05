@@ -23,11 +23,13 @@ export class LoginPageComponent {
   onLoginSucces() {
     const roles = this.authService.getUserRoles();
     if (roles.includes('Admin')) {
-      this.router.navigate(['/admin/dashboard']);
+      this.router.navigate(['/admin/all-doctor']);
     } else if (roles.includes('Doctor')) {
-      this.router.navigate(['/doctor/dashboard']);
+      this.router.navigate(['/doctor/calendar']);
     } else if (roles.includes('Patient')) {
-      this.router.navigate(['/patient/dashboard']);
+      this.router.navigate(['/patient/book-appointment']);
     }
+
+    
   } 
 }

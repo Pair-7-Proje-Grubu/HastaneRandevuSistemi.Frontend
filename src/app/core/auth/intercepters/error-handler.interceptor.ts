@@ -18,7 +18,9 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req: HttpRequest<any>
         if (error.status === 0) {
           errorMessage = 'Sunucu aktif değil. Lütfen daha sonra tekrar deneyiniz.';
         } else {
-          errorMessage = `Hata Kodu: ${error.status}\nMesaj: ${error.message}`;
+          // errorMessage = `Hata Kodu: ${error.status}\nMesaj: ${error.message}`;
+          errorMessage = `Hata oluştu, lütfen tekrar deneyiniz`;
+          console.log(`Hata Kodu: ${error.status}\nMesaj: ${error.message}`);
         }
       }
       snackBar.open(errorMessage, 'Close', {
