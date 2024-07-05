@@ -2,6 +2,10 @@ div{
   text-align: center;
   // margin: 100px;
 }
+.main{
+  background: linear-gradient(to right, #ffffff, #d7ebfd);
+
+}
 
 .banner-section{
   align-items: flex-end;
@@ -63,9 +67,9 @@ p{
 img{
     object-fit: cover;
     width: 100%;
-    height: 100%;
+    height: 120%;
     position: absolute;
-    top: 0%;
+    top: 9%;
     bottom: 0%;
     left: 0%;
     right: 0%;
