@@ -16,6 +16,7 @@ import { AppointmentListComponent } from './routes/patients/appointment-list/app
 import { AllFeedbackComponent } from './routes/feedbacks/all-feedback/all-feedback.component';
 import { ListPastAppointmentComponent } from './routes/doctors/list-past-appointment/list-past-appointment.component';
 import { PatientListComponent } from './routes/doctors/patient-list/patient-list.component';
+import { FeedbackComponent } from './shared/components/feedback/feedback.component';
 
 export const routes: Routes = [
   {
