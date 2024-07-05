@@ -6,7 +6,7 @@
     height: 70px;
     margin-top: .5rem;
     .nav-link {
-        color: #000 !important;
+        color: #fff !important;
       }
     
       .nav-link:hover {
@@ -33,7 +33,7 @@
 .navbar-scrolled {
     background-color: #f7f7f7; 
     margin-top: 0;
-    padding-bottom: 2rem;
+    padding-bottom: 4.5rem;
   }
 
 .navbar .navbar-toggler {
@@ -84,7 +84,7 @@
     border-radius: 50px;
     flex: none;
     padding: 11px 40px;
-    transition: all .5s;
+    transition: all .3s;
     display: inline-block;
 }
 
@@ -132,19 +132,24 @@ ul{
 }
 
 .fa-dna{
-    font-size: 2.5rem;
-    color: #e0ecde;
+    font-size: 4rem;
+    color: #425f66;
+    padding-left: 1rem;
+    padding-top: 3rem;
   }
   
-  span{
+  .logo span{
     color: #fff;
     text-transform: capitalize;
     align-items: center;
     font-family: Inter, sans-serif;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 300;
     line-height: 1.5em;
     text-decoration: none;
     transition: color .5s;
-    margin-left: .8rem;
+  }
+
+  .hrs{
+    margin-left: 4.5rem;
   }
