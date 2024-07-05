@@ -1,11 +1,15 @@
 <div class="register-page">
   <div class="register-shadow"></div>
   <div class="register-container">
-    <h2 class="text-center"><a [routerLink]="['/']" class="logo">HRS.COM</a></h2>
+    <div class="hrs-logo" style="margin-bottom: 1rem; text-align: center;">
+      <a [routerLink]="['/']">
+        <i class="fa-solid fa-dna" ></i><span>HRS.COM</span>
+      </a>
+    </div>
 
     <div class="card">
       <div class="card-header">
-        <h1 class="h3 mb-3 fw-normal">Kayıt Ol</h1>
+        <h1 class="h3 mb-3 fw-normal">Kayıt Formu</h1>
       </div>
       <div class="card-body">
         <form [formGroup]="registerFormGroup" (submit)="onFormSubmit()">

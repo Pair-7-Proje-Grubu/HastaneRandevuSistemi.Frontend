@@ -27,9 +27,7 @@ export class AppointmentListComponent {
     { 
       headerName: 'Randevu Tarihi',
       field: 'dateTime',
-      // cellRenderer: (params) => {
-      //   params.data.v
-      // }
+      cellRenderer: (data: { value: string | number | Date; }) => { return data.value ? (new Date(data.value)).toLocaleString() : '' } 
     },
     { headerName: 'Klinik', field: 'clinic' },
     { headerName: 'Konum', field: 'officeLocation' },

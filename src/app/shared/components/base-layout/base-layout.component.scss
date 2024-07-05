@@ -3,10 +3,13 @@
     flex-direction: column;
     height: 100%;
 }
-
+$start-color: #003d8f;
+$end-color: lighten($start-color, 30%);
 mat-drawer{
-    width: 260px;
-    background: #222f44;
+  width: 280px;
+  background: #003d82;
+    background: linear-gradient(to bottom, $start-color, $end-color);
+
 }
 
 mat-drawer-container{
@@ -50,7 +53,7 @@ mat-drawer-content::-webkit-scrollbar-thumb:hover {
 
 .page__box {
     min-height: 90px;
-    background: #222f44;
+    background: #003d82;
     margin: 0 -1rem;
     font-size: 23px;
 }
