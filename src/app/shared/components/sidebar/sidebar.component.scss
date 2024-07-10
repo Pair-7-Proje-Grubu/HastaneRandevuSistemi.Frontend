@@ -2,32 +2,26 @@
 {
   text-align: center;
 }
-
 /* WebKit tarayıcıları için (Chrome, Safari) */
 .side-nav-content {
     overflow-y: auto; /* Yan kaydırma çubuğunun görünmesini sağlar */
     height: 100vh; /* Yan panelin tam yüksekliğe sahip olmasını sağlar */
 }
-
 .side-nav-content::-webkit-scrollbar {
     width: 10px; /* Kaydırma çubuğunun genişliği */
 }
-
 .side-nav-content::-webkit-scrollbar-track {
     background: #1e293b; /* Kaydırma çubuğu yolu rengi */
     border-radius: 10px; /* Kenarların yuvarlatılması */
 }
-
 .side-nav-content::-webkit-scrollbar-thumb {
     background-color: #4b5563; /* Kaydırma çubuğu rengi */
     border-radius: 10px; /* Kenarların yuvarlatılması */
     border: 2px solid #1e293b; /* Kenar boşluğu ve renk */
 }
-
 .side-nav-content::-webkit-scrollbar-thumb:hover {
     background: #647286; /* Kaydırma çubuğu üzerine gelindiğinde renk */
 }
-
 /* Genel ayarlar */
 .nav-list {
     list-style: none;
@@ -38,16 +32,13 @@
     font-style:normal;
     font-size: 1rem;
 }
-
 .nav-list-item {
     padding: 10px;
 }
-
 .nav-list-item:hover {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
 }
-
 .nav-list-item a {
     text-transform: capitalize;
     text-decoration: none;
@@ -56,12 +47,10 @@
     justify-content: space-between;
     width: 100%;
 }
-
 .nav-list-item a:hover {
     color: #f0f0f0;
     text-decoration: none;
 }
-
 .nav-list-item i {
     font-size: 20px;
     height: 25px;
@@ -70,21 +59,17 @@
     text-align: center;
     line-height: 25px;
 }
-
 .sub-nav-list-item {
     padding-left: 20px;
 }
-
 .sub-nav-list-item:hover {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
 }
-
 .nav-list-item.selected {
     background-color: rgba(255, 255, 255, 0.1); 
     border-radius: 10px;
 }
-
 .nav-list-item.selected a {
     color: #f0f0f0;
 }
@@ -101,3 +86,41 @@
     opacity: 0.6;
     pointer-events: none;
   }
+
+/* Profil bölümü için stiller */
+.user-profile {
+  text-align: center;
+  padding: 20px 10px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  margin: 0 10px 20px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-info {
+  color: white;
+}
+
+.user-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.user-age {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}

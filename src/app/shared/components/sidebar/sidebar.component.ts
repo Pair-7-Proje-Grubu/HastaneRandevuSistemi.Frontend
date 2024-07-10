@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../../core/auth/services/auth.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { UsersService } from '../../../features/users/services/users.service';
 
 interface MenuItem {
   number: string;
@@ -38,6 +39,11 @@ export class SidebarComponent implements OnInit {
 
   userRoles: string[] = [];
   list: MenuItem[] = [];
+
+  // YENİ: Profil bilgileri için özellikler
+  userName: string = '';
+  userAge: number = 0;
+  userAvatarSrc: string = '';
 
   adminList: MenuItem[]= [
     {
@@ -152,62 +158,104 @@ export class SidebarComponent implements OnInit {
     }
   ];
 
-  constructor(private authService: AuthService,private route: ActivatedRoute) { }
+  constructor(
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private usersService: UsersService,
+    private cdr: ChangeDetectorRef
+  ) { }
+
   ngOnInit(): void {
-    
-      const userType = this.route.snapshot.data['role'];
-      this.userRoles = this.authService.getUserRoles();
+    const userType = this.route.snapshot.data['role'];
+    this.userRoles = this.authService.getUserRoles();
 
-      if (userType === 'Patient' && this.userRoles.includes("Patient")) {
-        this.list = this.patientList;
-      } 
-      else if (userType === 'Doctor'  && this.userRoles.includes("Doctor")) {
-        this.list = this.doctorList;
-      }
-        else if (userType === 'Admin'  && this.userRoles.includes("Admin")) {
-        this.list = this.adminList;
-      }
-  
-
-   // Seçili olan öğeleri yerel depolamadan yükleme
-  const savedSelectedItem = localStorage.getItem('selectedItem');
-  const savedSelectedSubItem = localStorage.getItem('selectedSubItem');
-
-  if (savedSelectedItem) {
-    this.selectedItem = savedSelectedItem;
-  }
-
-  if (savedSelectedSubItem) {
-    this.selectedSubItem = savedSelectedSubItem;
-    const parentItem = this.list.find(item => item.sublist && item.sublist.some(sub => sub.name === savedSelectedSubItem));
-    if (parentItem) {
-      const parentItemNumber = parentItem.number;
-      this.collapseOtherSubmenus(parentItemNumber);
-      (document.getElementById('submenu' + parentItemNumber) as HTMLElement)?.classList.add('show');
+    if (userType === 'Patient' && this.userRoles.includes("Patient")) {
+      this.list = this.patientList;
+    } 
+    else if (userType === 'Doctor'  && this.userRoles.includes("Doctor")) {
+      this.list = this.doctorList;
     }
-  } else {
-     // İlk elemanı seçili yap
-    if (this.list.length > 0 && !this.selectedItem) {
-      this.onItemClick(this.list[0].name);
+    else if (userType === 'Admin'  && this.userRoles.includes("Admin")) {
+      this.list = this.adminList;
     }
-  }
 
-  // BaseLayoutComponent'e seçili menü öğesini gönder
-  if (savedSelectedItem) {
-    this.menuSelection.emit(savedSelectedItem);
+    // Seçili olan öğeleri yerel depolamadan yükleme
+    const savedSelectedItem = localStorage.getItem('selectedItem');
+    const savedSelectedSubItem = localStorage.getItem('selectedSubItem');
+
+    if (savedSelectedItem) {
+      this.selectedItem = savedSelectedItem;
+    }
+
     if (savedSelectedSubItem) {
+      this.selectedSubItem = savedSelectedSubItem;
       const parentItem = this.list.find(item => item.sublist && item.sublist.some(sub => sub.name === savedSelectedSubItem));
       if (parentItem) {
-        this.menuSelection.emit(`${parentItem.name} -> ${savedSelectedSubItem}`);
-      } else {
-        this.menuSelection.emit(savedSelectedSubItem);
+        const parentItemNumber = parentItem.number;
+        this.collapseOtherSubmenus(parentItemNumber);
+        (document.getElementById('submenu' + parentItemNumber) as HTMLElement)?.classList.add('show');
+      }
+    } else {
+      // İlk elemanı seçili yap
+      if (this.list.length > 0 && !this.selectedItem) {
+        this.onItemClick(this.list[0].name);
       }
     }
+
+    // BaseLayoutComponent'e seçili menü öğesini gönder
+    if (savedSelectedItem) {
+      this.menuSelection.emit(savedSelectedItem);
+      if (savedSelectedSubItem) {
+        const parentItem = this.list.find(item => item.sublist && item.sublist.some(sub => sub.name === savedSelectedSubItem));
+        if (parentItem) {
+          this.menuSelection.emit(`${parentItem.name} -> ${savedSelectedSubItem}`);
+        } else {
+          this.menuSelection.emit(savedSelectedSubItem);
+        }
+      }
+    }
+
+    // YENİ: Profil bilgilerini yükle
+    this.loadUserProfile();
   }
-}
 
-  //Burdan sonraki metotlar: BaseLayouta seçilen menunun adını gönderme ve menude seçili alan için gerekli düzenlemeler.
+  // YENİ: Profil bilgilerini yükleme metodu
+  loadUserProfile(): void {
+    this.usersService.getProfile().subscribe({
+      next: (data) => {
+        this.userName = `${data.firstName} ${data.lastName}`;
+        this.userAge = this.calculateAge(new Date(data.birthDate));
+        this.userAvatarSrc = this.getAvatarSrc(data.gender);
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Profil bilgileri yüklenirken hata oluştu:', error);
+      }
+    });
+  }
 
+  // YENİ: Yaş hesaplama metodu
+  calculateAge(birthDate: Date): number {
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
+  // YENİ: Avatar
+  getAvatarSrc(gender: string): string {
+    switch (gender.toUpperCase()) {
+      case 'M':
+        return '../../../../assets/male-icon.png';
+      case 'F':
+        return '../../../../assets/female-icon.png';
+      default:
+        return '../../../../assets/admin-icon.png';
+    }
+  }
   onItemClick(itemName: string) {
     this.selectedItem = itemName;
     this.selectedSubItem = '';
@@ -246,4 +294,3 @@ export class SidebarComponent implements OnInit {
     });
   }
 }
-

@@ -8,6 +8,17 @@
     </div>
   </div>
 
+  <!-- Profil bölümü  -->
+  <div class="user-profile mb-4">
+    <div class="avatar">
+      <img [src]="userAvatarSrc" alt="User Avatar" class="rounded-circle">
+    </div>
+    <div class="user-info mt-2">
+      <h5 class="user-name mb-0">{{userName}}</h5>
+      <p class="user-age mb-0">Yaş: {{userAge}} </p>
+    </div>
+  </div>
+
   <ul class="nav flex-column nav-list">
     <li *ngFor="let item of list" class="nav-item nav-list-item" [class.selected]="isSelected(item.name)" [class.disabled]="item.disabled">
       <ng-container *ngIf="item.sublist && item.sublist.length > 0; else noSublist">
