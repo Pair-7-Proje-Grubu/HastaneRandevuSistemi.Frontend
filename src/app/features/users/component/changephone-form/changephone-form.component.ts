@@ -38,8 +38,9 @@ export class ChangephoneFormComponent {
     const userEmail = this.authService.getEmailToken();
     if (userEmail) {
       this.userService.getUserPhoneNumber(userEmail).subscribe({
-        next: (phoneNumber) => {
-          this.currentPhoneNumber = phoneNumber;
+        next: (response: any) => {
+          const parsedResponse = JSON.parse(response);
+          this.currentPhoneNumber = parsedResponse.phone; //JSON verisinden sadece telefon numarasını alma
           this.cdr.detectChanges();
         },
         error: (err) => {
