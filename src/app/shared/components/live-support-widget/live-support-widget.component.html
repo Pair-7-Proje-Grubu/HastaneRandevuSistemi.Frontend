@@ -1,9 +1,24 @@
 <div class="live-support-widget">
-  <button (click)="toggleWidget()" class="toggle-button">
+  <button class="toggle-button" (click)="toggleWidget()">
     <span class="icon">💬</span>
     {{ isOpen ? 'Canlı Desteği Kapat' : 'Canlı Destek' }}
   </button>
-  <div *ngIf="isOpen" class="widget-container">
-    <iframe [src]="liveSupportUrl" class="support-iframe"></iframe>
+
+  <div class="widget-container" *ngIf="isOpen">
+    <ng-container *ngIf="!isLoading; else loading">
+      <ng-container *ngIf="isApiAvailable; else apiUnavailable">
+        <iframe [src]="liveSupportUrl"></iframe>
+      </ng-container>
+      <ng-template #apiUnavailable>
+        <div class="error-message">
+          <p>Canlı destek hizmetimize şu anda erişilemiyor, Lütfen daha sonra tekrar deneyiniz.</p>
+        </div>
+      </ng-template>
+    </ng-container>
+    <ng-template #loading>
+      <div class="loading-message">
+        <p>Canlı destek yükleniyor...</p>
+      </div>
+    </ng-template>
   </div>
 </div>
