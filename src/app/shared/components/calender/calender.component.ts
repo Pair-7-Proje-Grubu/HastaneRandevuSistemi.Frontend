@@ -227,36 +227,36 @@ export class CalenderComponent {
     const dialogRef = this.dialog.open(AddNoworkhourPopupComponent, {
       width: '500px',
       height: '500px',
-      data: { start: selectInfo.start, end: selectInfo.end  }
+      data: { 
+        start: selectInfo.start,
+        end: selectInfo.end ? new Date(selectInfo.end.getTime() - 1) : selectInfo.start
+      }
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const calendarApi = selectInfo.view.calendar;
-        calendarApi.addEvent({
-          id: result.id,
-          // title: result.title,
-          start: result.start,
-          end: result.end,
-          // allDay: selectInfo.allDay
+        const events = Array.isArray(result) ? result : [result];
+  
+        events.forEach(event => {
+          calendarApi.addEvent({
+            id: event.id,
+            title: event.title,
+            start: new Date(event.start),
+            end: new Date(event.end),
+          });
         });
-
-        const requestBody: NoWorkHour[] = [
-          {
-            id: result.id,
-            title: result.title,
-            startDate: result.start.toISOString(),
-            endDate: result.end.toISOString()
-          }
-        ];
-        console.log(requestBody);
-
+  
+        // NoWorkHour ekleme işlemi
+        const requestBody: NoWorkHour[] = events.map(event => ({
+          id: Number(event.id),
+          title: event.title,
+          startDate: event.start,
+          endDate: event.end
+        }));
+  
         this.noWorkHourService.addNoWorkHour(requestBody).subscribe(response => {
           console.log('NoWorkHour added:', response);
-          const event = calendarApi.getEventById(result.id);
-        if (event) {
-          event.setProp('title', result.title);
-        }
         });
       }
     });

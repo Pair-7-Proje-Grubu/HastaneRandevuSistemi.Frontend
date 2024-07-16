@@ -3,6 +3,7 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Feedback } from '../models/feedback';
+import { PagedResponse } from '../../../features/pagination/models/paged-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,12 @@ export class FeedbacksService {
 
   constructor(private http: HttpClient) { }
 
-  getAllFeedbacks(): Observable<Feedback[]> {
-    return this.http.get<Feedback[]>(this.apiControllerUrl + '/GetList');
+  getAllFeedbacks(pageNumber: number, pageSize: number): Observable<PagedResponse<Feedback>> {
+    return this.http.get<PagedResponse<Feedback>>(this.apiControllerUrl + '/GetList', {
+      params: {
+        page: pageNumber.toString(),
+        pageSize: pageSize.toString(),
+      },
+    });
   }
 }
