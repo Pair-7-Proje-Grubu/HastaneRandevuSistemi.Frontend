@@ -15,11 +15,18 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { ErrorFieldComponent } from "../../../../shared/components/error-field/error-field.component";
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent,RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ButtonComponent,
+    RouterLink,
+    ErrorFieldComponent
+  ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,31 +35,40 @@ export class LoginFormComponent {
   loginFormGroup: FormGroup;
   @Output() success = new EventEmitter<void>();
 
-  constructor(formBuilder: FormBuilder, private authService: AuthService) {
-    this.loginFormGroup = formBuilder.group({
-      email: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+  propertyNames = {
+    email: 'E-posta',
+    password: 'Parola'
+  };
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) {
+    this.loginFormGroup = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  login() {
+  onFormSubmit(): void {
+    if (this.loginFormGroup.invalid) {
+      this.loginFormGroup.markAllAsTouched();
+      return;
+    }
+
+    this.login();
+  }
+
+  private login(): void {
     const loginCredentials: LoginCredentials = {
-      email: this.loginFormGroup.value.email,
-      password: this.loginFormGroup.value.password,
+      email: this.loginFormGroup.get('email')?.value,
+      password: this.loginFormGroup.get('password')?.value,
     };
+
     this.authService.login(loginCredentials).subscribe({
       complete: () => {
         this.success.emit();
       },
     });
-  }
-
-  onFormSubmit() {
-    if (this.loginFormGroup.invalid) {
-      console.error('Invalid form');
-      return;
-    }
-
-    this.login();
   }
 }

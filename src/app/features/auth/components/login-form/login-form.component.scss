@@ -1,21 +1,4 @@
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 .login-page {
-  // height: 100vh;
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
-  // background-image: url('../../../../../assets/register-img.jpg');
-  // background-repeat: no-repeat;
-  // background-size: cover;
-  // background-color: rgba(255,255,255,0.6);
-  // background-blend-mode: lighten;
-
   height: 100vh;
   display: flex;
   align-items: center;
@@ -28,60 +11,116 @@ body {
 }
 
 .login-container {
-  max-width: 600px;
   width: 100%;
-  padding: 2rem;
+  max-width: 420px;
+  padding: 15px;
+  margin: auto;
 }
 
-.logo {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #0056b3;
-  text-decoration: none;
-  display: block;
-  margin-bottom: 1rem;
+.hrs-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  
+  i {
+    font-size: 2rem;
+    color: #0056b3;
+    margin-right: 10px;
+  }
+
+  span {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0056b3;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #003d82;
+    }
+  }
 }
 
 .card {
   background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 .card-header {
   background-color: transparent;
   border-bottom: none;
   text-align: center;
+  padding: 1.5rem 1rem 0.5rem;
+
+  h1 {
+    margin-bottom: 0;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.card-body {
+  padding: 1.5rem;
 }
 
 .form-floating {
-  margin-bottom: 1rem;
-  
-  &:focus-within {
-    z-index: 2;
+  > label {
+    color: #495057;
+  }
+
+  > .form-control {
+    &:focus {
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    &:not(:placeholder-shown) {
+      ~ label {
+        color: #6c757d;
+      }
+    }
   }
 }
 
-.form-signin {
-  input[type="email"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  input[type="password"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
+.form-check-label {
+  color: #495057;
 }
 
 .btn-primary {
   background-color: #0056b3;
   border-color: #0056b3;
+  transition: all 0.3s ease;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: #003d82;
     border-color: #003d82;
+  }
+}
+
+@media (max-width: 576px) {
+  .login-container {
+    padding: 10px;
+  }
+
+  .card {
+    border-radius: 0.5rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .hrs-logo {
+    i, span {
+      font-size: 1.75rem;
+    }
+  }
+
+  .form-floating {
+    > label {
+      font-size: 0.9rem;
+    }
   }
 }
