@@ -3,6 +3,10 @@ $secondary-color: #ffffff;
 $hover-background-color: #6ccbf7;
 $hover-color: #fff;
 $shadow-color: rgba(0, 0, 0, 0.1);
+$error-background-color: #f8d7da;
+$error-text-color: #721c24;
+$loading-background-color: #e9ecef;
+$loading-text-color: #495057;
 
 .live-support-widget {
   position: fixed;
@@ -47,6 +51,7 @@ $shadow-color: rgba(0, 0, 0, 0.1);
     position: relative;
     display: flex;
     flex-direction: column;
+    background-color: $secondary-color;
 
     iframe {
       flex: 1;
@@ -54,6 +59,30 @@ $shadow-color: rgba(0, 0, 0, 0.1);
       height: 100%;
       border: none;
       overflow: auto;
+    }
+
+    .error-message, .loading-message {
+      padding: 20px;
+      text-align: center;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      p {
+        margin: 10px 0;
+      }
+    }
+
+    .error-message {
+      background-color: $error-background-color;
+      color: $error-text-color;
+    }
+
+    .loading-message {
+      background-color: $loading-background-color;
+      color: $loading-text-color;
     }
   }
 }
