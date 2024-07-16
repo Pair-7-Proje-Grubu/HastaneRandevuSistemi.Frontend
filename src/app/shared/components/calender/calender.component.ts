@@ -26,6 +26,7 @@ import { AppointmentService } from '../../../features/appointments/services/appo
 import { Clinic } from '../../../features/clinics/models/clinic';
 import trLocale from '@fullcalendar/core/locales/tr';
 
+
 @Component({
     selector: 'app-calender',
     standalone: true,
@@ -284,17 +285,19 @@ export class CalenderComponent {
           this.deleteEvent(result.id); // Event silme işlemi
           event.remove(); // Takvimden etkinliği kaldırma
         }else{
+          const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+
           const updatedEvent: NoWorkHour = {
             id: result.id,
             title: result.title,
-            startDate: result.start.toISOString(),
-            endDate: result.end.toISOString()
+            startDate: new Date(result.start.getTime() - timezoneOffset),
+            endDate: new Date(result.end.getTime() - timezoneOffset)
           };
   
           this.noWorkHourService.updateNoWorkHour(updatedEvent).subscribe(() => {
             event.setProp('title', result.title);
-            event.setStart(result.start);
-            event.setEnd(result.end);
+            event.setStart(result.start.toISOString());
+            event.setEnd(result.end.toISOString());
             this.changeDetector.detectChanges(); // ek bilgileri güncellemek için
           });
         } 

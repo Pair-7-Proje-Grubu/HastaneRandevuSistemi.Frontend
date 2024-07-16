@@ -103,7 +103,7 @@ export class AddNoworkhourPopupComponent {
     } else {
       // Tek bir saat seçilmişse
       const startDate = new Date(this.data.start);
-      const endDate = new Date(this.data.start);
+      const endDate = new Date(this.data.end);
       
       if (this.startTime) {
         const [hours, minutes] = this.startTime.split(':').map(Number);
