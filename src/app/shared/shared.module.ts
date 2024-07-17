@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -26,7 +28,9 @@ import { RouterModule, RouterOutlet } from '@angular/router';
     MatDividerModule,
     MatListModule,
     RouterOutlet,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule,
+    MatDialogModule
   ],
   exports: [BaseLayoutComponent,NavbarComponent],
 })

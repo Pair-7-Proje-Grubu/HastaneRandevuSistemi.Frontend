@@ -1,107 +1,115 @@
-import { RegisterCredentials } from '../../models/register-credentials';
-import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Output,
-  inject,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  inject
 } from '@angular/core';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import {
-  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
-  ValidationErrors,
-  ValidatorFn,
+  Validators
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ErrorFieldComponent } from "../../../../shared/components/error-field/error-field.component";
-import { ValidationService } from '../../../validation/services/validation.service';
-import { matchValidator } from '../../../validation/validator/match.validator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DynamicDialogComponent } from '../../../../shared/components/dynamic-dialog/dynamic-dialog.component';
+import { ErrorFieldComponent } from "../../../../shared/components/error-field/error-field.component";
 import { IDynamicDialogConfig } from '../../../../shared/models/dynamic-dialog/dynamic-dialog-config';
-
+import { matchValidator } from '../../../validation/validator/match.validator';
+import { AuthService } from '../../services/auth.service';
+import { RegisterCredentials } from '../../models/register-credentials';
 
 @Component({
-    selector: 'app-register-form',
-    standalone: true,
-    templateUrl: './register-form.component.html',
-    styleUrl: './register-form.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, ReactiveFormsModule, ButtonComponent, RouterLink, ErrorFieldComponent]
+  selector: 'app-register-form',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    ErrorFieldComponent,
+    MatDialogModule
+  ],
+  templateUrl: './register-form.component.html',
+  styleUrl: './register-form.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterFormComponent {
-  readonly dialog = inject(MatDialog);
   registerFormGroup: FormGroup;
   @Output() success = new EventEmitter<void>();
 
   @ViewChild('successDialogTemplate') successDialogTemplate: TemplateRef<any> | undefined;
   @ViewChild('failedDialogTemplate') failedDialogTemplate: TemplateRef<any> | undefined;
+  @ViewChild('aydinlatmaMetniDialog') aydinlatmaMetniDialog!: TemplateRef<any>;
 
-  constructor(formBuilder: FormBuilder, private authService: AuthService) {
-    this.registerFormGroup = formBuilder.group({
-      firstName: ['', [Validators.required, Validators.minLength(2),Validators.maxLength(50)]],
-      lastName: ['', [Validators.required, Validators.minLength(2),Validators.maxLength(50)]],
+  readonly dialog = inject(MatDialog);
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) {
+    this.registerFormGroup = this.formBuilder.group({
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       birthDate: ['', [Validators.required]],
       gender: ['M', [Validators.required, Validators.maxLength(1)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
       phone: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30), matchValidator('confirmPassword', true)]],
       confirmPassword: ['', [Validators.required, matchValidator('password')]],
       userAgreement: [false, Validators.requiredTrue]
     });
-
-    this.registerFormGroup.controls["password"].setValidators(
-      [Validators.required, Validators.minLength(6), Validators.maxLength(50), matchValidator('confirmPassword', true)]
-    );
-
   }
 
-  registerDialog(dialogType: any)
-  {
-    const dialogRef = this.dialog.open(DynamicDialogComponent, {
+  onFormSubmit(): void {
+    if (this.registerFormGroup.invalid) {
+      this.registerFormGroup.markAllAsTouched();
+      return;
+    }
+
+    this.register();
+  }
+
+  private register(): void {
+    const registerCredentials: RegisterCredentials = {
+      firstName: this.registerFormGroup.get('firstName')?.value,
+      lastName: this.registerFormGroup.get('lastName')?.value,
+      birthDate: this.registerFormGroup.get('birthDate')?.value,
+      gender: this.registerFormGroup.get('gender')?.value,
+      email: this.registerFormGroup.get('email')?.value,
+      phone: this.registerFormGroup.get('phone')?.value,
+      password: this.registerFormGroup.get('password')?.value,
+    };
+
+    this.authService.register(registerCredentials).subscribe({
+      next: () => {
+        this.registerDialog("success");
+        this.success.emit();
+      },
+      error: () => {
+        this.registerDialog("failed");
+      }
+    });
+  }
+
+  private registerDialog(dialogType: "success" | "failed"): void {
+    this.dialog.open(DynamicDialogComponent, {
       width: '400px',
       data: <IDynamicDialogConfig>{
-        title: 'Kayıt',
-        dialogContent: dialogType == "success"? this.successDialogTemplate : this.failedDialogTemplate,
+        title: 'Kayit',
+        dialogContent: dialogType === "success" ? this.successDialogTemplate : this.failedDialogTemplate,
         dialogType: dialogType,
         acceptButtonTitle: 'Tamam'
       }
     });
   }
 
-  register() {
-    const registerCredentials: RegisterCredentials = {
-      firstName: this.registerFormGroup.value.firstName,
-      lastName: this.registerFormGroup.value.lastName,
-      birthDate: this.registerFormGroup.value.birthDate,
-      gender: this.registerFormGroup.value.gender,
-      email: this.registerFormGroup.value.email,
-      phone: this.registerFormGroup.value.phone,
-      password: this.registerFormGroup.value.password,
-    };
-    this.authService.register(registerCredentials).subscribe({
-      complete: () => {
-        this.success.emit();
-      },
-    });
-  }
-
-  onFormSubmit() {
-    if (this.registerFormGroup.invalid) {
-      console.error('Invalid form');
-      this.registerDialog("failed");
-      return;
-    }
-
-    this.register();
-    this.registerDialog("success");
+  openAydinlatmaMetni(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dialog.open(this.aydinlatmaMetniDialog);
   }
 }

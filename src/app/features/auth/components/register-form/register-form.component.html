@@ -1,94 +1,111 @@
 <div class="register-page">
-  <div class="register-shadow"></div>
   <div class="register-container">
-    <div class="hrs-logo" style="margin-bottom: 1rem; text-align: center;">
-      <a [routerLink]="['/']">
-        <i class="fa-solid fa-dna" ></i><span>HRS.COM</span>
-      </a>
+    <div class="hrs-logo">
+      <i class="fa-solid fa-dna"></i>
+      <span>HRS.COM</span>
     </div>
 
     <div class="card">
       <div class="card-header">
-        <h1 class="h3 mb-3 fw-normal">Kayıt Formu</h1>
+        <h1 id="kayıt-formu" class="h3 mb-2 fw-bold">Kayıt Ol</h1>
       </div>
+
       <div class="card-body">
-        <form [formGroup]="registerFormGroup" (submit)="onFormSubmit()">
-          <div class="input-group">
-            <div class="form-floating">
-              <input type="text" class="form-control" id="firstname" autocomplete="given-name" formControlName="firstName" placeholder="First Name" required>
-              <label for="firstname">Ad</label>
-              <app-error-field [control]="registerFormGroup.controls['firstName']" propertyName="Ad"></app-error-field>
-            </div>
-            
-            <div class="form-floating">
-              <input type="text" class="form-control" id="lastname" autocomplete="family-name" formControlName="lastName" placeholder="Last Name">
-              <label for="lastname">Soyad</label>
-              <app-error-field [control]="registerFormGroup.controls['lastName']" propertyName="Soyad"></app-error-field>
-            </div>
+        <form [formGroup]="registerFormGroup" (ngSubmit)="onFormSubmit()" class="form-signup">
+          <div class="form-floating mb-1">
+            <input type="text" class="form-control form-control-sm" id="firstName" formControlName="firstName" placeholder=" ">
+            <label for="firstName">Ad</label>
+            <app-error-field [control]="registerFormGroup.get('firstName')!" [propertyName]="'Ad'"></app-error-field>
           </div>
 
-          <div class="form-floating">
-            <input type="date" class="form-control" id="birthdate" autocomplete="bday" formControlName="birthDate" placeholder="Birth Date">
-            <label for="birthdate">Doğum Tarihi</label>
-            <app-error-field [control]="registerFormGroup.controls['birthDate']" propertyName="Doğum Tarihi"></app-error-field>
+          <div class="form-floating mb-1">
+            <input type="text" class="form-control form-control-sm" id="lastName" formControlName="lastName" placeholder=" ">
+            <label for="lastName">Soyad</label>
+            <app-error-field [control]="registerFormGroup.get('lastName')!" [propertyName]="'Soyad'"></app-error-field>
           </div>
 
-          <div class="input-group mb-3" autocomplete="sex">
+          <div class="form-floating mb-1 position-relative">
+            <input type="date" class="form-control form-control-sm pe-5" id="birthDate" formControlName="birthDate" placeholder="GG.AA.YYYY">
+            <label for="birthDate">Doğum Tarihi</label>
+            <i class="bi bi-calendar3 position-absolute top-50 end-0 translate-middle-y me-3"></i>
+            <app-error-field [control]="registerFormGroup.get('birthDate')!" [propertyName]="'Doğum Tarihi'"></app-error-field>
+          </div>
+
+          <div class="gender-group mb-1 text-center">
             <label class="gender-label">Cinsiyet:</label>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" id="male" value="M" type="radio" formControlName="gender" name="gender">
-              <label class="form-check-label" for="male">Erkek</label>
+              <input class="form-check-input" type="radio" id="genderM" value="M" formControlName="gender">
+              <label class="form-check-label" for="genderM">Erkek</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" id="female" value="F" type="radio" formControlName="gender" name="gender">
-              <label class="form-check-label" for="female">Kadın</label>
+              <input class="form-check-input" type="radio" id="genderF" value="F" formControlName="gender">
+              <label class="form-check-label" for="genderF">Kadın</label>
             </div>
+            <app-error-field [control]="registerFormGroup.get('gender')!" [propertyName]="'Cinsiyet'"></app-error-field>
           </div>
 
-          <div class="form-floating">
-            <input type="email" class="form-control" autocomplete="email" id="email" formControlName="email" placeholder="name@example.com">
-            <label for="email">E-Posta</label>
-            <app-error-field [control]="registerFormGroup.controls['email']" propertyName="E-posta"></app-error-field>
+          <div class="form-floating mb-1">
+            <input type="email" class="form-control form-control-sm" id="email" formControlName="email" placeholder=" ">
+            <label for="email">E-posta</label>
+            <app-error-field [control]="registerFormGroup.get('email')!" [propertyName]="'E-posta'"></app-error-field>
           </div>
 
-          <div class="form-floating">
-            <input type="text" class="form-control" id="phone" autocomplete="tel" formControlName="phone" placeholder="Phone">
+          <div class="form-floating mb-1">
+            <input type="tel" class="form-control form-control-sm" id="phone" formControlName="phone" placeholder=" ">
             <label for="phone">Telefon Numarası</label>
-            <app-error-field [control]="registerFormGroup.controls['phone']" propertyName="Telefon Numarası"></app-error-field>
+            <app-error-field [control]="registerFormGroup.get('phone')!" [propertyName]="'Telefon Numarası'"></app-error-field>
           </div>
 
-          <div class="form-floating">
-            <input type="password" autocomplete="new-password" class="form-control" id="password" formControlName="password" placeholder="Password">
+          <div class="form-floating mb-1">
+            <input type="password" class="form-control form-control-sm" id="password" formControlName="password" placeholder=" ">
             <label for="password">Parola</label>
-            <app-error-field [control]="registerFormGroup.controls['password']" propertyName="Parola"></app-error-field>
-          </div>
-          
-          <div class="form-floating">
-            <input type="password" autocomplete="new-password" class="form-control" id="confirmPassword" formControlName="confirmPassword" placeholder="Password">
-            <label for="confirmPassword">Parola Tekrarı</label>
-            <app-error-field [control]="registerFormGroup.controls['confirmPassword']" propertyName="Parola"></app-error-field>
-          </div>
-        
-          <div class="form-check text-start my-3">
-            <input class="form-check-input" type="checkbox" formControlName="userAgreement" value="useragreement" id="useragreement">
-            <label class="form-check-label" for="useragreement">
-              Aydınlatma Metni'ni okudum, anladım.
-            </label>
-            <app-error-field [control]="registerFormGroup.controls['userAgreement']" propertyName="Kullanıcı Sözleşmesi"></app-error-field>
+            <app-error-field [control]="registerFormGroup.get('password')!" [propertyName]="'Parola'"></app-error-field>
           </div>
 
-          <button class="btn btn-primary w-100 py-2" type="submit">Kayıt Oluştur</button>
+          <div class="form-floating mb-1">
+            <input type="password" class="form-control form-control-sm" id="confirmPassword" formControlName="confirmPassword" placeholder=" ">
+            <label for="confirmPassword">Parola Tekrarı</label>
+            <app-error-field [control]="registerFormGroup.get('confirmPassword')!" [propertyName]="'Parola Tekrarı'"></app-error-field>
+          </div>
+
+          <div class="form-check text-start mb-1">
+            <input class="form-check-input" type="checkbox" id="userAgreement" formControlName="userAgreement">
+            <label class="form-check-label" for="userAgreement">
+              <span (click)="openAydinlatmaMetni($event)" class="clickable-link">Aydınlatma Metni</span>'ni okudum, anladım.
+            </label>
+            <app-error-field [control]="registerFormGroup.get('userAgreement')!" [propertyName]="'Kullanıcı Sözleşmesi'"></app-error-field>
+          </div>
+
+          <button class="btn btn-primary w-100 py-1" type="submit" [disabled]="registerFormGroup.invalid">Kayıt Ol</button>
         </form>
+
+        <p class="mt-1 mb-0 text-center">
+          <a [routerLink]="['/auth/login']" class="text-decoration-none">Hesabınız var mı? Giriş yapın!</a>
+        </p>
       </div>
     </div>
   </div>
 </div>
 
 <ng-template #successDialogTemplate>
-  <h4><b>Başarılı!</b></h4>
+  <h4 class="text-success">Başarılı!</h4>
   <p>Başarıyla kayıt olundu.</p>
 </ng-template>
+
 <ng-template #failedDialogTemplate>
-  <h4><b>Hata!</b></h4>
-  <p class="important">Kayıt esnasında bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.</p>
+  <h4 class="text-danger">Hata!</h4>
+  <p>Kayıt esnasında bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.</p>
+</ng-template>
+
+<ng-template #aydinlatmaMetniDialog>
+  <h2 mat-dialog-title>Aydınlatma Metni</h2>
+  <mat-dialog-content>
+    <p>
+      Bu, örnek bir aydınlatma metnidir. Gerçek uygulamada, bu metin kişisel verilerin işlenmesi, 
+      kullanım amaçları, saklama süreleri ve kullanıcı hakları gibi konuları içermelidir.
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Kapat</button>
+  </mat-dialog-actions>
 </ng-template>
