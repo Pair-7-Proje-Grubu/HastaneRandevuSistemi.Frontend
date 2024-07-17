@@ -1,19 +1,6 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Output,
-  TemplateRef,
-  ViewChild,
-  inject
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import {ChangeDetectionStrategy,Component,EventEmitter,Output,TemplateRef,ViewChild,inject} from '@angular/core';
+import {FormBuilder,FormGroup,ReactiveFormsModule,Validators} from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DynamicDialogComponent } from '../../../../shared/components/dynamic-dialog/dynamic-dialog.component';

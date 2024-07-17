@@ -73,7 +73,7 @@
             <label class="form-check-label" for="userAgreement">
               <span (click)="openAydinlatmaMetni($event)" class="clickable-link">Aydınlatma Metni</span>'ni okudum, anladım.
             </label>
-            <app-error-field [control]="registerFormGroup.get('userAgreement')!" [propertyName]="'Kullanıcı Sözleşmesi'"></app-error-field>
+            <app-error-field [control]="registerFormGroup.get('userAgreement')!" [propertyName]="'Aydınlatma Metni'"></app-error-field>
           </div>
 
           <button class="btn btn-primary w-100 py-1" type="submit" [disabled]="registerFormGroup.invalid">Kayıt Ol</button>
