@@ -30,7 +30,7 @@ export class ListPastAppointmentComponent implements OnInit {
         totalRecords: 0
     };
     pageNumber: number = 1;
-    pageSize: number = 15;
+    pageSize: number = 14;
     totalRecords: number = 0
 
     defaultColDef: ColDef = {

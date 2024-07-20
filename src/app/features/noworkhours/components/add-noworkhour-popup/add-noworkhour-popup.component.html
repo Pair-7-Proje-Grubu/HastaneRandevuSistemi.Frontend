@@ -42,7 +42,20 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Vazgeç</button>
-  <button mat-button *ngIf="isNewEvent" (click)="addTime()">Ekle</button>
-  <button mat-button (click)="onSaveClick()">{{ isNewEvent ? 'Kaydet' : 'Güncelle' }}</button>
-  <button mat-button color="warn" (click)="onDeleteClick()" *ngIf="!isNewEvent">Sil</button>
+  
+  <ng-container *ngIf="!isCancelledAppointment">
+    <button mat-button *ngIf="isNewEvent" (click)="addTime()">Ekle</button>
+    
+    <button mat-button (click)="onSaveClick()" *ngIf="!isAppointment">
+      {{ isNewEvent ? 'Kaydet' : 'Güncelle' }}
+    </button>
+    
+    <button mat-button color="warn" (click)="onDeleteClick()" *ngIf="!isNewEvent && !isAppointment">
+      Sil
+    </button>
+
+    <button mat-button color="warn" (click)="onCancelClick()" *ngIf="isAppointment && !isCancelledAppointment">
+      Randevuyu İptal Et
+    </button>
+  </ng-container>
 </div>
