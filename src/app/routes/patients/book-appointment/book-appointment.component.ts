@@ -237,8 +237,7 @@ export class BookAppointmentComponent{
             },
           }
         ); 
-
-        },
+      },
 
         error: () => {
           this.dialog.open(DynamicDialogComponent, {

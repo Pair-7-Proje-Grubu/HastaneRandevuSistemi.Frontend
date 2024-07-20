@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>Ofis Konumu Güncelle</h1>
+<button class="close-button" (click)="onNoClick()">×</button>
+<div mat-dialog-content>
+  <form [formGroup]="officeLocationForm">
+    <mat-form-field>
+      <mat-label>Doktor Adı</mat-label>
+      <input matInput formControlName="fullName" readonly>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Blok</mat-label>
+      <mat-select formControlName="blockId" (selectionChange)="loadFloors()">
+        <mat-option *ngFor="let block of blocks" [value]="block.id">{{ block.no }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Kat</mat-label>
+      <mat-select formControlName="floorId" (selectionChange)="loadRooms()">
+        <mat-option *ngFor="let floor of floors" [value]="floor.id">{{ floor.no }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Oda</mat-label>
+      <mat-select formControlName="roomId">
+        <mat-option *ngFor="let room of rooms" [value]="room.id">{{ room.no }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" (click)="onSubmit()">Güncelle</button>
+      </div>
+  </form>
+</div>

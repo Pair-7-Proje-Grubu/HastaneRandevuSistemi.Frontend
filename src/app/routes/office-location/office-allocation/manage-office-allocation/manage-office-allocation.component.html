@@ -1,0 +1,17 @@
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <p>Ofis Tahsis Listesi</p>
+    <div></div>
+      <div style="display: flex; ">
+        <button class="icon-button"><i class="fa fa-refresh" (click)="getDoctorOfficeLocationList()"></i></button>
+      </div>
+  </div>
+    
+  <ag-grid-angular
+    class="ag-theme-quartz"
+    style="height: 100vh;"
+    [rowData]="officeLocationList"
+    [columnDefs]="colDefs"
+    rowSelection="multiple"
+    [defaultColDef]="defaultColDef"
+    [components]="frameworkComponents">
+  </ag-grid-angular>
