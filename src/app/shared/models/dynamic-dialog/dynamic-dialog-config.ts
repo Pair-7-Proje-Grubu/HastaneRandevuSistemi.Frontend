@@ -5,5 +5,5 @@ export interface IDynamicDialogConfig {
   acceptButtonTitle?: string;
   declineButtonTitle?: string;
   dialogContent: TemplateRef<any>;
-  dialogType?: 'success' | 'failed' | 'information';
+  dialogType?: 'success' | 'failed' | 'information' | 'warning';
 }

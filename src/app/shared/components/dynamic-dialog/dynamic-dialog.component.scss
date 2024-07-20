@@ -1,7 +1,6 @@
 
 ::ng-deep{
 
- 
   .success {
     --dialog-icon-color: #4caf50;
   }
@@ -12,6 +11,10 @@
 
   .information {
     --dialog-icon-color: #2196f3;
+  }
+
+  .warning {
+    --dialog-icon-color: #ffcc00;
   }
 
   .dialog-container{
@@ -50,6 +53,13 @@
       background-color: #FFE9E9; /* Açık kırmızı arka plan rengi */
       border: 1px solid #FFB2B2; /* Açık kırmızı kenar çizgisi */
       color: #9e0910; /* Metin rengi */
+      font-weight: bold; /* Kalın yazı */
+    }
+
+    .warning {
+      background-color: #f8eab4; /* Açık kırmızı arka plan rengi */
+      border: 1px solid #fae695; /* Açık kırmızı kenar çizgisi */
+      color: black; /* Metin rengi */
       font-weight: bold; /* Kalın yazı */
     }
   }
