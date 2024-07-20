@@ -1,0 +1,56 @@
+<div class="dialog-container">
+  <h2>Oda Düzenle</h2>
+  
+  <button class="close-button" (click)="closeDialog()">×</button>
+
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Oda No Ekle
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field class="full-width">
+        <mat-label>Oda No</mat-label>
+        <input matInput [(ngModel)]="roomNo">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="addRoom()">Ekle</button>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+         Oda No Güncelle
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field class="full-width">
+        <mat-label>Oda No</mat-label>
+        <mat-select [(ngModel)]="roomIdToUpdate">
+          <mat-option *ngFor="let room of rooms" [value]="room.id">{{ room.no }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Yeni Oda No</mat-label>
+        <input matInput [(ngModel)]="roomNoToUpdate">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="updateRoom()">Güncelle</button>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Oda No Sil
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field class="full-width">
+        <mat-label>Oda No</mat-label>
+        <mat-select [(ngModel)]="roomIdToDelete">
+          <mat-option *ngFor="let room of rooms" [value]="room.id">{{ room.no }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="warn" (click)="deleteRoom()">Sil</button>
+    </mat-expansion-panel>
+  </mat-accordion>
+ <div></div>
+  <button mat-button (click)="closeDialog()">İptal</button>
+</div>

@@ -1,0 +1,56 @@
+<div class="dialog-container">
+    <h2>{{ title }}</h2>
+    
+    <button class="close-button" (click)="closeDialog()">×</button>
+  
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ data.type | titlecase }} No Ekle
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field class="full-width">
+          <mat-label>{{ data.type | titlecase }} No</mat-label>
+          <input matInput [(ngModel)]="newItem">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="addItem()">Ekle</button>
+      </mat-expansion-panel>
+  
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ data.type | titlecase }} No Güncelle
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field class="full-width">
+          <mat-label>{{ data.type | titlecase }} No</mat-label>
+          <mat-select [(ngModel)]="itemIdToUpdate">
+            <mat-option *ngFor="let item of items" [value]="item.id">{{ item.no }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Yeni {{ data.type | titlecase }} No</mat-label>
+          <input matInput [(ngModel)]="itemNoToUpdate">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="updateItem()">Güncelle</button>
+      </mat-expansion-panel>
+  
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ data.type | titlecase }} No Sil
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field class="full-width">
+          <mat-label>{{ data.type | titlecase }} No</mat-label>
+          <mat-select [(ngModel)]="itemIdToDelete">
+            <mat-option *ngFor="let item of items" [value]="item.id">{{ item.no }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="warn" (click)="deleteItem()">Sil</button>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <div></div>
+  <button mat-raised-button color="warn" (click)="closeDialog()">İptal</button>
+  </div>

@@ -1,0 +1,40 @@
+<div class="manage-office-location">
+  <h2>Ofis Konumu Güncelle</h2>
+
+  <button class="close-button" (click)="onNoClick()">×</button>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="block">Blok: </label>
+      <mat-form-field class="full-width">
+        <mat-label>Blok No</mat-label>
+        <mat-select [(ngModel)]="selectedBlockId" name="blockId">
+          <mat-option *ngFor="let block of blocks" [value]="block.id">{{ block.no }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <label for="floor">Kat:</label>
+      <mat-form-field class="full-width">
+        <mat-label>Kat No</mat-label>
+        <mat-select [(ngModel)]="selectedFloorId" name="floorId">
+          <mat-option *ngFor="let floor of floors" [value]="floor.id">{{ floor.no }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <label for="room">Oda:</label>
+      <mat-form-field class="full-width">
+        <mat-label>Oda No</mat-label>
+        <mat-select [(ngModel)]="selectedRoomId" name="roomId">
+          <mat-option *ngFor="let room of rooms" [value]="room.id">{{ room.no }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-raised-button color="primary" type="submit">Güncelle</button>
+    </div>
+  </form>
+</div>

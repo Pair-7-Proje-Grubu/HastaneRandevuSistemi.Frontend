@@ -74,11 +74,21 @@ export class SidebarComponent implements OnInit {
     }, 
     {
       number: '5',
+      name: 'Bina Yönetimi',
+      icon: 'fa-solid fa-gear',
+      sublist: [
+        { name: 'Ofis Konumu', link: 'officeLocation' },
+        { name: 'Ofis Tahsis', link: '#' },
+      ]
+    },
+    {
+      number: '6',
       name: 'Ayarlar',
       icon: 'fa-solid fa-gear',
       sublist: [],
       link: 'settings'
-    }
+    },
+    
   ];
   doctorList: MenuItem[]=[
     {

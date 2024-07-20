@@ -1,0 +1,49 @@
+.btn-edit {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: blue;
+  margin-right: 5px;
+}
+
+.btn-delete {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: red;
+}
+button {
+  margin: 0 3px;
+}
+
+button.mat-icon-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.icon-button {
+  background-color: #edf2f9;
+  border: none;
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 25px;
+  color: #344767;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
+  margin-right: 20px;
+  min-width: 50px;
+}
+
+.icon-button:hover {
+  background-color: #d1d9e6;
+}
+
+.icon-button i {
+  font-size: 20px;
+  color: #344767;
+}

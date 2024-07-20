@@ -17,6 +17,7 @@ import { AllFeedbackComponent } from './routes/feedbacks/all-feedback/all-feedba
 import { ListPastAppointmentComponent } from './routes/doctors/list-past-appointment/list-past-appointment.component';
 import { PatientListComponent } from './routes/doctors/patient-list/patient-list.component';
 import { FeedbackComponent } from './routes/feedbacks/feedback-page/feedback.component';
+import { ManageOfficeLocationComponent } from './routes/office-location/manage-office-location/manage-office-location.component';
 
 export const routes: Routes = [
   {
@@ -55,6 +56,7 @@ export const routes: Routes = [
       { path: 'all-doctor', component: AllDoctorComponent },
       { path: 'all-feedback', component: AllFeedbackComponent},
       { path: 'settings', component: SettingsPageComponent },
+      { path: 'officeLocation', component: ManageOfficeLocationComponent },
       
     ],
   },
