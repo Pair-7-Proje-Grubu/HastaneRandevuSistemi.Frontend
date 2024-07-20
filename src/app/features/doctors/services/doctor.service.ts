@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { GetByClinicIdDoctorResponse } from '../models/get-by-clinic-id-doctor-response';
 import { GetListDoctorResponse } from '../models/get-list-doctor-response';
 import { PagedResponse } from '../../pagination/models/paged-response';
+import { GetListDoctorOfficeLocationResponse } from '../models/get-list-doctor-officeLocation';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,17 @@ export class DoctorService {
         pageSize: pageSize.toString(),
       },
     });
+  }
+
+  getDoctorListOfficeLocation(): Observable<GetListDoctorOfficeLocationResponse[]> {
+    return this.http.get<GetListDoctorOfficeLocationResponse[]>(`${this.apiControllerUrl}/GetListDoctorOfficeLocation`, {}) 
+    .pipe(
+      tap(data => console.log('data:', data)),
+
+    );
+  }
+  updateDoctorOfficeLocation(officeLocation: any): Observable<void> {
+    return this.http.post<void>(`${this.apiControllerUrl}/UpdateDoctorOfficeLocation`, officeLocation);
   }
 
 }
