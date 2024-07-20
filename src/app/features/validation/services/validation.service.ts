@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 
 export class ValidationService {
   errorMessages = {
-    required: "{propertyName} alanı boş veya hatalı olamaz.",
+    required: "{propertyName} alanı boş bırakılamaz.",
     minlength: "{propertyName} en az {requiredLength} karakter uzunluğunda olmalıdır.",
       maxlength: "{propertyName} alanı {requiredLength} karakterden az olmalıdır.",
       email: "Lütfen geçerli e-posta adresini giriniz.",

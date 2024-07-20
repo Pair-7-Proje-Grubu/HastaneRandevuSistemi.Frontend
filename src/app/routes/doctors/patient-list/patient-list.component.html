@@ -2,8 +2,14 @@
 <ag-grid-angular
     class="ag-theme-quartz"
     style="height: 100vh;"
-    [rowData]="patientList"
+    [rowData]="patientList.data || []"
     [columnDefs]="colDefs"
     rowSelection="multiple"
     [defaultColDef]="defaultColDef"/>
-    />
+<app-pagination
+    [page]="pageNumber"
+    [pageSize]="pageSize"
+    [totalItemCount]="patientList.totalRecords"
+    (pageChange)="onPageChange($event)"
+>
+</app-pagination>    

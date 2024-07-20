@@ -34,6 +34,7 @@ export class AddNoworkhourPopupComponent {
   endTime: string = '';
   isNewEvent: boolean = false;
   selectedTimes: { date: Date, startTime: string, endTime: string }[] = [];
+  currentTitle: string = '';
 
   constructor(
     private noworkhourService: NoworkhoursService,
@@ -60,14 +61,16 @@ export class AddNoworkhourPopupComponent {
   addTime(): void {
     if (this.startTime && this.endTime && this.data.start && this.data.end) {
       const newTime = {
-        date: this.data.start,
+        date: new Date(this.data.start),
         startTime: this.startTime,
-        endTime: this.endTime
+        endTime: this.endTime,
+        title: this.currentTitle // Her zaman aralığı için ayrı bir başlık
       };
       this.selectedTimes.push(newTime);
       // Yeni saat ekledikten sonra giriş alanlarını temizle
       this.startTime = '';
       this.endTime = '';
+      this.currentTitle = ''; // Başlığı da temizle
     }
   }
 
@@ -79,19 +82,45 @@ export class AddNoworkhourPopupComponent {
   }
 
   onSaveClick(): void {
-    if (this.startTime) {
-      const [hours, minutes] = this.startTime.split(':').map(Number);
-      this.data.start!.setHours(hours);
-      this.data.start!.setMinutes(minutes);
+    if (this.selectedTimes.length > 0) {
+      // Birden fazla saat seçilmişse
+      const events = this.selectedTimes.map(time => {
+        const startDate = new Date(this.data.start);
+        const endDate = new Date(this.data.start);
+        const [startHours, startMinutes] = time.startTime.split(':').map(Number);
+        const [endHours, endMinutes] = time.endTime.split(':').map(Number);
+        
+        startDate.setHours(startHours, startMinutes, 0, 0);
+        endDate.setHours(endHours, endMinutes, 0, 0);
+  
+        return {
+          title: this.data.title,
+          start: startDate.toISOString(),
+          end: endDate.toISOString()
+        };
+      });
+      this.dialogRef.close(events);
+    } else {
+      // Tek bir saat seçilmişse
+      const startDate = new Date(this.data.start);
+      const endDate = new Date(this.data.end);
+      
+      if (this.startTime) {
+        const [hours, minutes] = this.startTime.split(':').map(Number);
+        startDate.setHours(hours, minutes, 0, 0);
+      }
+      if (this.endTime) {
+        const [hours, minutes] = this.endTime.split(':').map(Number);
+        endDate.setHours(hours, minutes, 0, 0);
+      }
+      
+      this.dialogRef.close({
+        id: this.data.id,
+        title: this.data.title,
+        start: startDate,
+        end: endDate
+      });
     }
-    if (this.endTime) {
-      const [hours, minutes] = this.endTime.split(':').map(Number);
-      this.data.end!.setHours(hours);
-      this.data.end!.setMinutes(minutes);
-    }
-    // this.noworkhourService.saveEvent(this.data.start!, this.data.end!);
-    console.log('Saving Event Data:', this.data);
-    this.dialogRef.close(this.data);
   }
 
   private formatTime(date: Date | null): string {

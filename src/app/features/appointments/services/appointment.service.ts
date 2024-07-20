@@ -8,6 +8,7 @@ import { BookAppointmentRequest } from '../models/book-appointment-request';
 import { ListAppointmentByDoctorResponse } from '../models/list-appointment-by-doctor-reponse';
 import { GetListAppointmentResponse } from '../models/get-list-appointment-response';
 import { GetListPatientByDoctorResponse } from '../models/get-list-patient-by-doctor-response';
+import { PagedResponse } from '../../pagination/models/paged-response';
 
 @Injectable({
   providedIn: 'root'
@@ -25,12 +26,22 @@ export class AppointmentService {
     return this.http.post<ListAppointmentByDoctorResponse[]>(`${this.apiControllerUrl}/GetListActiveAppointmentByDoctor`, {});
   }
 
-  getListPastAppointmentByDoctor(): Observable<ListAppointmentByDoctorResponse[]> {
-    return this.http.post<ListAppointmentByDoctorResponse[]>(`${this.apiControllerUrl}/GetListPastAppointmentByDoctor`, {});
+  getListPastAppointmentByDoctor(pageNumber: number, pageSize: number): Observable<PagedResponse<ListAppointmentByDoctorResponse>> {
+    return this.http.get<PagedResponse<ListAppointmentByDoctorResponse>>(`${this.apiControllerUrl}/GetListPastAppointmentByDoctor`, {
+      params: {
+        page: pageNumber.toString(),
+        pageSize: pageSize.toString(),
+      },
+    });
   }
 
-  getListPatientByDoctor(): Observable<GetListPatientByDoctorResponse[]> {
-    return this.http.post<GetListPatientByDoctorResponse[]>(`${this.apiControllerUrl}/GetListPatientByDoctor`, {});
+  getListPatientByDoctor(pageNumber: number, pageSize: number): Observable<PagedResponse<GetListPatientByDoctorResponse>> {
+    return this.http.get<PagedResponse<GetListPatientByDoctorResponse>>(`${this.apiControllerUrl}/GetListPatientByDoctor`, {
+      params: {
+        page: pageNumber.toString(),
+        pageSize: pageSize.toString(),
+      },
+    });
   }
 
   getListAppointment(): Observable<GetListAppointmentResponse[]> {
