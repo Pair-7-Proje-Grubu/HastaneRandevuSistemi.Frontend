@@ -1,0 +1,11 @@
+<div class="button-group">
+  <ng-container *ngFor="let button of params.buttons; let i = index">
+      <button mat-icon-button
+      *ngIf="predicate(button, params.data)"
+      class="ag-grid-custom-button"
+      [color]="button.color"
+      (click)="onClick(i, $event)">
+        <i [ngClass]="[button.icon]"></i>
+      </button>
+  </ng-container>
+</div>

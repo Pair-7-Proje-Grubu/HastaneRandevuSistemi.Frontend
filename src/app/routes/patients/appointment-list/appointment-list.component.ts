@@ -11,6 +11,7 @@ import { DynamicDialogComponent } from '../../../shared/components/dynamic-dialo
 import { MatDialog } from '@angular/material/dialog';
 import { CancelAppointmentByPatientRequest } from '../../../features/appointments/models/cancel-appointment-by-patient-request';
 import { fontWeight } from 'html2canvas/dist/types/css/property-descriptors/font-weight';
+import { ButtonRendererGroupComponent } from '../../../shared/components/button-group-renderer/button-group-renderer.component';
 
 
 @Component({
@@ -35,7 +36,7 @@ export class AppointmentListComponent {
       cellRenderer: (params: any) => {
         switch (params.value) {
           case "Scheduled":
-            return  "Bekleniyor";
+            return  "Aktif Randevu";
   
           case "CancelByDoctor":
             return "İptal Edildi (Doktor)";
@@ -54,7 +55,7 @@ export class AppointmentListComponent {
       cellStyle: (params: any) => {
         switch (params.value) {
           case "Scheduled":
-            return  { color: '#228B22', fontWeight: 'bold'};
+            return  { color: '#65ac18', fontWeight: 'bold'};
   
           case "CancelByDoctor":
             return { color: 'red', fontWeight: 'bold'};
@@ -81,18 +82,38 @@ export class AppointmentListComponent {
     { headerName: 'Klinik', field: 'clinic' },
     { headerName: 'Konum', field: 'officeLocation' },
     {
-      headerName: 'İptal',
-      cellRenderer: ButtonRendererComponent,
+      field: 'actions',
+      headerName: 'İşlemler',
+      cellRenderer: ButtonRendererGroupComponent,
       cellRendererParams: {
-        onClick: this.onCancelClick.bind(this),
-        label: 'İptal',
-        icon: 'event_busy',
-        predicate: (appointment: any) => appointment.status === "Scheduled"
+        buttons:  [
+          {
+            onClick: this.onCancelClick.bind(this),
+            label: 'İptal Et',
+            icon: 'fa-solid fa-calendar-xmark fa-1x',
+            color: 'warn',
+            predicate: (appointment: any) => appointment.status === "Scheduled"
+          },
+        ]
       },
-      resizable: false,
+      maxWidth: 100,
       filter:false,
-      maxWidth: 80
-    }
+      resizable:false,
+    },
+    // {
+      
+    //   headerName: 'İptal',
+    //   cellRenderer: ButtonRendererComponent,
+    //   cellRendererParams: {
+    //     onClick: this.onCancelClick.bind(this),
+    //     label: 'İptal',
+    //     icon: 'event_busy',
+    //     predicate: (appointment: any) => appointment.status === "Scheduled"
+    //   },
+    //   resizable: false,
+    //   filter:false,
+    //   maxWidth: 80
+    // }
   ];
 
 
@@ -117,6 +138,9 @@ export class AppointmentListComponent {
     const selectedRows = this.doctorGridApi.getSelectedRows();
     if (selectedRows.length > 0){}
   }
+  onEditClick(params: any) {
+    console.log('Randevu edit istendi:', params.rowData.id);
+  }
 
   onCancelClick(params: any) {
     console.log('Randevu iptal istendi:', params.rowData.id);
@@ -127,7 +151,7 @@ export class AppointmentListComponent {
         dialogContent: this.cancelAppointmentDialogTemplate,
         acceptButtonTitle: 'Onayla',
         declineButtonTitle: 'Vazgeç',
-        dialogType: 'warning'
+        dialogType: 'failed'
       },
     });
 
