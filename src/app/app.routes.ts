@@ -19,6 +19,7 @@ import { PatientListComponent } from './routes/doctors/patient-list/patient-list
 import { FeedbackComponent } from './routes/feedbacks/feedback-page/feedback.component';
 import { ManageOfficeLocationComponent } from './routes/office-location/manage-office-location/manage-office-location.component';
 import { ManageOfficeAllocationComponent } from './routes/office-location/office-allocation/manage-office-allocation/manage-office-allocation.component';
+import { AllPatientComponent } from './routes/patients/all-patient/all-patient.component';
 
 export const routes: Routes = [
   {
@@ -59,7 +60,7 @@ export const routes: Routes = [
       { path: 'settings', component: SettingsPageComponent },
       { path: 'officeLocation', component: ManageOfficeLocationComponent },
       { path: 'doctorOfficeAllocation', component: ManageOfficeAllocationComponent },
-      
+      { path: 'all-patient', component: AllPatientComponent }
     ],
   },
   { 
@@ -69,11 +70,11 @@ export const routes: Routes = [
     data: { role: 'Patient' }, // Bu rotaya erişmek için gerekli rol
     children: [
       { path: 'dashboard', component: DashboardPageComponent },
-      {path: 'book-appointment', component: BookAppointmentComponent},
-      {path: 'appointments', component: AppointmentListComponent},
+      { path: 'book-appointment', component: BookAppointmentComponent},
+      { path: 'appointments', component: AppointmentListComponent},
       { path: 'settings', component: SettingsPageComponent },
-      {path: 'feedback', component: FeedbackComponent},
-      { path: 'all-doctor', component: AllDoctorComponent }
+      { path: 'feedback', component: FeedbackComponent},
+      { path: 'all-doctor', component: AllDoctorComponent },
     ]
   },
 

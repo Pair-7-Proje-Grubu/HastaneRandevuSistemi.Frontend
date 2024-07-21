@@ -55,7 +55,7 @@ export class AppointmentService {
   }
 
   cancelAppointmentFromDoctor(id: number): Observable<CancelAppointmentFromDoctorResponse> {
-    return this.http.put<CancelAppointmentFromDoctorResponse>(`${this.apiControllerUrl}/CancelByDoctor/${id}`, null);
+    return this.http.put<CancelAppointmentFromDoctorResponse>(`${this.apiControllerUrl}/${id}`, null);
   }
 
   cancelAppointmentByPatient(appointmentId : number): Observable<any> {
