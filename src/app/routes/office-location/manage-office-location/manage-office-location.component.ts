@@ -7,7 +7,6 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { OfficeLocationService } from '../../../features/officelocation/services/officeLocation.service';
 import { GetListOfficeLocationResponse } from '../../../features/officelocation/models/get-list-officeLocation-response';
 import { MatIconModule } from '@angular/material/icon';
-import { ActionCellRendererComponent } from '../action-cell-renderer/action-cell-renderer.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddOfficeLocationComponent } from '../add-office-location/add-office-location.component';
 import { ButtonRendererGroupComponent } from '../../../shared/components/button-group-renderer/button-group-renderer.component';
@@ -61,10 +60,6 @@ export class ManageOfficeLocationComponent implements OnInit {
       resizable:false,
     },
   ];
-
-  frameworkComponents = {
-    actionCellRenderer: ActionCellRendererComponent
-  };
 
   constructor(private officeLocationService: OfficeLocationService, private cdr: ChangeDetectorRef,private dialog: MatDialog) { }
 

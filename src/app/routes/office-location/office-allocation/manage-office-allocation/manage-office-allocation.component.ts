@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DoctorService } from '../../../../features/doctors/services/doctor.service';
 import { GetListDoctorOfficeLocationResponse } from '../../../../features/doctors/models/get-list-doctor-officeLocation';
-import { ActionCellRendererAllocationComponent } from '../action-cell-renderer-allocation/action-cell-renderer-allocation.component';
 import { ButtonRendererGroupComponent } from '../../../../shared/components/button-group-renderer/button-group-renderer.component';
 import { UpdateDoctorOfficeDialogComponent } from '../update-doctor-office-dialog/update-doctor-office-dialog.component';
 
@@ -58,9 +57,6 @@ export class ManageOfficeAllocationComponent implements OnInit {
     },
   ];
 
-  frameworkComponents = {
-    actionCellRenderer: ActionCellRendererAllocationComponent
-  };
 
   constructor(private doctorService: DoctorService, private cdr: ChangeDetectorRef,private dialog: MatDialog) { }
 
