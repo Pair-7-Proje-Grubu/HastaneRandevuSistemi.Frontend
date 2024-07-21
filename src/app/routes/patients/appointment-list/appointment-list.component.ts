@@ -133,12 +133,8 @@ export class AppointmentListComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) return;
-      const cancelAppointmentByPatientRequest: CancelAppointmentByPatientRequest = {
-        appointmentId: params.rowData.id
-      };
-
-
-      this.appointmentService.cancelAppointmentByPatient(cancelAppointmentByPatientRequest).subscribe({
+      
+      this.appointmentService.cancelAppointmentByPatient(params.rowData.id).subscribe({
         next: () => {
           
           console.log(params.rowData.id + " silindi!" );
