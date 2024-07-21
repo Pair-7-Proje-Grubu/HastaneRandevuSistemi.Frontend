@@ -12,12 +12,18 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,MatIconModule, MatButtonModule
   ],
   template: `
-  @if (params.predicate === undefined || params.predicate(params.data))
+  <!-- @if (params.predicate === undefined || params.predicate(params.data))
   {
     <button mat-icon-button color="warn" (click)="onClick($event)" class="full-height">
       <mat-icon>{{params.icon}}</mat-icon>
     </button>
-  }
+  } -->
+  <button mat-icon-button color="primary" (click)="onEditClick($event)">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" (click)="onDeleteClick($event)">
+      <mat-icon>delete</mat-icon>
+    </button>
   `,
   styleUrl: './button-renderer.component.scss',
 })
@@ -39,6 +45,26 @@ export class ButtonRendererComponent implements ICellRendererAngularComp {
         rowData: this.params.node.data
       }
       this.params.onClick(params);
+    }
+  }
+
+  onEditClick(event: Event) {
+    if (this.params.onEdit instanceof Function) {
+      const params = {
+        event: event,
+        rowData: this.params.node.data
+      }
+      this.params.onEdit(params);
+    }
+  }
+
+  onDeleteClick(event: Event) {
+    if (this.params.onDelete instanceof Function) {
+      const params = {
+        event: event,
+        rowData: this.params.node.data
+      }
+      this.params.onDelete(params);
     }
   }
 }
