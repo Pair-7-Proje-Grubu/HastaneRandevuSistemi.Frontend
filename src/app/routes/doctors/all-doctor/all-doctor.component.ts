@@ -114,7 +114,7 @@ export class AllDoctorComponent implements OnInit {
   }
 
   onEditClick(params: any) {
-    console.log('Düzenlenecek doktorun ID\'si:', params.rowData);
+    console.log('Düzenlenecek doktorun ID\'si:', params.data);
     
     forkJoin({
       clinics: this.clinicService.getAllClinics(),
@@ -130,28 +130,28 @@ export class AllDoctorComponent implements OnInit {
         width: '400px',
         data: {
           title: 'Doktor Düzenle',
-          id: params.rowData.id,
+          id: params.data.id,
           fields: [
-            { name: 'id', value: params.rowData.id, hidden: true },
-            { name: 'firstName', label: 'Adı', value: params.rowData.firstName, placeholder: 'Adı girin', readonly: true },
-            { name: 'lastName', label: 'Soyadı', value: params.rowData.lastName, placeholder: 'Soyadı girin', readonly: true },
+            { name: 'id', value: params.data.id, hidden: true },
+            { name: 'firstName', label: 'Adı', value: params.data.firstName, placeholder: 'Adı girin', readonly: true },
+            { name: 'lastName', label: 'Soyadı', value: params.data.lastName, placeholder: 'Soyadı girin', readonly: true },
             { 
               name: 'clinicId', 
               label: 'Klinik', 
-              value: params.rowData.clinicName, 
+              value: params.data.clinicName, 
               type: 'dropdown',
               options: clinicOptions,
-              selectedValue: params.rowData.clicnicName
+              selectedValue: params.data.clicnicName
             },
             { 
               name: 'titleId', 
               label: 'Unvan', 
-              value: params.rowData.title, 
+              value: params.data.title, 
               type: 'dropdown',
               options: titleOptions,
-              selectedValue: params.rowData.title
+              selectedValue: params.data.title
             },
-            { name: 'phone', label: 'Telefon', value: params.rowData.phone, placeholder: 'Telefon numarasını girin', readonly: true },
+            { name: 'phone', label: 'Telefon', value: params.data.phone, placeholder: 'Telefon numarasını girin', readonly: true },
           ]
         }
       });
@@ -200,7 +200,7 @@ export class AllDoctorComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.confirmDelete === 'ONAYLA') {
-        console.log('Silinecek doktor:', params.rowData);
+        console.log('Silinecek doktor:', params.data);
         // Burada silme işlemini gerçekleştirmek için gerekli API çağrısını yapabilirsiniz
         // Ardından, güncel listeyi almak için getDoctorList() metodunu çağırabilirsiniz
         this.getDoctorList();

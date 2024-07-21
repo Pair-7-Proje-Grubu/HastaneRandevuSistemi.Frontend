@@ -7,7 +7,7 @@ import { PagedResponse } from '../../../features/pagination/models/paged-respons
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 
-import { ButtonRendererComponent } from '../../../shared/components/button-renderer/button-renderer.component';
+import { ButtonRendererGroupComponent } from '../../../shared/components/button-group-renderer/button-group-renderer.component';
 import { GenericPopupComponent } from '../../../shared/components/generic-popup/generic-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,7 +20,7 @@ import { PatientsService } from '../../../features/patients/services/patients.se
     standalone: true,
     imports: [
         CommonModule, AgGridModule, AgGridAngular,
-        PaginationComponent, ButtonRendererComponent, GenericPopupComponent
+        PaginationComponent, GenericPopupComponent, ButtonRendererGroupComponent
     ],
     templateUrl: './all-patient.component.html',
     styleUrl: './all-patient.component.scss',
@@ -72,12 +72,26 @@ export class AllPatientComponent implements OnInit {
         { headerName: 'Yakını', field: 'emergencyContact' },
         {
             headerName: 'İşlemler',
-            cellRenderer: ButtonRendererComponent,
+            cellRenderer: ButtonRendererGroupComponent,
             cellRendererParams: {
-              onEdit: this.onEditClick.bind(this),
-              onDelete: this.onDeleteClick.bind(this),
-            },
-            width: 120 
+                buttons:  [
+                  {
+                    onClick: this.onEditClick.bind(this),
+                    label: 'Düzenle',
+                    icon: 'fa-solid fa-edit fa-1x',
+                    color: 'primary',
+                  },
+                  {
+                    onClick: this.onDeleteClick.bind(this),
+                    label: 'Sil',
+                    icon: 'fa-solid fa-user-xmark fa-1x',
+                    color: 'warn',
+                  }
+                ]
+              },
+              maxWidth: 200,
+              filter:false,
+              resizable:false,
           }
     ];
 
@@ -110,24 +124,24 @@ export class AllPatientComponent implements OnInit {
     }
 
     onEditClick(params: any) {
-        const formattedBirthDate = params.rowData.birthDate ? new Date(params.rowData.birthDate).toLocaleDateString('tr-TR') : '';
-        const displayGender = this.mapGender(params.rowData.gender);
-        const displayBloodType = this.mapBloodType(params.rowData.bloodType);
+        const formattedBirthDate = params.data.birthDate ? new Date(params.data.birthDate).toLocaleDateString('tr-TR') : '';
+        const displayGender = this.mapGender(params.data.gender);
+        const displayBloodType = this.mapBloodType(params.data.bloodType);
 
         const dialogRef = this.dialog.open(GenericPopupComponent, {
           width: '400px',
           data: {
             title: 'Hasta Düzenle',
             fields: [
-              { name: 'id', value: params.rowData.id, hidden: true },
-              { name: 'email', label: 'Email', value: params.rowData.email, placeholder: 'Email girin' },
-              { name: 'firstName', label: 'Adı', value: params.rowData.firstName, placeholder: 'Adı girin' },
-              { name: 'lastName', label: 'Soyadı', value: params.rowData.lastName, placeholder: 'Soyadı girin' },
+              { name: 'id', value: params.data.id, hidden: true },
+              { name: 'email', label: 'Email', value: params.data.email, placeholder: 'Email girin' },
+              { name: 'firstName', label: 'Adı', value: params.data.firstName, placeholder: 'Adı girin' },
+              { name: 'lastName', label: 'Soyadı', value: params.data.lastName, placeholder: 'Soyadı girin' },
               { name: 'birthDate', label: 'Doğum Tarihi', value: formattedBirthDate, placeholder: 'Doğum tarihini girin (GG.AA.YYYY)' },
               { 
                 name: 'gender', 
                 label: 'Cinsiyet', 
-                value: params.rowData.gender, // Backend değerini kullan
+                value: params.data.gender, // Backend değerini kullan
                 type: 'dropdown',
                 options: [
                   { value: 'F', label: 'Kadın' },
@@ -138,7 +152,7 @@ export class AllPatientComponent implements OnInit {
               { 
                 name: 'bloodType', 
                 label: 'Kan Grubu', 
-                value: params.rowData.bloodType,
+                value: params.data.bloodType,
                 type: 'dropdown',
                 options: [
                   { value: 1, label: 'A Rh+' },
@@ -151,7 +165,7 @@ export class AllPatientComponent implements OnInit {
                   { value: 8, label: '0 Rh-' }
                 ]
               },
-              { name: 'emergencyContact', label: 'Yakını', value: params.rowData.emergencyContact, placeholder: 'Yakını iletişim numarasını girin' },
+              { name: 'emergencyContact', label: 'Yakını', value: params.data.emergencyContact, placeholder: 'Yakını iletişim numarasını girin' },
             ]
           }
         });
@@ -202,7 +216,7 @@ export class AllPatientComponent implements OnInit {
     
         // dialogRef.afterClosed().subscribe(result => {
         //   if (result && result.confirmDelete === 'ONAYLA') {
-        //     this.doctorService.deleteDoctor(params.rowData.id).subscribe(
+        //     this.doctorService.deleteDoctor(params.data.id).subscribe(
         //       () => {
         //         this.snackBar.open('Doktor başarıyla silindi', 'Kapat', { duration: 3000 });
         //         this.getDoctorList();
