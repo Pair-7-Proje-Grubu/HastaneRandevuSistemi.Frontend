@@ -5,7 +5,6 @@ import { ColDef } from 'ag-grid-community';
 import { forkJoin } from 'rxjs';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { PagedResponse } from '../../../features/pagination/models/paged-response';
-import { ButtonRendererComponent } from '../../../shared/components/button-renderer/button-renderer.component';
 import { AuthService } from '../../../core/auth/services/auth.service';
 import { GenericPopupComponent } from '../../../shared/components/generic-popup/generic-popup.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -17,12 +16,13 @@ import { DoctorService } from '../../../features/doctors/services/doctor.service
 import { ClinicsService } from '../../../features/clinics/services/clinics.service';
 import { TitlesService } from '../../../features/titles/models/titles.service';
 import { MatDialog } from '@angular/material/dialog';
+import { ButtonRendererGroupComponent } from '../../../shared/components/button-group-renderer/button-group-renderer.component';
 
 @Component({
   selector: 'app-all-doctor',
   standalone: true,
   imports: [
-    CommonModule, AgGridModule, AgGridAngular, PaginationComponent, ButtonRendererComponent, GenericPopupComponent
+    CommonModule, AgGridModule, AgGridAngular, PaginationComponent, GenericPopupComponent
   ],
   templateUrl: './all-doctor.component.html',
   styleUrl: './all-doctor.component.scss',
@@ -54,14 +54,29 @@ export class AllDoctorComponent implements OnInit {
     { headerName: 'Unvan', field: 'title' },
     { headerName: 'Telefon', field: 'phone' },
     {
+      field: 'actions',
       headerName: 'İşlemler',
-      cellRenderer: ButtonRendererComponent,
+      cellRenderer: ButtonRendererGroupComponent,
       cellRendererParams: {
-        onEdit: this.onEditClick.bind(this),
-        onDelete: this.onDeleteClick.bind(this),
+        buttons:  [
+          {
+            onClick: this.onEditClick.bind(this),
+            label: 'Düzenle',
+            icon: 'fa-solid fa-edit fa-1x',
+            color: 'primary',
+          },
+          {
+            onClick: this.onDeleteClick.bind(this),
+            label: 'Sil',
+            icon: 'fa-solid fa-user-xmark fa-1x',
+            color: 'warn',
+          }
+        ]
       },
-      width: 120 
-    }
+      maxWidth: 200,
+      filter:false,
+      resizable:false,
+    },
   ];
 
   colDefsWithoutButtons: ColDef[] = this.colDefs.slice(0, 5); // Sadece ilk 5 sütun

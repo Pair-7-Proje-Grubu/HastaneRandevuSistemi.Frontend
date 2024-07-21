@@ -62,6 +62,8 @@ export class EditOfficeLocationDialogComponent implements OnInit {
   }
 
   loadBlocks(): void {
+
+    console.log(this.data);
     this.blockService.getBlocks().subscribe(
       (data: GetListBlockResponse[]) => {
         this.blocks = data;
@@ -109,6 +111,7 @@ export class EditOfficeLocationDialogComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log("id" + this.data.id);
     const updatedOfficeLocation = {
       id: this.data.id,
       blockId: this.selectedBlockId,

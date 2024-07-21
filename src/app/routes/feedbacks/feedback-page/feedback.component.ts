@@ -41,14 +41,21 @@ export class FeedbackComponent {
     
   }
 
+  private resetForm(form: NgForm): void {
+    form.resetForm();
+    this.feedback = { userMail: '', userFeedback: '' };
+  }
+
   onSubmit(feedbackForm: NgForm) {
     this.http.post('https://localhost:7027/api/feedback/add', this.feedback)
       .subscribe(response => {
         console.log('Geri bildirim başarıyla gönderildi. Teşekkür ederiz.', response);
         this.feedbackDialog("success");
+        this.resetForm(feedbackForm);
       }, error => {
         console.error('Geri bildirim gönderilirken hata oluştu.', error);
         this.feedbackDialog("failed");
+        this.resetForm(feedbackForm);
       });
   }
 }

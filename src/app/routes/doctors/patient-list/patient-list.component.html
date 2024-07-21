@@ -5,7 +5,8 @@
     [rowData]="patientList.data || []"
     [columnDefs]="colDefs"
     rowSelection="multiple"
-    [defaultColDef]="defaultColDef"/>
+    [defaultColDef]="defaultColDef"
+    suppressCellFocus/>
 <app-pagination
     [page]="pageNumber"
     [pageSize]="pageSize"

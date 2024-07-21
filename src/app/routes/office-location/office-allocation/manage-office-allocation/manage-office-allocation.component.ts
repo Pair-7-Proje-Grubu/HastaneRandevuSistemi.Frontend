@@ -10,6 +10,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DoctorService } from '../../../../features/doctors/services/doctor.service';
 import { GetListDoctorOfficeLocationResponse } from '../../../../features/doctors/models/get-list-doctor-officeLocation';
 import { ActionCellRendererAllocationComponent } from '../action-cell-renderer-allocation/action-cell-renderer-allocation.component';
+import { ButtonRendererGroupComponent } from '../../../../shared/components/button-group-renderer/button-group-renderer.component';
+import { UpdateDoctorOfficeDialogComponent } from '../update-doctor-office-dialog/update-doctor-office-dialog.component';
 
 
 @Component({
@@ -37,11 +39,23 @@ export class ManageOfficeAllocationComponent implements OnInit {
     { headerName: 'Kat No', field: 'floorNo', flex: 1 },
     { headerName: 'Oda No', field: 'roomNo', flex: 1 },
     {
-      headerName: 'Düzenle',
-      cellRenderer: 'actionCellRenderer',
-      filter: false, // Filtreleme devre dışı bırakıldı
-      maxWidth: 100 // Sütun genişliği daraltıldı
-    }
+      field: 'actions',
+      headerName: 'İşlemler',
+      cellRenderer: ButtonRendererGroupComponent,
+      cellRendererParams: {
+        buttons:  [
+          {
+            onClick: this.onEdit.bind(this),
+            label: 'Düzenle',
+            icon: 'fa-solid fa-edit fa-1x',
+            color: 'primary',
+          }
+        ]
+      },
+      maxWidth: 100,
+      filter:false,
+      resizable:false,
+    },
   ];
 
   frameworkComponents = {
@@ -61,6 +75,22 @@ export class ManageOfficeAllocationComponent implements OnInit {
         this.cdr.detectChanges();
       }
     );
+  }
+
+  onEdit(params: any) {
+    const dialogRef = this.dialog.open(UpdateDoctorOfficeDialogComponent, {
+      width: '405px',
+      height: '463px',
+      data: params.data
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Güncellenmiş veri:', result);
+        this.getDoctorOfficeLocationList();
+        this.cdr.detectChanges();
+      }
+    });
   }
 }
 
