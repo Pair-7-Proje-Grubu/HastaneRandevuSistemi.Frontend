@@ -32,11 +32,14 @@ export class AppointmentListComponent {
 
   appointmentCols: ColDef[] = [
     { headerName: 'Durum',width: 200, maxWidth: 200, resizable:false, suppressAutoSize:false, field: 'status', 
+      
       cellRenderer: (params: any) => {
         switch (params.value) {
           case "Scheduled":
-            return  "Aktif Randevu";
-  
+            if (new Date(params.data.dateTime) < new Date())
+              return  "Geçmiş Randevu";
+            else 
+              return  "Aktif Randevu";
           case "CancelByDoctor":
             return "İptal Edildi (Doktor)";
   
@@ -53,9 +56,13 @@ export class AppointmentListComponent {
   
       cellStyle: (params: any) => {
         switch (params.value) {
+
           case "Scheduled":
-            return  { color: '#65ac18', fontWeight: 'bold'};
-  
+            if (new Date(params.data.dateTime) < new Date())
+              return  { color: 'orange', fontWeight: 'bold'};
+            else 
+              return  { color: '#65ac18', fontWeight: 'bold'};
+
           case "CancelByDoctor":
             return { color: 'red', fontWeight: 'bold'};
   
@@ -91,7 +98,7 @@ export class AppointmentListComponent {
             label: 'İptal Et',
             icon: 'fa-solid fa-calendar-xmark fa-1x',
             color: 'warn',
-            predicate: (appointment: any) => appointment.status === "Scheduled"
+            predicate: (appointment: any) => appointment.status === "Scheduled" && (new Date(appointment.dateTime) > new Date())
           },
         ]
       },
