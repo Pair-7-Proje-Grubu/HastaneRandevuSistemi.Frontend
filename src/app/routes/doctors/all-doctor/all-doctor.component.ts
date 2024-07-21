@@ -4,19 +4,19 @@ import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { PagedResponse } from '../../../features/pagination/models/paged-response';
-import { ButtonRendererComponent } from '../../../shared/components/button-renderer/button-renderer.component';
 import { AuthService } from '../../../core/auth/services/auth.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 
 import { GetListDoctorResponse } from '../../../features/doctors/models/get-list-doctor-response';
 import { DoctorService } from '../../../features/doctors/services/doctor.service';
+import { ButtonRendererGroupComponent } from '../../../shared/components/button-group-renderer/button-group-renderer.component';
 
 @Component({
   selector: 'app-all-doctor',
   standalone: true,
   imports: [
-    CommonModule, AgGridModule, AgGridAngular, PaginationComponent, ButtonRendererComponent
+    CommonModule, AgGridModule, AgGridAngular, PaginationComponent
   ],
   templateUrl: './all-doctor.component.html',
   styleUrl: './all-doctor.component.scss',
@@ -47,14 +47,29 @@ export class AllDoctorComponent implements OnInit {
     { headerName: 'Unvan', field: 'title' },
     { headerName: 'Telefon', field: 'phone' },
     {
+      field: 'actions',
       headerName: 'İşlemler',
-      cellRenderer: ButtonRendererComponent,
+      cellRenderer: ButtonRendererGroupComponent,
       cellRendererParams: {
-        onEdit: this.onEditClick.bind(this),
-        onDelete: this.onDeleteClick.bind(this),
+        buttons:  [
+          {
+            onClick: this.onEditClick.bind(this),
+            label: 'Düzenle',
+            icon: 'fa-solid fa-edit fa-1x',
+            color: 'primary',
+          },
+          {
+            onClick: this.onDeleteClick.bind(this),
+            label: 'Sil',
+            icon: 'fa-solid fa-user-xmark fa-1x',
+            color: 'warn',
+          }
+        ]
       },
-      width: 120 // Genişliği iki butona uygun şekilde ayarlayın
-    }
+      maxWidth: 200,
+      filter:false,
+      resizable:false,
+    },
   ];
 
   colDefsWithoutButtons: ColDef[] = this.colDefs.slice(0, 5); // Sadece ilk 5 sütun
@@ -83,12 +98,12 @@ export class AllDoctorComponent implements OnInit {
   }
 
   onEditClick(params: any) {
-    console.log('Edit clicked for:', params.rowData);
+    console.log('Edit clicked for:', params.data);
     // Düzenleme mantığınızı buraya ekleyin
   }
 
   onDeleteClick(params: any) {
-    console.log('Delete clicked for:', params.rowData);
+    console.log('Delete clicked for:', params.data);
     // Silme mantığınızı buraya ekleyin
   }
 }

@@ -16,7 +16,8 @@
     (selectionChanged)="onSelectionChangedClinic()"
     [rowData]="clinicRows"
     [columnDefs]="clinicCols"
-    [defaultColDef]="defaultColDef"/>
+    [defaultColDef]="defaultColDef"
+    suppressCellFocus/>
   </div>
   </mat-tab>
 
@@ -36,7 +37,8 @@
     (selectionChanged)="onSelectionChangedDoctor()"
     [rowData]="doctorRows"
     [columnDefs]="doctorCols"
-    [defaultColDef]="defaultColDef"/>
+    [defaultColDef]="defaultColDef"
+    suppressCellFocus/>
   </mat-tab>
 
 

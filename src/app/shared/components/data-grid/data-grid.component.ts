@@ -22,8 +22,8 @@ import { Clinic } from '../../../features/clinics/models/clinic';
     [pagination]="pagination"
     [paginationPageSize]="paginationPageSize"
     [paginationPageSizeSelector]="paginationPageSizeSelector"
-    [defaultColDef]="defaultColDef"/>
-    />
+    [defaultColDef]="defaultColDef"
+    suppressCellFocus/>
   `,
   styleUrl: './data-grid.component.scss'
 })

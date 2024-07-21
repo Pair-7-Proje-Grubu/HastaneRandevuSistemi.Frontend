@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActionCellRendererComponent } from '../action-cell-renderer/action-cell-renderer.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddOfficeLocationComponent } from '../add-office-location/add-office-location.component';
+import { ButtonRendererGroupComponent } from '../../../shared/components/button-group-renderer/button-group-renderer.component';
+import { EditOfficeLocationDialogComponent } from '../edit-office-location-dialog/edit-office-location-dialog.component';
 
 @Component({
   selector: 'app-manage-office-location',
@@ -35,11 +37,29 @@ export class ManageOfficeLocationComponent implements OnInit {
     { headerName: 'Kat No', field: 'floorNo', flex: 1 },
     { headerName: 'Oda No', field: 'roomNo', flex: 1 },
     {
-      headerName: 'Düzenle',
-      cellRenderer: 'actionCellRenderer',
-      filter: false, // Filtreleme devre dışı bırakıldı
-      maxWidth: 130 // Sütun genişliği daraltıldı
-    }
+      field: 'actions',
+      headerName: 'İşlemler',
+      cellRenderer: ButtonRendererGroupComponent,
+      cellRendererParams: {
+        buttons:  [
+          {
+            onClick: this.onEdit.bind(this),
+            label: 'Düzenle',
+            icon: 'fa-solid fa-edit fa-1x',
+            color: 'primary',
+          },
+          {
+            onClick: this.onDelete.bind(this),
+            label: 'Sil',
+            icon: 'fa-solid fa-building-circle-xmark fa-1x',
+            color: 'warn',
+          }
+        ]
+      },
+      maxWidth: 200 ,
+      filter:false,
+      resizable:false,
+    },
   ];
 
   frameworkComponents = {
@@ -79,5 +99,36 @@ export class ManageOfficeLocationComponent implements OnInit {
     });
 
   };
+
+
+
+
+  onEdit(params: any) {
+    console.log(params);
+    const dialogRef = this.dialog.open(EditOfficeLocationDialogComponent, {
+      width: '405px',
+      height: '463px',
+      data: params.data
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        console.log('Güncellenmiş veri:', result);
+        this.getOfficeLocationList();
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  onDelete(params : any) {
+    if (confirm(`Silme işlemini gerçekleştirmek istediğinize emin misiniz?`)) {
+      console.log("ben bastım");
+      this.officeLocationService.deleteOfficeLocation(params.data.id).subscribe(() => {
+        this.getOfficeLocationList();
+      });
+    }
+  }
+
+  
 }
 

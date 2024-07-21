@@ -44,7 +44,7 @@ export class ButtonRendererGroupComponent implements ICellRendererAngularComp {
     if (typeof this.params.buttons[index].onClick === 'function') {
       this.params.buttons[index].onClick({
         event,
-        rowData: this.params.data
+        data: this.params.data
       });
     }
   }

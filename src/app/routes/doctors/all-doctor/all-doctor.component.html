@@ -5,7 +5,8 @@
     [rowData]="doctorList.data"
     [columnDefs]="isAllDoctorAdminPanel ? colDefs : colDefsWithoutButtons"
     rowSelection="multiple"
-    [defaultColDef]="defaultColDef"/>
+    [defaultColDef]="defaultColDef"
+    suppressCellFocus/>
 <app-pagination
     [page]="pageNumber"
     [pageSize]="pageSize"

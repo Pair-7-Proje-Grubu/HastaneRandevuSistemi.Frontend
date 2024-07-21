@@ -5,7 +5,6 @@ import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 import { ColDef, GridApi,GridReadyEvent,ICellRendererParams,GridOptions } from 'ag-grid-community';
 import { AppointmentService } from '../../../features/appointments/services/appointment.service';
 import { GetListAppointmentResponse } from '../../../features/appointments/models/get-list-appointment-response';
-import { ButtonRendererComponent } from '../../../shared/components/button-renderer/button-renderer.component';
 import { IDynamicDialogConfig } from '../../../shared/models/dynamic-dialog/dynamic-dialog-config';
 import { DynamicDialogComponent } from '../../../shared/components/dynamic-dialog/dynamic-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -139,11 +138,11 @@ export class AppointmentListComponent {
     if (selectedRows.length > 0){}
   }
   onEditClick(params: any) {
-    console.log('Randevu edit istendi:', params.rowData.id);
+    console.log('Randevu edit istendi:', params.data.id);
   }
 
   onCancelClick(params: any) {
-    console.log('Randevu iptal istendi:', params.rowData.id);
+    console.log('Randevu iptal istendi:', params.data.id);
     const dialogRef = this.dialog.open(DynamicDialogComponent, {
       width: '500px',
       data: <IDynamicDialogConfig>{
@@ -158,11 +157,10 @@ export class AppointmentListComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) return;
       
-      this.appointmentService.cancelAppointmentByPatient(params.rowData.id).subscribe({
+      this.appointmentService.cancelAppointmentByPatient(params.data.id).subscribe({
         next: () => {
           
-          console.log(params.rowData.id + " silindi!" );
-          const index = this.appointmentRows.findIndex(appointment => appointment.id === params.rowData.id);
+          const index = this.appointmentRows.findIndex(appointment => appointment.id === params.data.id);
           if (index !== -1) {
             this.appointmentRows[index].status = "CancelByPatient";
             this.appointmentRows = [...this.appointmentRows]; // Angular change detection için
@@ -171,7 +169,7 @@ export class AppointmentListComponent {
       },
 
         error: () => {
-          console.log("başarısız iptal etme işlemi");
+          console.log("İptal etme işlemi başarısız oldu!");
         }
       });
     });
