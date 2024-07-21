@@ -9,6 +9,7 @@ import { ListAppointmentByDoctorResponse } from '../models/list-appointment-by-d
 import { GetListAppointmentResponse } from '../models/get-list-appointment-response';
 import { GetListPatientByDoctorResponse } from '../models/get-list-patient-by-doctor-response';
 import { PagedResponse } from '../../pagination/models/paged-response';
+import { CancelAppointmentByPatientRequest } from '../models/cancel-appointment-by-patient-request';
 
 @Injectable({
   providedIn: 'root'
@@ -50,5 +51,9 @@ export class AppointmentService {
 
   bookAvailableAppointment(requestBody:BookAppointmentRequest): Observable<any> {
     return this.http.post(`${this.apiControllerUrl}/Book`,requestBody);
+  }
+
+  cancelAppointmentByPatient(requestBody:CancelAppointmentByPatientRequest): Observable<any> {
+    return this.http.post(`${this.apiControllerUrl}/CancelByPatient`,requestBody);
   }
 }

@@ -9,6 +9,8 @@ import { ButtonRendererComponent } from '../../../shared/components/button-rende
 import { IDynamicDialogConfig } from '../../../shared/models/dynamic-dialog/dynamic-dialog-config';
 import { DynamicDialogComponent } from '../../../shared/components/dynamic-dialog/dynamic-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CancelAppointmentByPatientRequest } from '../../../features/appointments/models/cancel-appointment-by-patient-request';
+import { fontWeight } from 'html2canvas/dist/types/css/property-descriptors/font-weight';
 
 
 @Component({
@@ -29,10 +31,51 @@ export class AppointmentListComponent {
   
 
   appointmentCols: ColDef[] = [
+    { headerName: 'Durum',width: 200, maxWidth: 200, resizable:false, suppressAutoSize:false, field: 'status', 
+      cellRenderer: (params: any) => {
+        switch (params.value) {
+          case "Scheduled":
+            return  "Bekleniyor";
+  
+          case "CancelByDoctor":
+            return "İptal Edildi (Doktor)";
+  
+          case "CancelByPatient":
+            return "İptal Edildi (Hasta)";
+  
+          case "Completed":
+            return "Tamamlandı";
+  
+          default:
+            return params.value; // Eşleşme yoksa orijinal değeri göster
+        }
+      },
+  
+      cellStyle: (params: any) => {
+        switch (params.value) {
+          case "Scheduled":
+            return  { color: '#228B22', fontWeight: 'bold'};
+  
+          case "CancelByDoctor":
+            return { color: 'red', fontWeight: 'bold'};
+  
+          case "CancelByPatient":
+            return { color: 'red' , fontWeight: 'bold'};
+  
+          case "Completed":
+            return { color: 'dodgerblue' , fontWeight: 'bold'};
+  
+          default:
+            return params.value; // Eşleşme yoksa orijinal değeri göster
+        }
+      }
+  
+      },
     { headerName: 'Doktor', field: 'doctor'},
+
     { 
       headerName: 'Randevu Tarihi',
-      field: 'dateTime',
+      field: 'dateTime',  
       cellRenderer: (data: { value: string | number | Date; }) => { return data.value ? (new Date(data.value)).toLocaleString() : '' } 
     },
     { headerName: 'Klinik', field: 'clinic' },
@@ -44,7 +87,7 @@ export class AppointmentListComponent {
         onClick: this.onCancelClick.bind(this),
         label: 'İptal',
         icon: 'event_busy',
-        predicate: (data: any) => data.cancelStatus === "NoCancel"
+        predicate: (appointment: any) => appointment.status === "Scheduled"
       },
       resizable: false,
       filter:false,
@@ -62,6 +105,7 @@ export class AppointmentListComponent {
 
     this.appointmentService.getListAppointment().subscribe(
       (data: GetListAppointmentResponse[]) => {
+        console.log(data);
         this.appointmentRows = data;
         this.cdr.detectChanges();
       }
@@ -74,8 +118,8 @@ export class AppointmentListComponent {
     if (selectedRows.length > 0){}
   }
 
-  onCancelClick(appointment: GetListAppointmentResponse) {
-    console.log('Randevu iptal istendi:', appointment);
+  onCancelClick(params: any) {
+    console.log('Randevu iptal istendi:', params.rowData.id);
     const dialogRef = this.dialog.open(DynamicDialogComponent, {
       width: '500px',
       data: <IDynamicDialogConfig>{
@@ -89,46 +133,27 @@ export class AppointmentListComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) return;
-    //   const bookAppointmentRequest: BookAppointmentRequest = {
-    //     doctorId:this.listAvailableAppointmentRequest.doctorId,
-    //     dateTime: dateTime.toISOString(),
-    //   };
-      
+      const cancelAppointmentByPatientRequest: CancelAppointmentByPatientRequest = {
+        appointmentId: params.rowData.id
+      };
 
-    //   this.selectedData.dateTime = dateTimeForFrontend.toString();
-    //   console.log(this.selectedData);
-      
 
-    //   this.appointmentService.bookAvailableAppointment(bookAppointmentRequest).subscribe({
-    //     next: () => {
+      this.appointmentService.cancelAppointmentByPatient(cancelAppointmentByPatientRequest).subscribe({
+        next: () => {
+          
+          console.log(params.rowData.id + " silindi!" );
+          const index = this.appointmentRows.findIndex(appointment => appointment.id === params.rowData.id);
+          if (index !== -1) {
+            this.appointmentRows[index].status = "CancelByPatient";
+            this.appointmentRows = [...this.appointmentRows]; // Angular change detection için
+          }
+          this.cdr.detectChanges();
+      },
 
-    //       console.log(timeStr);
-    //       this.availableAppointments.appointmentDates[this.tabGroup?.selectedIndex!].bookedSlots.push(timeStr + ":00");
-    //       this.cdr.detectChanges();
-    //       this.dialog.open(DynamicDialogComponent, {
-    //         width: '500px',
-    //         data: <IDynamicDialogConfig>{
-    //           title: 'Sonuç',
-    //           dialogContent: this.successDialogTemplate,
-    //           acceptButtonTitle: 'Tamam',
-    //           dialogType: 'success' 
-    //         },
-    //       }
-    //     ); 
-    //   },
-
-    //     error: () => {
-    //       this.dialog.open(DynamicDialogComponent, {
-    //         width: '500px',
-    //         data: <IDynamicDialogConfig>{
-    //           title: 'Sonuç',
-    //           dialogContent: this.failedDialogTemplate,
-    //           acceptButtonTitle: 'Tamam',
-    //           dialogType: 'failed' 
-    //         },
-    //       }); 
-    //     }
-    //   });
+        error: () => {
+          console.log("başarısız iptal etme işlemi");
+        }
+      });
     });
 
   }

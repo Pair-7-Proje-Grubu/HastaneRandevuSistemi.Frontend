@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
   template: `
   @if (params.predicate === undefined || params.predicate(params.data))
   {
-    <button mat-icon-button color="warn" (click)="onClick($event)" class="full-height">
+    <button mat-icon-button (click)="onClick($event)" class="full-height cancel">
       <mat-icon>{{params.icon}}</mat-icon>
     </button>
   }
