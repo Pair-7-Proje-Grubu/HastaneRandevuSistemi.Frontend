@@ -8,6 +8,7 @@ import { BookAppointmentRequest } from '../models/book-appointment-request';
 import { ListAppointmentByDoctorResponse } from '../models/list-appointment-by-doctor-reponse';
 import { GetListAppointmentResponse } from '../models/get-list-appointment-response';
 import { GetListPatientByDoctorResponse } from '../models/get-list-patient-by-doctor-response';
+import { CancelAppointmentFromDoctorResponse } from '../models/cancel-appointment-from-doctor-response';
 import { PagedResponse } from '../../pagination/models/paged-response';
 import { CancelAppointmentByPatientRequest } from '../models/cancel-appointment-by-patient-request';
 
@@ -53,7 +54,11 @@ export class AppointmentService {
     return this.http.post(`${this.apiControllerUrl}/Book`,requestBody);
   }
 
-  cancelAppointmentByPatient(requestBody:CancelAppointmentByPatientRequest): Observable<any> {
-    return this.http.post(`${this.apiControllerUrl}/CancelByPatient`,requestBody);
+  cancelAppointmentFromDoctor(id: number): Observable<CancelAppointmentFromDoctorResponse> {
+    return this.http.put<CancelAppointmentFromDoctorResponse>(`${this.apiControllerUrl}/CancelByDoctor/${id}`, null);
+  }
+
+  cancelAppointmentByPatient(appointmentId : number): Observable<any> {
+    return this.http.put(`${this.apiControllerUrl}/CancelByPatient/${appointmentId}`,null);
   }
 }

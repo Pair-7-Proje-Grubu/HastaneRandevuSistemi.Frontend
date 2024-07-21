@@ -4,6 +4,8 @@ import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { PagedResponse } from '../../../features/pagination/models/paged-response';
+import { ButtonRendererComponent } from '../../../shared/components/button-renderer/button-renderer.component';
+import { AuthService } from '../../../core/auth/services/auth.service';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 
@@ -14,7 +16,7 @@ import { DoctorService } from '../../../features/doctors/services/doctor.service
   selector: 'app-all-doctor',
   standalone: true,
   imports: [
-    CommonModule, AgGridModule, AgGridAngular, PaginationComponent
+    CommonModule, AgGridModule, AgGridAngular, PaginationComponent, ButtonRendererComponent
   ],
   templateUrl: './all-doctor.component.html',
   styleUrl: './all-doctor.component.scss',
@@ -43,12 +45,25 @@ export class AllDoctorComponent implements OnInit {
     { headerName: 'Soyadı', field: 'lastName' },
     { headerName: 'Klinik', field: 'clinicName' },
     { headerName: 'Unvan', field: 'title' },
-    { headerName: 'Telefon', field: 'phone' }
+    { headerName: 'Telefon', field: 'phone' },
+    {
+      headerName: 'İşlemler',
+      cellRenderer: ButtonRendererComponent,
+      cellRendererParams: {
+        onEdit: this.onEditClick.bind(this),
+        onDelete: this.onDeleteClick.bind(this),
+      },
+      width: 120 // Genişliği iki butona uygun şekilde ayarlayın
+    }
   ];
 
-  constructor(private doctorService: DoctorService, private cdr: ChangeDetectorRef){}
+  colDefsWithoutButtons: ColDef[] = this.colDefs.slice(0, 5); // Sadece ilk 5 sütun
+  isAllDoctorAdminPanel = true;
+
+  constructor(private doctorService: DoctorService, private authService: AuthService, private cdr: ChangeDetectorRef){}
 
   ngOnInit(): void {
+    this.isAllDoctorAdminPanel = this.authService.getUserRoles().includes("Admin");
     this.getDoctorList();
   }
 
@@ -65,5 +80,15 @@ export class AllDoctorComponent implements OnInit {
             this.cdr.detectChanges();
         }
     )
+  }
+
+  onEditClick(params: any) {
+    console.log('Edit clicked for:', params.rowData);
+    // Düzenleme mantığınızı buraya ekleyin
+  }
+
+  onDeleteClick(params: any) {
+    console.log('Delete clicked for:', params.rowData);
+    // Silme mantığınızı buraya ekleyin
   }
 }

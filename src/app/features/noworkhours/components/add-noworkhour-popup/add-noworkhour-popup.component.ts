@@ -35,23 +35,37 @@ export class AddNoworkhourPopupComponent {
   isNewEvent: boolean = false;
   selectedTimes: { date: Date, startTime: string, endTime: string }[] = [];
   currentTitle: string = '';
+  isAppointment: boolean = false;
+  isCancelledAppointment: boolean = false;
 
   constructor(
     private noworkhourService: NoworkhoursService,
     public dialogRef: MatDialogRef<AddNoworkhourPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { id: string | number; title: string; start: Date; end: Date; details: string }
-    // title: string; details: string
+    @Inject(MAT_DIALOG_DATA) public data: { 
+      id: string | number; 
+      title: string; 
+      start: Date; 
+      end: Date; 
+      details: string;
+      isAppointment: boolean;
+      appointmentId?: number;
+      isCancelledAppointment: boolean;
+    }
   ) {
     // Timepicker input alanlarına zaman değerlerini ayarlama
     this.startTime = data.start ? this.formatTime(new Date(data.start)) : '';
     this.endTime = data.end ? this.formatTime(new Date(data.end)) : '';
     this.isNewEvent = !data.title;
+    this.isAppointment = data.isAppointment;
+    this.isCancelledAppointment = data.isCancelledAppointment;
     console.log('Dialog Data in Constructor:', this.data);
   }
 
   ngOnInit() {
-    this.isNewEvent = !this.data.title; // title boşsa yeni bir eventtir
-    console.log(this.data);
+    console.log('Dialog data:', this.data); // Debug için
+    this.isNewEvent = !this.data.title;
+    this.isAppointment = this.data.isAppointment;
+    this.isCancelledAppointment = this.data.isCancelledAppointment;
   }
 
   onNoClick(): void {
@@ -131,8 +145,15 @@ export class AddNoworkhourPopupComponent {
   }
 
   onDeleteClick(): void {
-    console.log('Deleting Event Data:', this.data);
-    this.dialogRef.close({ delete: true, id: this.data.id.toString() }); // ID'yi geri döndürüyoruz
+    if (this.isAppointment) {
+      this.dialogRef.close({ delete: true, appointmentId: this.data.appointmentId });
+    } else {
+      this.dialogRef.close({ delete: true, id: this.data.id.toString() });
+    }
+  }
+
+  onCancelClick(): void {
+    this.dialogRef.close({ cancel: true, appointmentId: this.data.appointmentId });
   }
 }
 

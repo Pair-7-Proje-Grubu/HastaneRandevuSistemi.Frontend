@@ -3,7 +3,7 @@
     class="ag-theme-quartz"
     style="height: 100vh;"
     [rowData]="doctorList.data"
-    [columnDefs]="colDefs"
+    [columnDefs]="isAllDoctorAdminPanel ? colDefs : colDefsWithoutButtons"
     rowSelection="multiple"
     [defaultColDef]="defaultColDef"/>
 <app-pagination

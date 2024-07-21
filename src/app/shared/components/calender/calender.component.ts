@@ -107,9 +107,7 @@ export class CalenderComponent {
     private appointmentService: AppointmentService
   ) {
     this.initializeCalendarOptions();
-    // this.workingTimeService.getWorkingHourById(1).subscribe(workingTime => console.log(workingTime));
-    this.fetchNoWorkHours();
-    this.fetchAppointments();
+    this.loadAllEvents();
   }
 
   initializeCalendarOptions() {
@@ -163,61 +161,107 @@ export class CalenderComponent {
     return num.toString().padStart(2, '0');
   }
 
-  fetchNoWorkHours() {
-    this.noWorkHourService.getListNoWorkHour().subscribe(noWorkHours => {
-      const events = noWorkHours.map(noWorkHour => ({
-        id: noWorkHour.id.toString(),
-        start: noWorkHour.startDate,
-        end: noWorkHour.endDate,
-        title: noWorkHour.title,
-      }));
-      
-      const updatedOptions = {
-        ...this.calendarOptions(),
-        events: events
-      };
-
-      this.calendarOptions.set(updatedOptions);
-      this.changeDetector.detectChanges();
-    });
-  }
-
-  fetchAppointments() {
+  loadAllEvents() {
     forkJoin({
+      noWorkHours: this.noWorkHourService.getListNoWorkHour(),
       appointments: this.appointmentService.getListActiveAppointmentByDoctor(),
       clinic: this.clinicService.getClinic()
-    }).subscribe(({ appointments, clinic }) => {
-      const appointmentEvents: EventInput[] = appointments.map(appointment => ({
-        // id: appointment.id.toString(),
-        title: `${appointment.firstName} ${appointment.lastName}`,
-        start: appointment.appointmentDate,
-        end: this.calculateEndTime(appointment.appointmentDate, clinic.appointmentDuration),
-        extendedProps: {
-          type: 'appointment'
-        }
-      }));
-  
-      const currentEvents = this.calendarOptions().events;
-      let updatedEvents: EventInput[];
-  
-      if (Array.isArray(currentEvents)) {
-        updatedEvents = [
-          ...currentEvents.filter((event: EventInput) => 
-            !(event as any).extendedProps || (event as any).extendedProps.type !== 'appointment'
-          ),
-          ...appointmentEvents
-        ];
-      } else {
-        updatedEvents = appointmentEvents;
-      }
-  
+    }).subscribe(({ noWorkHours, appointments, clinic }) => {
+      const noWorkHourEvents = this.mapNoWorkHoursToEvents(noWorkHours);
+      const appointmentEvents = this.mapAppointmentsToEvents(appointments, clinic);
+      
+      const allEvents = [...noWorkHourEvents, ...appointmentEvents];
+      
       this.calendarOptions.update(options => ({
         ...options,
-        events: updatedEvents
+        events: allEvents
       }));
+      
       this.changeDetector.detectChanges();
     });
   }
+  
+  mapNoWorkHoursToEvents(noWorkHours: any[]): EventInput[] {
+    return noWorkHours.map(noWorkHour => ({
+      id: noWorkHour.id.toString(),
+      start: noWorkHour.startDate,
+      end: noWorkHour.endDate,
+      title: noWorkHour.title,
+      extendedProps: {
+        type: 'noWorkHour'
+      }
+    }));
+  }
+  
+  mapAppointmentsToEvents(appointments: any[], clinic: Clinic): EventInput[] {
+    return appointments.map(appointment => ({
+      id: appointment.id.toString(),
+      title: `${appointment.firstName} ${appointment.lastName}`,
+      start: appointment.appointmentDate,
+      end: this.calculateEndTime(appointment.appointmentDate, clinic.appointmentDuration),
+      extendedProps: {
+        type: 'appointment',
+        appointmentId: appointment.id
+      }
+    }));
+  }
+
+  // fetchNoWorkHours() {
+  //   this.noWorkHourService.getListNoWorkHour().subscribe(noWorkHours => {
+  //     const events = noWorkHours.map(noWorkHour => ({
+  //       id: noWorkHour.id.toString(),
+  //       start: noWorkHour.startDate,
+  //       end: noWorkHour.endDate,
+  //       title: noWorkHour.title,
+  //     }));
+      
+  //     const updatedOptions = {
+  //       ...this.calendarOptions(),
+  //       events: events
+  //     };
+
+  //     this.calendarOptions.set(updatedOptions);
+  //     this.changeDetector.detectChanges();
+  //   });
+  // }
+
+  // fetchAppointments() {
+  //   forkJoin({
+  //     appointments: this.appointmentService.getListActiveAppointmentByDoctor(),
+  //     clinic: this.clinicService.getClinic()
+  //   }).subscribe(({ appointments, clinic }) => {
+  //     const appointmentEvents: EventInput[] = appointments.map(appointment => ({
+  //       id: appointment.id.toString(),
+  //       title: `${appointment.firstName} ${appointment.lastName}`,
+  //       start: appointment.appointmentDate,
+  //       end: this.calculateEndTime(appointment.appointmentDate, clinic.appointmentDuration),
+  //       extendedProps: {
+  //         type: 'appointment',
+  //         appointmentId: appointment.id
+  //       }
+  //     }));
+  
+  //     const currentEvents = this.calendarOptions().events;
+  //     let updatedEvents: EventInput[];
+  
+  //     if (Array.isArray(currentEvents)) {
+  //       updatedEvents = [
+  //         ...currentEvents.filter((event: EventInput) => 
+  //           !(event as any).extendedProps || (event as any).extendedProps.type !== 'appointment'
+  //         ),
+  //         ...appointmentEvents
+  //       ];
+  //     } else {
+  //       updatedEvents = appointmentEvents;
+  //     }
+  
+  //     this.calendarOptions.update(options => ({
+  //       ...options,
+  //       events: updatedEvents
+  //     }));
+  //     this.changeDetector.detectChanges();
+  //   });
+  // }
   
   calculateEndTime(startTime: string | Date, duration: number): Date {
     const start = startTime instanceof Date ? startTime : new Date(startTime);
@@ -258,13 +302,16 @@ export class CalenderComponent {
   
         this.noWorkHourService.addNoWorkHour(requestBody).subscribe(response => {
           console.log('NoWorkHour added:', response);
+          this.loadAllEvents();
         });
+        
       }
     });
   }
 
   handleEventClick(clickInfo: EventClickArg) {
     const event = clickInfo.event;
+    const isAppointment = event.extendedProps['type'] === 'appointment';
     console.log('Event:', event);
     console.log('Event ID:', event.id);
     const dialogRef = this.dialog.open(AddNoworkhourPopupComponent, {
@@ -274,16 +321,26 @@ export class CalenderComponent {
         title: event.title,
         start: event.start,
         end: event.end,
-        // details: event.extendedProps['details'],
-        id: event.id // varsayılan olarak diğer bilgileri burada taşıyoruz
+        id: event.id,
+        isAppointment: isAppointment,
+        appointmentId: isAppointment ? event.extendedProps['appointmentId'] : null
       }
     });
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (result.delete) {
-          this.deleteEvent(result.id); // Event silme işlemi
-          event.remove(); // Takvimden etkinliği kaldırma
+          if(isAppointment) {
+            this.cancelAppointment(result.appointmentId);
+          }else{
+            this.deleteEvent(result.id);
+          }
+          event.remove();
+          this.loadAllEvents();
+        }else if (result.cancel) {  // Yeni eklenen kısım
+          this.cancelAppointment(result.appointmentId);
+          event.remove();
+          this.loadAllEvents();
         }else{
           const timezoneOffset = new Date().getTimezoneOffset() * 60000;
 
@@ -299,11 +356,33 @@ export class CalenderComponent {
             event.setStart(result.start.toISOString());
             event.setEnd(result.end.toISOString());
             this.changeDetector.detectChanges(); // ek bilgileri güncellemek için
+            this.loadAllEvents();
           });
         } 
       }
     });
   }
+
+  cancelAppointment(appointmentId: number) {
+  this.appointmentService.cancelAppointmentFromDoctor(appointmentId).subscribe(() => {
+    const calendarApi = this.calendarOptions().events;
+    if (Array.isArray(calendarApi)) {
+      const eventIndex = calendarApi.findIndex((e: any) => e.extendedProps?.appointmentId === appointmentId);
+      if (eventIndex !== -1) {
+        const event = calendarApi[eventIndex];
+        const noWorkHour: NoWorkHour = {
+          id: 0,
+          title: 'İptal Edilen Randevu',
+          startDate: new Date(event.start as string),
+          endDate: new Date(event.end as string)
+        };
+        this.noWorkHourService.addNoWorkHour([noWorkHour]).subscribe(() => {
+          this.loadAllEvents();
+        });
+      }
+    }
+  });
+}
   
   deleteEvent(eventId: string) {
     const eventIdAsNumber = Number(eventId); // veya +eventId şeklinde de kullanılabilir
@@ -313,7 +392,7 @@ export class CalenderComponent {
     }
   
     this.noWorkHourService.deleteNoWorkHour(eventIdAsNumber).subscribe(() => {
-      this.fetchNoWorkHours();
+      this.loadAllEvents();
     });
   }
 

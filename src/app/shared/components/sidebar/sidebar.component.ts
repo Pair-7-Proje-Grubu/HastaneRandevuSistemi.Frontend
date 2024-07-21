@@ -78,7 +78,7 @@ export class SidebarComponent implements OnInit {
       icon: 'fa-solid fa-gear',
       sublist: [
         { name: 'Ofis Konumu', link: 'officeLocation' },
-        { name: 'Ofis Tahsis', link: '#' },
+        { name: 'Ofis Tahsis', link: 'doctorOfficeAllocation' },
       ]
     },
     {
