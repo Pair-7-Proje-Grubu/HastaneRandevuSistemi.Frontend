@@ -141,7 +141,7 @@ export class AllPatientComponent implements OnInit {
               { 
                 name: 'gender', 
                 label: 'Cinsiyet', 
-                value: params.data.gender, // Backend değerini kullan
+                value: params.data.gender,
                 type: 'dropdown',
                 options: [
                   { value: 'F', label: 'Kadın' },
@@ -174,15 +174,15 @@ export class AllPatientComponent implements OnInit {
             console.log(result);
 
             let isoDate;
-    try {
-      // Türkçe tarih formatını (GG.AA.YYYY) parse edip ISO formatına çevirme
-      const [day, month, year] = result.birthDate.split('.');
-      isoDate = new Date(year, month - 1, day).toISOString();
-    } catch (error) {
-      console.error('Geçersiz tarih formatı:', result.birthDate);
-      this.snackBar.open('Geçersiz tarih formatı', 'Kapat', { duration: 3000 });
-      return;
-    }
+            try {
+              // Türkçe tarih formatını (GG.AA.YYYY) parse edip ISO formatına çevirme
+              const [day, month, year] = result.birthDate.split('.');
+              isoDate = new Date(year, month - 1, day).toISOString();
+            } catch (error) {
+              console.error('Geçersiz tarih formatı:', result.birthDate);
+              this.snackBar.open('Geçersiz tarih formatı', 'Kapat', { duration: 3000 });
+              return;
+            }
             const backendGender = this.mapGender(result.gender, false);
             const updatedResult = {
                 ...result,
@@ -254,9 +254,9 @@ export class AllPatientComponent implements OnInit {
         };
       
         if (typeof bloodType === 'number') {
-          return bloodTypeMap[bloodType] || 'Bilinmiyor';
+          return bloodTypeMap[bloodType];
         } else {
-          return bloodType || 'Bilinmiyor';
+          return bloodType || 'Belirtilmemiş';
         }
       }
     }

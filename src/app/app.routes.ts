@@ -20,6 +20,7 @@ import { FeedbackComponent } from './routes/feedbacks/feedback-page/feedback.com
 import { ManageOfficeLocationComponent } from './routes/office-location/manage-office-location/manage-office-location.component';
 import { ManageOfficeAllocationComponent } from './routes/office-location/office-allocation/manage-office-allocation/manage-office-allocation.component';
 import { AllPatientComponent } from './routes/patients/all-patient/all-patient.component';
+import { GetListAllAppointmentComponent } from './routes/admins/get-list-all-appointment/get-list-all-appointment.component';
 
 export const routes: Routes = [
   {
@@ -59,7 +60,8 @@ export const routes: Routes = [
       { path: 'settings', component: SettingsPageComponent },
       { path: 'officeLocation', component: ManageOfficeLocationComponent },
       { path: 'doctorOfficeAllocation', component: ManageOfficeAllocationComponent },
-      { path: 'all-patient', component: AllPatientComponent }
+      { path: 'all-patient', component: AllPatientComponent },
+      { path: 'all-appointment', component: GetListAllAppointmentComponent }
     ],
   },
   { 

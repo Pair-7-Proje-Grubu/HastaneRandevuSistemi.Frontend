@@ -56,7 +56,7 @@ export class SidebarComponent implements OnInit {
         number: '3',
         name: 'Randevular',
         icon: 'fa fa-user-md',
-        disabled:true,
+        link: 'all-appointment'
         
     },
     {

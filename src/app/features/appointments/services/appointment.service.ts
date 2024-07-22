@@ -11,6 +11,7 @@ import { GetListPatientByDoctorResponse } from '../models/get-list-patient-by-do
 import { CancelAppointmentFromDoctorResponse } from '../models/cancel-appointment-from-doctor-response';
 import { PagedResponse } from '../../pagination/models/paged-response';
 import { CancelAppointmentByPatientRequest } from '../models/cancel-appointment-by-patient-request';
+import { GetListAllAppointmentResponse } from '../models/get-list-all-appointment-response';
 
 @Injectable({
   providedIn: 'root'
@@ -63,5 +64,14 @@ export class AppointmentService {
 
   cancelAppointmentByPatient(appointmentId : number): Observable<any> {
     return this.http.put(`${this.apiControllerUrl}/CancelByPatient/${appointmentId}`,null);
+  }
+
+  getListAppointmentByAdmin(pageNumber: number, pageSize: number) : Observable<PagedResponse<GetListAllAppointmentResponse>> {
+    return this.http.get<PagedResponse<GetListAllAppointmentResponse>>(`${this.apiControllerUrl}/GetListAppointmentByAdmin`, {
+      params: {
+        page: pageNumber.toString(),
+        pageSize: pageSize.toString(),
+      },
+    });
   }
 }
