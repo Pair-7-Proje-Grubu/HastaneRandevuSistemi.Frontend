@@ -13,7 +13,7 @@ export class ClinicsService {
   constructor(private http: HttpClient) { }
 
   getClinic(): Observable<Clinic> {
-    return this.http.post<Clinic>(`${this.apiControllerUrl}/GetClinic`, {});
+    return this.http.get<Clinic>(`${this.apiControllerUrl}/GetClinic`, {});
   }
 
   getAllClinics(): Observable<Clinic[]> {

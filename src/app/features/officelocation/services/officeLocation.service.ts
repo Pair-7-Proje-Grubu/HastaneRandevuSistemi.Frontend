@@ -22,7 +22,7 @@ export class OfficeLocationService {
   }
 
   deleteOfficeLocation(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiControllerUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiControllerUrl}/Delete/${id}`);
   }
 
   updateOfficeLocation(officeLocation: any): Observable<void> {

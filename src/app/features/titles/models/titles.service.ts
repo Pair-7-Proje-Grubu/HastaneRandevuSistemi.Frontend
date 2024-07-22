@@ -13,6 +13,6 @@ export class TitlesService {
   constructor(private http: HttpClient) { }
 
   getAllTitles(): Observable<Title[]> {
-    return this.http.post<Title[]>(this.apiControllerUrl + '/GetList', {});
+    return this.http.get<Title[]>(this.apiControllerUrl + '/GetList', {});
   }
 }

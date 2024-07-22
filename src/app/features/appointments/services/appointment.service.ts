@@ -22,11 +22,14 @@ export class AppointmentService {
   constructor(private http: HttpClient) { }
 
   getListAvailableAppointment(requestBody:ListAvailableAppointmentRequest): Observable<ListAvailableAppointmentResponse> {
-    return this.http.post<ListAvailableAppointmentResponse>(`${this.apiControllerUrl}/GetListAvailableAppointments`,requestBody);
+    return this.http.get<ListAvailableAppointmentResponse>(`${this.apiControllerUrl}/GetListAvailableAppointments`,{
+      params: {
+        doctorId: requestBody.doctorId
+      }});
   }
 
   getListActiveAppointmentByDoctor(): Observable<ListAppointmentByDoctorResponse[]> {
-    return this.http.post<ListAppointmentByDoctorResponse[]>(`${this.apiControllerUrl}/GetListActiveAppointmentByDoctor`, {});
+    return this.http.get<ListAppointmentByDoctorResponse[]>(`${this.apiControllerUrl}/GetListActiveAppointmentByDoctor`, {});
   }
 
   getListPastAppointmentByDoctor(pageNumber: number, pageSize: number): Observable<PagedResponse<ListAppointmentByDoctorResponse>> {
@@ -61,7 +64,7 @@ export class AppointmentService {
   }
 
   cancelAppointmentFromDoctor(id: number): Observable<CancelAppointmentFromDoctorResponse> {
-    return this.http.put<CancelAppointmentFromDoctorResponse>(`${this.apiControllerUrl}/${id}`, null);
+    return this.http.put<CancelAppointmentFromDoctorResponse>(`${this.apiControllerUrl}/CancelByDoctor/${id}`, null);
   }
 
   cancelAppointmentByPatient(appointmentId : number): Observable<any> {

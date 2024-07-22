@@ -27,7 +27,7 @@ export class BlockService {
   }
 
   deleteBlock(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiControllerUrl}/Block/${id}`);
+    return this.http.delete<void>(`${this.apiControllerUrl}/Block/Delete/${id}`);
   }
   
 }

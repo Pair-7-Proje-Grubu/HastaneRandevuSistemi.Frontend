@@ -10,23 +10,23 @@ import { GetListRoomResponse } from '../models/get-list-officeLocation-response'
 })
 export class RoomService {
 
-  private readonly apiControllerUrl = `${environment.apiUrl}`;
+  private readonly apiControllerUrl = `${environment.apiUrl}/Room`;
 
   constructor(private http: HttpClient) { }
 
   getRooms(): Observable<GetListRoomResponse[]> {
-    return this.http.get<GetListRoomResponse[]>(`${this.apiControllerUrl}/Room/GetList`, {});
+    return this.http.get<GetListRoomResponse[]>(`${this.apiControllerUrl}/GetList`, {});
   }
   createRoom(room: { no: string }): Observable<void> {
-    return this.http.post<void>(`${this.apiControllerUrl}/Room/Add`, room);
+    return this.http.post<void>(`${this.apiControllerUrl}/Add`, room);
   }
 
   updateRoom(id: number, room: { no: string }): Observable<void> {
-    return this.http.put<void>(`${this.apiControllerUrl}/Room/Update`, room);
+    return this.http.put<void>(`${this.apiControllerUrl}/Update`, room);
   }
 
   deleteRoom(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiControllerUrl}/Room/${id}`);
+    return this.http.delete<void>(`${this.apiControllerUrl}/Delete/${id}`);
   }
 
 }
