@@ -143,14 +143,6 @@ export class AppointmentListComponent {
     this.doctorGridApi = params.api;
     this.loadAppointments();
     params.api.sizeColumnsToFit();
-    this.appointmentService.getListAppointment(this.pageNumber, this.pageSize).subscribe(
-      (data: PagedResponse<GetListAppointmentResponse>) => {
-        console.log(data);
-        this.appointmentRows = data;
-        this.cdr.detectChanges();
-      }
-    );
-    params.api.sizeColumnsToFit();
   }
 
   onSelectionChangedAppointmentList() {
@@ -185,6 +177,8 @@ export class AppointmentListComponent {
             this.appointmentRows.data[index].status = "CancelByPatient";
             this.appointmentRows.data = [...this.appointmentRows.data]; // Angular change detection için
           }
+
+          this.loadAppointments();
           this.cdr.detectChanges();
       },
 
