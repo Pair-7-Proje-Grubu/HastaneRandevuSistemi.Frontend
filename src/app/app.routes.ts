@@ -41,7 +41,6 @@ export const routes: Routes = [
       { path: 'calendar', component: CalenderComponent },
       { path: 'settings', component: SettingsPageComponent },
       { path: 'past-appointment', component: ListPastAppointmentComponent },
-      { path: 'past-appointment', component: ListPastAppointmentComponent },
       { path: 'patient', component: PatientListComponent },
       {path: 'feedback', component: FeedbackComponent},
 
