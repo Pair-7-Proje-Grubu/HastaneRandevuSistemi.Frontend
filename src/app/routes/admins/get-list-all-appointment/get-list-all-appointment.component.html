@@ -1,0 +1,15 @@
+<p>Randevular</p>
+<ag-grid-angular
+    class="ag-theme-quartz"
+    style="height: 100vh;"
+    [rowData]="appointmentList.data"
+    [columnDefs]="colDefs"
+    rowSelection="multiple"
+    [defaultColDef]="defaultColDef"/>
+<app-pagination
+    [page]="pageNumber"
+    [pageSize]="pageSize"
+    [totalItemCount]="appointmentList.totalRecords"
+    (pageChange)="onPageChange($event)"
+>
+</app-pagination>
