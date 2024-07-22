@@ -21,7 +21,10 @@ export class AppointmentService {
   constructor(private http: HttpClient) { }
 
   getListAvailableAppointment(requestBody:ListAvailableAppointmentRequest): Observable<ListAvailableAppointmentResponse> {
-    return this.http.post<ListAvailableAppointmentResponse>(`${this.apiControllerUrl}/GetListAvailableAppointments`,requestBody);
+    return this.http.get<ListAvailableAppointmentResponse>(`${this.apiControllerUrl}/GetListAvailableAppointments`,{
+      params: {
+        doctorId: requestBody.doctorId
+      }});
   }
 
   getListActiveAppointmentByDoctor(): Observable<ListAppointmentByDoctorResponse[]> {
@@ -47,7 +50,7 @@ export class AppointmentService {
   }
 
   getListAppointment(): Observable<GetListAppointmentResponse[]> {
-    return this.http.post<GetListAppointmentResponse[]>(`${this.apiControllerUrl}/List`, {});
+    return this.http.get<GetListAppointmentResponse[]>(`${this.apiControllerUrl}/List`, {});
   }
 
   bookAvailableAppointment(requestBody:BookAppointmentRequest): Observable<any> {
