@@ -35,8 +35,13 @@ export class DoctorService {
 
     );
   }
+
   updateDoctorOfficeLocation(officeLocation: any): Observable<void> {
     return this.http.post<void>(`${this.apiControllerUrl}/UpdateDoctorOfficeLocation`, officeLocation);
+  }
+
+  updateDoctor(doctorData: any): Observable<any> {
+    return this.http.put(`${this.apiControllerUrl}/Update`, doctorData);
   }
 
 }

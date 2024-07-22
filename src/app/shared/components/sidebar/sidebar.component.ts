@@ -63,7 +63,7 @@ export class SidebarComponent implements OnInit {
       number: '4',
       name: 'Hastalar',
       icon: 'fa fa-users',
-      disabled:true,
+      link: 'all-patient' ,
     },
 
     {

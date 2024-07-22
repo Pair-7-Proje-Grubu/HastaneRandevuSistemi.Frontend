@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="editForm">
+    <ng-container *ngFor="let field of data.fields">
+      <ng-container *ngIf="!field.hidden">
+        <mat-form-field>
+          <mat-label>{{ field.label }}</mat-label>
+          <ng-container [ngSwitch]="field.type">
+            <input *ngSwitchDefault matInput [formControlName]="field.name" [placeholder]="field.placeholder" [readonly]="field.readonly" [class.readonly-field]="field.readonly">
+            <mat-select *ngSwitchCase="'dropdown'" [formControlName]="field.name" [compareWith]="compareOptionValues">
+              <mat-option *ngFor="let option of field.options" [value]="option.value">
+                {{option.label}}
+              </mat-option>
+            </mat-select>
+          </ng-container>
+        </mat-form-field>
+      </ng-container>
+    </ng-container>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">İptal</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!editForm.valid">Kaydet</button>
+</mat-dialog-actions>
