@@ -47,8 +47,13 @@ export class AppointmentService {
     });
   }
 
-  getListAppointment(): Observable<GetListAppointmentResponse[]> {
-    return this.http.post<GetListAppointmentResponse[]>(`${this.apiControllerUrl}/List`, {});
+  getListAppointment(pageNumber: number, pageSize: number): Observable<PagedResponse<GetListAppointmentResponse>> {
+    return this.http.get<PagedResponse<GetListAppointmentResponse>>(`${this.apiControllerUrl}/List`, {
+      params: {
+        page: pageNumber.toString(),
+        pageSize: pageSize.toString(),
+      },
+    });
   }
 
   bookAvailableAppointment(requestBody:BookAppointmentRequest): Observable<any> {

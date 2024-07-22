@@ -11,13 +11,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { CancelAppointmentByPatientRequest } from '../../../features/appointments/models/cancel-appointment-by-patient-request';
 import { fontWeight } from 'html2canvas/dist/types/css/property-descriptors/font-weight';
 import { ButtonRendererGroupComponent } from '../../../shared/components/button-group-renderer/button-group-renderer.component';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
+import { PagedResponse } from '../../../features/pagination/models/paged-response';
 
 
 @Component({
   selector: 'app-appointment-list',
   standalone: true,
   imports: [
-    CommonModule,MatIcon,AgGridAngular,AgGridModule
+    CommonModule,MatIcon,AgGridAngular,AgGridModule, PaginationComponent
   ],
   templateUrl: './appointment-list.component.html',
   styleUrl: './appointment-list.component.scss',
@@ -123,15 +125,26 @@ export class AppointmentListComponent {
   ];
 
 
-  appointmentRows: GetListAppointmentResponse[] = [];
-  
+  appointmentRows: PagedResponse<GetListAppointmentResponse> = {
+    data: [],
+    pageNumber: 1,
+    pageSize: 10,
+    totalPages: 0,
+    totalRecords: 0
+};
+
+    pageNumber: number = 1;
+    pageSize: number = 14;
+    totalRecords: number = 0
+
   constructor(private appointmentService: AppointmentService, private cdr: ChangeDetectorRef){}
   
   onGridReadyAppointmentList(params : GridReadyEvent<GetListAppointmentResponse> ) {
     this.doctorGridApi = params.api;
-
-    this.appointmentService.getListAppointment().subscribe(
-      (data: GetListAppointmentResponse[]) => {
+    this.loadAppointments();
+    params.api.sizeColumnsToFit();
+    this.appointmentService.getListAppointment(this.pageNumber, this.pageSize).subscribe(
+      (data: PagedResponse<GetListAppointmentResponse>) => {
         console.log(data);
         this.appointmentRows = data;
         this.cdr.detectChanges();
@@ -167,10 +180,10 @@ export class AppointmentListComponent {
       this.appointmentService.cancelAppointmentByPatient(params.data.id).subscribe({
         next: () => {
           
-          const index = this.appointmentRows.findIndex(appointment => appointment.id === params.data.id);
+          const index = this.appointmentRows.data.findIndex(appointment => appointment.id === params.data.id);
           if (index !== -1) {
-            this.appointmentRows[index].status = "CancelByPatient";
-            this.appointmentRows = [...this.appointmentRows]; // Angular change detection için
+            this.appointmentRows.data[index].status = "CancelByPatient";
+            this.appointmentRows.data = [...this.appointmentRows.data]; // Angular change detection için
           }
           this.cdr.detectChanges();
       },
@@ -183,4 +196,21 @@ export class AppointmentListComponent {
 
   }
 
+  onPageChange(page: number) {
+    this.pageNumber = page;
+    this.loadAppointments();
+  }
+
+  loadAppointments() {
+    this.appointmentService.getListAppointment(this.pageNumber, this.pageSize).subscribe(
+      (data: PagedResponse<GetListAppointmentResponse>) => {
+        console.log(data);
+        this.appointmentRows = data;
+        if (this.doctorGridApi) {
+          this.doctorGridApi.setGridOption('rowData', data.data);
+        }
+        this.cdr.detectChanges();
+      }
+    );
+  }
 }

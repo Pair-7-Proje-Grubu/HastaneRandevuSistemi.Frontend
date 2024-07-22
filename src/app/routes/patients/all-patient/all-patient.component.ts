@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
+import { forkJoin, switchMap } from 'rxjs';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { PagedResponse } from '../../../features/pagination/models/paged-response';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -14,6 +15,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { GetAllPatientResponse } from '../../../features/patients/models/get-all-patient-response';
 import { PatientsService } from '../../../features/patients/services/patients.service';
+import { ClinicsService } from '../../../features/clinics/services/clinics.service';
+import { TitlesService } from '../../../features/titles/models/titles.service';
+import { OfficeLocationService } from '../../../features/officelocation/services/officeLocation.service';
+import { OperationClaimsService } from '../../../features/operationClaims/services/operation-claims.service';
+import { DoctorService } from '../../../features/doctors/services/doctor.service';
+import { UserOperationClaimsService } from '../../../features/userOperationClaims/services/user-operation-claims.service';
+import { Title } from '@angular/platform-browser';
+import { GetListOfficeLocationResponse } from '../../../features/officelocation/models/get-list-officeLocation-response';
+import { CreateUserOperationClaim } from '../../../features/userOperationClaims/models/create-user-operation-claim';
 
 @Component({
     selector: 'app-all-patient',
@@ -86,6 +96,12 @@ export class AllPatientComponent implements OnInit {
                     label: 'Sil',
                     icon: 'fa-solid fa-user-xmark fa-1x',
                     color: 'warn',
+                  },
+                  {
+                    onClick: this.onDoctorRoleClick.bind(this),
+                    label: 'Rol Ataması',
+                    icon: 'fa-solid fa-user-doctor fa-1x',
+                    color: 'black',
                   }
                 ]
               },
@@ -99,6 +115,12 @@ export class AllPatientComponent implements OnInit {
 
     constructor(
         private patientService: PatientsService, 
+        private clinicService: ClinicsService,
+        private titleService: TitlesService,
+        private officeLocationService: OfficeLocationService,
+        private operationClaimService: OperationClaimsService,
+        private doctorService: DoctorService,
+        private userOperationClaimService: UserOperationClaimsService,
         private cdr: ChangeDetectorRef,
         private dialog: MatDialog,
         private snackBar: MatSnackBar
@@ -258,6 +280,97 @@ export class AllPatientComponent implements OnInit {
         } else {
           return bloodType || 'Belirtilmemiş';
         }
+      }
+
+      onDoctorRoleClick(params: any) {
+        // Mevcut hasta bilgilerini alalım
+        const patientData = params.data;
+      
+        forkJoin({
+          clinics: this.clinicService.getAllClinics(),
+          officeLocations: this.officeLocationService.getListOfficeLocation(),
+          titles: this.titleService.getAllTitles(),
+          roles: this.operationClaimService.getAllOperationClaims()
+        }).subscribe(results => {
+          const dialogRef = this.dialog.open(GenericPopupComponent, {
+            width: '500px',
+            data: {
+              title: 'Hastayı Doktora Dönüştür',
+              fields: [
+                { name: 'id', value: patientData.id, hidden: true },
+                { name: 'email', label: 'Email', value: patientData.email, placeholder: 'Email girin'},
+                { name: 'firstName', label: 'Adı', value: patientData.firstName, placeholder: 'Adı girin', readonly: true  },
+                { name: 'lastName', label: 'Soyadı', value: patientData.lastName, placeholder: 'Soyadı girin', readonly: true  },
+                { 
+                  name: 'clinic', 
+                  label: 'Klinik', 
+                  value: '',
+                  type: 'dropdown',
+                  options: results.clinics.map(clinic => ({ value: clinic.id, label: clinic.name }))
+                },
+                { 
+                  name: 'officeLocation', 
+                  label: 'Ofis Konumu', 
+                  value: '',
+                  type: 'dropdown',
+                  options: results.officeLocations.map((location: GetListOfficeLocationResponse) => ({ 
+                    value: location.id, 
+                    label: `Blok: ${location.blockNo}, Kat: ${location.floorNo}, Oda: ${location.roomNo}`
+                  }))
+                },
+                { 
+                  name: 'title', 
+                  label: 'Unvan', 
+                  value: '',
+                  type: 'dropdown',
+                  options: results.titles.map(title => ({ value: title.id, label: title.titleName }))
+                },
+                { 
+                  name: 'role', 
+                  label: 'Rol', 
+                  value: '',
+                  type: 'dropdown',
+                  options: results.roles.map(role => ({ value: role.id, label: role.name }))
+                },
+              ]
+            }
+          });
+      
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              const doctorData = {
+                id: patientData.id,
+                clinicId: result.clinic,
+                officeLocationId: result.officeLocation,
+                titleId: result.title,
+                email: result.email
+              };
+        
+              this.doctorService.createDoctor(doctorData)
+                .pipe(
+                  switchMap(response => {
+                    const newDoctorId = response.id;
+                    const userOperationClaimCommand: CreateUserOperationClaim = {
+                      userId: newDoctorId,
+                      operationClaimId: result.role
+                    };
+                    console.log(userOperationClaimCommand);
+                    return this.userOperationClaimService.addUserOperationClaim(userOperationClaimCommand);
+                  })
+                )
+                .subscribe({
+                  next: () => {
+                    this.snackBar.open('Hasta başarıyla doktora dönüştürüldü ve rol atandı', 'Kapat', { duration: 3000 });
+                    this.getAllPatient();
+                  },
+                  error: (error) => {
+                    this.snackBar.open('Dönüştürme işlemi sırasında bir hata oluştu', 'Kapat', { duration: 3000 });
+                    console.error('Hata:', error);
+                  }
+                });
+            }
+          });
+        });
       }
     }
  

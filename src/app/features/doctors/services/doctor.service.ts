@@ -44,4 +44,8 @@ export class DoctorService {
     return this.http.put(`${this.apiControllerUrl}/Update`, doctorData);
   }
 
+  createDoctor(doctorData: any): Observable<any> {
+    return this.http.post(`${this.apiControllerUrl}/Add`, doctorData);
+  }
+
 }

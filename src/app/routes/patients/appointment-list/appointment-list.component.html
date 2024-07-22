@@ -1,15 +1,22 @@
 <p>Randevularım</p>
 <ag-grid-angular
-class="ag-theme-quartz"
-style="height: 100vh;"
-domLayout="autoHeight"
-(gridReady)="onGridReadyAppointmentList($event)"
-rowSelection="single"
-(selectionChanged)="onSelectionChangedAppointmentList()"
-[rowData]="appointmentRows"
-[columnDefs]="appointmentCols"
-[defaultColDef]="defaultColDef"
-suppressCellFocus/>
+  class="ag-theme-quartz"
+  style="height: 100vh;"
+  domLayout="autoHeight"
+  (gridReady)="onGridReadyAppointmentList($event)"
+  rowSelection="single"
+  (selectionChanged)="onSelectionChangedAppointmentList()"
+  [columnDefs]="appointmentCols"
+  [defaultColDef]="defaultColDef"
+  suppressCellFocus
+/>
+<app-pagination
+    [page]="pageNumber"
+    [pageSize]="pageSize"
+    [totalItemCount]="appointmentRows.totalRecords"
+    (pageChange)="onPageChange($event)"
+>
+</app-pagination>
 
 
 <ng-template #cancelAppointmentDialogTemplate>
