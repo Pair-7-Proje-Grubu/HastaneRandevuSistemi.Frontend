@@ -50,7 +50,10 @@
   <mat-toolbar-row class="justify-content-between">
     <button class="btn" (click)="toggleSidebar()"><mat-icon>menu</mat-icon></button>
     <div class="row mr-2 ml-auto">
-      <ul>
+      <ul class="d-flex align-items-center mb-0">
+        <li class="nav-item me-3">
+          <button class="btn btn-outline btn-custom" type="button" [routerLink]="['/patient/book-appointment']" routerLinkActive="active">Randevu Al</button>
+        </li>
         <li class="nav-item dropdown">
           <button class="btn btn-outline dropdown-toggle me-3" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="d-none d-lg-inline">{{displayUserName}}</span>
@@ -58,6 +61,7 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
             <!-- <li><a [routerLink]="['./settings']" class="dropdown-item"><i class="fa fa-lock"></i> Ayarlar</a></li> -->
+
             <li><button (click)="onLogout()" routerLinkActive="active" class="dropdown-item"><i class="fa fa-sign-out-alt"></i> Çıkış Yap</button></li>
           </ul>
         </li>

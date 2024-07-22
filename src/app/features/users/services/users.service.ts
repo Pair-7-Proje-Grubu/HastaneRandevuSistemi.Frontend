@@ -23,7 +23,7 @@ export class UsersService extends CoreAuthService {
 
   changePassword(changeCredentials: ChangeCredentials): Observable<any> {
     console.log('API Controller URL:', this.apiControllerUrl);
-    return this.http.post(`${this.apiControllerUrl}/ChangePassword`, changeCredentials, { responseType: 'text' })
+    return this.http.put(`${this.apiControllerUrl}/ChangePassword`, changeCredentials, { responseType: 'text' })
       .pipe(
         map(response => {
           try {
@@ -45,7 +45,7 @@ export class UsersService extends CoreAuthService {
 
   changePhoneNumber(email: string, newPhone: string): Observable<any> {
     const body = { email, newPhone };
-    return this.http.post(`${this.apiControllerUrl}/ChangePhoneNumber`, body)
+    return this.http.put(`${this.apiControllerUrl}/ChangePhoneNumber`, body)
       .pipe(
         map(response => {
           if (typeof response === 'string') {

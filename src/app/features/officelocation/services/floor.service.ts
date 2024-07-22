@@ -10,12 +10,12 @@ import { GetListFloorResponse } from '../models/get-list-officeLocation-response
 })
 export class FloorService {
 
-  private readonly apiControllerUrl = `${environment.apiUrl}`;
+  private readonly apiControllerUrl = `${environment.apiUrl}/Floor`;
 
   constructor(private http: HttpClient) { }
 
   getFloors(): Observable<GetListFloorResponse[]> {
-    return this.http.get<GetListFloorResponse[]>(`${this.apiControllerUrl}/Floor/GetList`)
+    return this.http.get<GetListFloorResponse[]>(`${this.apiControllerUrl}/GetList`)
     .pipe(
       tap(data => console.log('Floors:', data)),
       
@@ -23,15 +23,15 @@ export class FloorService {
   }
 
   createFloor(room: { no: string }): Observable<void> {
-    return this.http.post<void>(`${this.apiControllerUrl}/Floor/Add`, room);
+    return this.http.post<void>(`${this.apiControllerUrl}/Add`, room);
   }
 
   updateFloor(id: number, room: { no: string }): Observable<void> {
-    return this.http.put<void>(`${this.apiControllerUrl}/Floor/Update`, room);
+    return this.http.put<void>(`${this.apiControllerUrl}/Update`, room);
   }
 
   deleteFloor(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiControllerUrl}/Floor/${id}`);
+    return this.http.delete<void>(`${this.apiControllerUrl}/Delete/${id}`);
   }
 
 }

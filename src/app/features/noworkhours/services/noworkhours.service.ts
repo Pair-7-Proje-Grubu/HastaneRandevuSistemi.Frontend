@@ -58,7 +58,7 @@ export class NoworkhoursService {
   }
 
   deleteNoWorkHour(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiControllerUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiControllerUrl}/Delete/${id}`);
   }
 
   updateNoWorkHour(noWorkHour: NoWorkHour): Observable<void> {
